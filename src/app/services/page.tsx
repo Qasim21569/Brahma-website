@@ -140,7 +140,7 @@ export default function ServicesPage() {
               </h2>
             </div>
             <div className="md:col-span-8">
-              <div className="aspect-[4/3] w-full bg-stone-white mb-8 overflow-hidden md:w-3/4 float-right ml-8 mb-8">
+              <div className="aspect-[4/3] w-full bg-stone-white mb-8 overflow-hidden md:w-3/4 float-none md:float-right ml-0 md:ml-8">
                 <img
                   className="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply"
                   data-alt="Interior view of a high-end minimalist hotel lobby with textured stone surfaces."
@@ -183,10 +183,10 @@ export default function ServicesPage() {
                 key={step.num}
                 className={`relative ${i > 0 ? "md:hairline-l md:pl-8 border-mortar-grey" : ""}`}
               >
-                <span className="font-stat-display text-stat-display text-surface-dim absolute -top-8 -left-4 z-0 opacity-50">
+                <span className="font-stat-display text-stat-display text-surface-dim md:absolute md:-top-8 md:-left-4 z-0 opacity-50 block mb-2 md:mb-0">
                   {step.num}
                 </span>
-                <div className="relative z-10 pt-4 reveal">
+                <div className="relative z-10 pt-0 md:pt-4 reveal">
                   <h4 className="font-headline-md text-headline-md text-primary mb-4">
                     {step.title}
                   </h4>

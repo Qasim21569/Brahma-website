@@ -160,17 +160,17 @@ export default function CareersPage() {
                 href="#"
                 className="grid grid-cols-12 gap-4 py-8 border-b border-mortar-grey group hover:bg-surface-variant transition-colors items-center -mx-4 px-4 reveal"
               >
-                <div className="col-span-12 md:col-span-4 mb-2 md:mb-0">
+                <div className="col-span-12 md:col-span-4 mb-2 md:mb-0" data-label="Role">
                   <h3 className="font-headline-md text-headline-md text-ink-navy group-hover:text-muted-azure transition-colors">
                     {role.title}
                   </h3>
                 </div>
-                <div className="col-span-12 md:col-span-5 mb-4 md:mb-0 pr-8">
+                <div className="col-span-12 md:col-span-5 mb-4 md:mb-0 pr-8" data-label="Summary">
                   <p className="font-body-md text-body-md text-on-surface-variant">
                     {role.summary}
                   </p>
                 </div>
-                <div className="col-span-6 md:col-span-2 text-left md:text-right font-body-md text-body-md text-ink-navy">
+                <div className="col-span-6 md:col-span-2 text-left md:text-right font-body-md text-body-md text-ink-navy" data-label="Location">
                   {role.location}
                 </div>
                 <div className="col-span-6 md:col-span-1 text-right flex justify-end items-center">
