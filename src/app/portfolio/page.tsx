@@ -69,7 +69,7 @@ export default function PortfolioPage() {
                 className="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center"
               >
                 <div
-                  className={`md:col-span-7 h-[600px] w-full bg-stone-white border border-mortar-grey/50 relative overflow-hidden group ${
+                  className={`md:col-span-7 h-[300px] md:h-[600px] w-full bg-stone-white border border-mortar-grey/50 relative overflow-hidden group ${
                     project.flip ? "md:col-start-6 order-1 md:order-2" : ""
                   }`}
                 >
@@ -137,7 +137,7 @@ export default function PortfolioPage() {
                   key={project.name}
                   className="grid grid-cols-1 md:grid-cols-12 gap-4 py-6 border-b border-mortar-grey items-center hover:bg-stone-white transition-colors group cursor-pointer reveal"
                 >
-                  <div className="md:col-span-5 flex items-center gap-6">
+                  <div className="md:col-span-5 flex items-center gap-6" data-label="Property">
                     <div className="w-16 h-16 bg-mortar-grey/30 overflow-hidden hidden md:block">
                       <img
                         className="w-full h-full object-cover"
@@ -150,13 +150,13 @@ export default function PortfolioPage() {
                       {project.name}
                     </span>
                   </div>
-                  <div className="md:col-span-3 font-body-md text-body-md text-on-surface-variant">
+                  <div className="md:col-span-3 font-body-md text-body-md text-on-surface-variant" data-label="Location">
                     {project.location}
                   </div>
-                  <div className="md:col-span-2 font-body-md text-body-md text-on-surface-variant">
+                  <div className="md:col-span-2 font-body-md text-body-md text-on-surface-variant" data-label="Category">
                     {project.category}
                   </div>
-                  <div className="md:col-span-2 text-left md:text-right font-body-md text-body-md text-primary">
+                  <div className="md:col-span-2 text-left md:text-right font-body-md text-body-md text-primary" data-label="Acquired">
                     {project.year}
                   </div>
                 </div>
