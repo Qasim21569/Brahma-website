@@ -51,7 +51,7 @@ export default function CareersPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[120px]">
+      <main className="pt-[104px]">
         {/* ─── Hero ─── */}
         <section className="px-margin-edge py-section-gap max-w-container-max mx-auto relative architectural-grid">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">

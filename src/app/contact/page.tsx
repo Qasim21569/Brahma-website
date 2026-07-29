@@ -38,7 +38,7 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-32 pb-section-gap">
+      <main className="pt-[104px] pb-section-gap">
         <div className="max-w-container-max mx-auto px-margin-edge">
           {/* ─── Header ─── */}
           <section className="mb-24 md:mb-32">

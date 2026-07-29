@@ -24,7 +24,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[140px]">
+      <main className="pt-[104px]">
         {/* ─── Hero ─── */}
         <section className="pt-8 pb-section-gap px-margin-edge max-w-container-max mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">

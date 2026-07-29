@@ -19,7 +19,7 @@ export default function ServicesPage() {
       <div aria-hidden="true" className="brand-overlay">
         BRAHMA
       </div>
-      <main className="relative z-10 pt-[140px]">
+      <main className="relative z-10 pt-[104px]">
         {/* ─── Hero ─── */}
         <header className="px-margin-edge max-w-container-max mx-auto mb-section-gap pt-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">

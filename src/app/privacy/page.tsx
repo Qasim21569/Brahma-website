@@ -5,7 +5,7 @@ export default function PrivacyPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[140px] px-margin-edge max-w-container-max mx-auto py-section-gap">
+      <main className="pt-[104px] px-margin-edge max-w-container-max mx-auto py-section-gap">
         <h1 className="font-headline-lg text-headline-lg text-primary mb-8">
           Privacy Policy
         </h1>
