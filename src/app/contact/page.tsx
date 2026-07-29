@@ -183,7 +183,7 @@ export default function ContactPage() {
           </section>
 
           {/* ─── Offices ─── */}
-          <section className="bg-surface-container-high py-24 -mx-margin-edge px-margin-edge">
+          <section className="bg-surface-container-high py-section-gap md:py-24 -mx-margin-edge px-margin-edge">
             <div className="max-w-container-max mx-auto">
               <div className="mb-16">
                 <Label className="block mb-4 text-primary">

@@ -181,7 +181,7 @@ export default function HomePage() {
         </section>
 
         {/* ─── Stats Bar ─── */}
-        <section className="bg-stone-white py-24 border-y border-mortar-grey">
+        <section className="bg-stone-white py-section-gap md:py-24 border-y border-mortar-grey">
           <div className="max-w-container-max mx-auto px-margin-edge grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col">

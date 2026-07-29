@@ -134,6 +134,48 @@ body {
   will-change: opacity, transform;
 }
 
+/* ─── Mobile column labels for data tables ─── */
+@media (max-width: 767px) {
+  [data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #74777d;
+    margin-bottom: 4px;
+  }
+}
+
+/* ─── Mobile responsive overrides ─── */
+@layer utilities {
+  @media (max-width: 767px) {
+    .text-display-hero {
+      font-size: 42px;
+      line-height: 48px;
+    }
+    .text-headline-lg {
+      font-size: 36px;
+      line-height: 44px;
+    }
+    .text-stat-display {
+      font-size: 48px;
+      line-height: 48px;
+    }
+    .py-section-gap {
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+    .mb-section-gap {
+      margin-bottom: 60px;
+    }
+    .pb-section-gap {
+      padding-bottom: 60px;
+    }
+  }
+}
+
 /* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .reveal {
