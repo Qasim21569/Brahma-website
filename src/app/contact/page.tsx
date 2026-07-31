@@ -45,7 +45,7 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
               <div className="md:col-span-7">
                 <h1 className="font-display-hero text-display-hero text-primary mb-8 md:mb-0 reveal">
-                  Connect with Brahma Group
+                  Connect with Brahmas
                 </h1>
               </div>
               <div className="md:col-span-5 flex items-end">

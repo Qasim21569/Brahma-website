@@ -36,7 +36,7 @@ export default function AboutPage() {
                 Architectural Integrity in Hospitality Investment
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                Brahma Group is built on a foundation of rigorous structural
+                Brahmas is built on a foundation of rigorous structural
                 permanence and curated hospitality. We identify, acquire, and
                 elevate properties that define regional prestige.
               </p>

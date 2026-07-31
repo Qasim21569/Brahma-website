@@ -57,7 +57,7 @@ export default function CareersPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
             <div className="lg:col-span-8 flex flex-col justify-center z-10">
               <Label withDot className="mb-4">
-                Careers at Brahma Group
+                Careers at Brahmas
               </Label>
               <h1 className="font-display-hero text-display-hero text-ink-navy mb-8 max-w-4xl reveal">
                 Building the foundations of modern hospitality.
@@ -77,7 +77,7 @@ export default function CareersPage() {
             <div className="lg:col-span-4 relative mt-12 lg:mt-0">
               <div className="aspect-[3/4] w-full bg-surface-container-highest relative overflow-hidden">
                 <img
-                  alt="Brahma Group Architecture"
+                  alt="Brahmas Architecture"
                   className="absolute inset-0 w-full h-full object-cover grayscale mix-blend-multiply opacity-80"
                   data-alt="Architectural photograph of a modern institutional building interior with stone pillars and geometric shadows."
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_yWaGsrHLg4VADg1a0U3M2G18zhRIt8xYH5-m94Foyr1beDZ_QC-c7UNCY8QHd6qGx-ZUVvcDrzrRX8AD2YrXK2GGjbd1Aw2VeR1dxrOYgzqQosGTAOJ5ar7RLFGwi2veY4KmZDXBYYjWCNOrYBkyfvEEoEvYf__OBrDwSVpsBmS3qoLAKBKoNZTx_pCr8F890YJnxcKUmraZlVpA28Fwbh-axS8UKml8-vkYvTRBTDuUZAtUmavh"

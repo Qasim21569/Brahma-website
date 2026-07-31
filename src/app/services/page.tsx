@@ -16,9 +16,7 @@ export default function ServicesPage() {
   return (
     <>
       <Navbar />
-      <div aria-hidden="true" className="brand-overlay">
-        BRAHMA
-      </div>
+      <div aria-hidden="true" className="brand-overlay">BRAHMAS</div>
       <main className="relative z-10 pt-[104px]">
         {/* ─── Hero ─── */}
         <header className="px-margin-edge max-w-container-max mx-auto mb-section-gap pt-12">
@@ -69,7 +67,7 @@ export default function ServicesPage() {
                   LEADING SUBSIDIARY
                 </span>
                 <span className="font-body-lg text-body-lg text-primary">
-                  Brahma Capital Partners
+                  Brahmas Capital Partners
                 </span>
               </div>
             </div>
@@ -161,7 +159,7 @@ export default function ServicesPage() {
                   LEADING SUBSIDIARY
                 </span>
                 <span className="font-body-lg text-body-lg text-primary">
-                  Brahma Hospitality Management
+                  Brahmas Hospitality Management
                 </span>
               </div>
             </div>

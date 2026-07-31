@@ -33,10 +33,10 @@ export function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter px-margin-edge py-section-gap max-w-container-max mx-auto relative z-10">
         <div className="col-span-12 md:col-span-4 mb-12 md:mb-0">
           <div className="font-headline-lg text-headline-lg text-on-primary mb-6">
-            BRAHMA
+            BRAHMAS
           </div>
           <p className="text-on-primary-container font-body-md text-body-md max-w-xs">
-            &copy; 2024 Brahma Group. Architectural Integrity in Hospitality
+            &copy; 2024 Brahmas. Architectural Integrity in Hospitality
             Investment.
           </p>
         </div>

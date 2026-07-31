@@ -126,9 +126,7 @@ export default function HomePage() {
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
             data-wordmark-scale
           >
-            <span className="font-display-hero text-[120px] md:text-[300px] leading-none text-white whitespace-nowrap font-bold tracking-tighter opacity-5">
-              BRAHMA
-            </span>
+            <span className="font-display-hero text-[120px] md:text-[300px] leading-none text-white whitespace-nowrap font-bold tracking-tighter opacity-5">BRAHMAS</span>
           </div>
           <div className="relative z-10 px-margin-edge text-center max-w-4xl mx-auto">
             <h2 className="font-headline-lg text-headline-lg text-white mb-8 reveal">

@@ -20,9 +20,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Brahma Group | Architectural Integrity in Hospitality Investment",
+  title: "Brahmas Management and Investment Group | BMIG",
   description:
-    "Brahma Group is a hospitality investment group handling acquisition, management, and operations across the full lifecycle of a hotel asset.",
+    "Brahmas Management and Investment Group (BMIG) is a hospitality investment group handling acquisition, management, and operations across the full lifecycle of a hotel asset.",
 };
 
 export default function RootLayout({

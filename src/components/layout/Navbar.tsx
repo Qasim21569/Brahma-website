@@ -42,9 +42,7 @@ export function Navbar() {
         <Link
           href="/"
           className="font-headline-md text-headline-md font-normal tracking-tight text-primary"
-        >
-          BRAHMA
-        </Link>
+        >BRAHMAS</Link>
 
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
@@ -110,9 +108,7 @@ export function Navbar() {
             href="/"
             onClick={() => setMobileOpen(false)}
             className="font-headline-md text-headline-md text-primary mb-12"
-          >
-            BRAHMA
-          </Link>
+          >BRAHMAS</Link>
 
           {/* Nav links */}
           <nav className="flex flex-col gap-6 flex-1">
