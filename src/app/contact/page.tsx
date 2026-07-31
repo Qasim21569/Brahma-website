@@ -198,7 +198,7 @@ export default function ContactPage() {
                   <div key={office.city} className="reveal">
                     <div className="aspect-[16/9] mb-8 relative overflow-hidden bg-surface-dim">
                       <img
-                        className="object-cover w-full h-full grayscale-[50%] hover:grayscale-0 transition-all duration-700"
+                        className="object-cover w-full h-full hover:opacity-95 transition-opacity duration-700"
                         data-alt={`${office.city} office building`}
                         src={office.img}
                         alt={`${office.city} office`}

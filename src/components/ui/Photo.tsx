@@ -11,7 +11,7 @@ export function Photo({
   alt,
   className = "",
   parallax = false,
-  grayscale = true,
+  grayscale = false,
 }: PhotoProps) {
   const base = `object-cover w-full h-full transition-all duration-700 ${
     grayscale ? "grayscale opacity-90" : ""

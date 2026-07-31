@@ -48,7 +48,7 @@ export default function ServicesPage() {
             <div className="md:col-span-8">
               <div className="aspect-[16/9] w-full bg-stone-white mb-8 overflow-hidden">
                 <img
-                  className="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply"
+                  className="w-full h-full object-cover opacity-90"
                   data-alt="Brutalist concrete building exterior intersecting with a serene natural landscape."
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg2xlDwvsxDSo5RdnvAPxS7qg31sHS9m20Q1kMGDOhiJ3QSKNW048wBLCzHcfqIP_xamC2IuaU2hbor3i1vJPSotS8PJYHTvzaV6wyPC-No5bxLRcRwMLW3SoYtIO6pR-rZFxQgw-duDTUpRbDzXpH2U3wadpJ-GwhSQq65zytm1Sq6SLrSDcVbR8L1n1XEEVlPINGxHzuUchFS4y_AJrSlZRYdCj4nb7PADLsgfcFR5_UrHEhzwKh"
                   alt="Acquisition architectural photography"
@@ -140,7 +140,7 @@ export default function ServicesPage() {
             <div className="md:col-span-8">
               <div className="aspect-[4/3] w-full bg-stone-white mb-8 overflow-hidden md:w-3/4 float-none md:float-right ml-0 md:ml-8">
                 <img
-                  className="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply"
+                  className="w-full h-full object-cover opacity-90"
                   data-alt="Interior view of a high-end minimalist hotel lobby with textured stone surfaces."
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG1mnHazzZZ3k9hEA68fYJ7-fXopl3E6IROmErFd5GSyZEoyBVjhE3aQHjmp-lpwEVY8ZYZasi4KKgqW6cNpeDXaSagwknC_JtHIF8n5_Z8Y0-7UBx3O7miwuZoMK1uAEuWKYoJpnCkB_CJ-LS_NA4-S61yjPaAwjIIbiGS5YFU94K127XLHEuHJq_6EJxK7FemXoNTyUhA-wPvQP3BHMc8NUwYLcP4F_3Q5A_JA7ZZytuT0Yx-pmc"
                   alt="Hotel lobby interior"
@@ -173,9 +173,10 @@ export default function ServicesPage() {
           </Label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter hairline-t pt-8">
             {[
-              { num: "01", title: "Discovery", desc: "Initial dialogue to align investment parameters and structural requirements." },
-              { num: "02", title: "Diligence", desc: "Rigorous financial and physical asset evaluation against our architectural standards." },
-              { num: "03", title: "Execution", desc: "Seamless transition into our management framework and operational integration." },
+              { num: "01", title: "Discovery", desc: "Initial dialogue with the operating partner to align investment parameters." },
+              { num: "02", title: "Diligence", desc: "Rigorous financial and physical asset evaluation against our investment framework." },
+              { num: "03", title: "Renovation", desc: "Capital deployment under Brahmas-led scope: physical asset, brand position, operating model." },
+              { num: "04", title: "Operation", desc: "Direct operation under Brahmas Hospitality Management. Quarterly performance review." },
             ].map((step, i) => (
               <div
                 key={step.num}

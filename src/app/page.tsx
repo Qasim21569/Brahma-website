@@ -2,51 +2,38 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
+import { properties } from "@/data/properties";
 
 const pillars = [
   {
     num: "01",
-    title: "Acquisition",
-    desc: "Identifying structurally sound opportunities with intrinsic value in prime markets.",
+    title: "Acquire",
+    desc: "Identifying underperforming hotels in markets whose structural quality exceeds their current operating performance.",
   },
   {
     num: "02",
-    title: "Management",
-    desc: "Rigorous financial oversight and asset repositioning to maximize yield and longevity.",
+    title: "Renovate",
+    desc: "Capital deployment into physical asset, operating model, and brand positioning. We do not hand the keys to a third party.",
   },
   {
     num: "03",
-    title: "Operations",
-    desc: "Executing exceptional guest experiences aligned with institutional investment goals.",
-  },
-];
-
-const trackRecords = [
-  {
-    property: "The Mercer Estate",
-    location: "New York",
-    category: "Luxury Boutique",
-    year: "2019",
-  },
-  {
-    property: "Vespera Resort",
-    location: "Los Angeles",
-    category: "Lifestyle Resort",
-    year: "2021",
-  },
-  {
-    property: "Aura Tower",
-    location: "Chicago",
-    category: "Urban Core",
-    year: "2023",
+    title: "Operate",
+    desc: "Held and operated under Brahmas Hospitality Management. Quarterly performance review against investment thesis.",
   },
 ];
 
 const stats = [
-  { num: "14", label: "Properties Managed" },
-  { num: "25", label: "Years of Heritage" },
-  { num: "6", label: "Global Regions" },
+  { num: "02", label: "Properties under Brahmas Management" },
+  { num: "2024", label: "Year of First Acquisition" },
+  { num: "02", label: "Active Operating Subsidiaries" },
 ];
+
+const trackRecords = properties.map((p) => ({
+  property: p.shortName,
+  location: p.city,
+  category: p.category,
+  year: p.acquiredYear,
+}));
 
 export default function HomePage() {
   return (
@@ -61,6 +48,10 @@ export default function HomePage() {
                 From acquisition to operation, we build hospitality that
                 lasts.
               </h1>
+              <p className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-2xl reveal">
+                We acquire, renovate, and operate underperforming hotel
+                assets to institutional standards of performance.
+              </p>
             </div>
             <div className="col-span-12 md:col-span-4 mt-12 md:mt-0 relative">
               <div
@@ -69,20 +60,10 @@ export default function HomePage() {
               />
               <div className="aspect-[4/3] w-full overflow-hidden bg-stone-white">
                 <img
-                  className="w-full h-full object-cover grayscale opacity-90 transition-opacity duration-700 hover:opacity-100 hover:grayscale-0"
-                  data-alt="Modern luxury hotel lobby featuring brutalist stone elements, natural light casting strong structural shadows."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-ssHBVQeIHG0CGFlN-T6FRm7B85za77R065XVamDAjyIyXDPeIK5ng-TPFf-j8yAlcP7shmDwtbWDY35bvrCK5EQOvvg7nzDRJrVvsEoCJKDXIdPboQL-UrKalldT5DqhI1ZkrUGgE11YETuTGJbqyaRefzMS2yrbPdP0EdyiyszLzJAm-qnIcr_RaDA8LPjE450Ne9vHsSgdqVb4zYqUck5K1296gUQNWK_kTFCChJN-AaP9FRx7"
-                  alt="Hotel lobby architectural photography"
-                />
-              </div>
-            </div>
-            <div className="col-span-12 md:col-span-6 md:col-start-3 mt-12 hidden md:block reveal">
-              <div className="aspect-[16/9] w-full overflow-hidden bg-surface-container">
-                <img
-                  className="w-full h-full object-cover grayscale opacity-80"
-                  data-alt="Abstract close up of raw concrete and smooth wood textures intersecting, architectural detail shot."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1My4tdT1LJfLwSEQGHbHTJh6MQdav90k2iA86ex_Br3tQgvyN1fwIHcL-XxxZ0Mat1MsmfynVC09r-bvktlIgzOlozLg5PMD7MmHh-2kQSDFil1HkcIKY0VfMGUk0PH2ybTS18b8nebkvW6T-rVmnQRKKBlJ9Fb6prHhdz62szfL06PYqpWuZL-FVxQ32GDZ8_zp4Yq6g5I6PzHwaq13J7n-2-Y1N27rzHh6oisAJzO8Eikvh40H0"
-                  alt="Concrete and wood texture architectural detail"
+                  className="w-full h-full object-cover transition-opacity duration-700 hover:opacity-95"
+                  data-alt="Brahmas hospitality asset, exterior architectural photography"
+                  src={properties[0].homeHeroSrc}
+                  alt={properties[0].gallery[0].alt}
                 />
               </div>
             </div>
@@ -95,6 +76,62 @@ export default function HomePage() {
             <h2 className="font-headline-lg text-headline-lg text-primary max-w-3xl reveal">
               Every stage, one partner.
             </h2>
+          </div>
+        </section>
+
+        {/* ─── Featured Properties (NEW) ─── */}
+        <section className="px-margin-edge py-section-gap max-w-container-max mx-auto">
+          <div className="mb-12">
+            <Label withLine className="mb-4">
+              SELECTED PORTFOLIO
+            </Label>
+            <h2 className="font-headline-lg text-headline-lg text-primary">
+              Two properties. One thesis.
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+            {properties.map((p, i) => (
+              <a
+                key={p.slug}
+                href="/portfolio"
+                className={`col-span-12 md:col-span-6 reveal group block ${
+                  i === 1 ? "md:mt-24" : ""
+                }`}
+              >
+                <div
+                  className="aspect-[4/5] w-full overflow-hidden bg-stone-white"
+                  style={{
+                    clipPath:
+                      i === 0
+                        ? "polygon(0% 0%, 100% 0%, 100% 88%, 78% 100%, 0% 100%)"
+                        : "polygon(0% 0%, 100% 0%, 100% 100%, 22% 100%, 0% 88%)",
+                  }}
+                >
+                  <img
+                    className="w-full h-full object-cover transition-[transform,opacity] duration-700 ease-out group-hover:scale-[1.04] group-hover:opacity-95"
+                    data-alt={p.gallery[0].alt}
+                    src={p.homeHeroSrc}
+                    alt={p.gallery[0].alt}
+                  />
+                </div>
+                <div className="mt-6 flex justify-between items-start">
+                  <div>
+                    <h3 className="font-headline-md text-headline-md text-primary">
+                      {p.shortName}
+                    </h3>
+                    <p className="font-label-caps text-label-caps text-on-surface-variant mt-2">
+                      {p.city} &middot; {p.category}
+                    </p>
+                  </div>
+                  <span className="material-symbols-outlined text-muted-azure transition-transform duration-300 ease-out group-hover:translate-x-1">
+                    arrow_forward
+                  </span>
+                </div>
+                <p className="font-body-md text-body-md text-on-surface-variant mt-4 max-w-md">
+                  {p.summary}
+                </p>
+              </a>
+            ))}
           </div>
         </section>
 
@@ -126,7 +163,9 @@ export default function HomePage() {
             className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
             data-wordmark-scale
           >
-            <span className="font-display-hero text-[120px] md:text-[300px] leading-none text-white whitespace-nowrap font-bold tracking-tighter opacity-5">BRAHMAS</span>
+            <span className="font-display-hero text-[120px] md:text-[300px] leading-none text-white whitespace-nowrap font-bold tracking-tighter opacity-5">
+              BRAHMAS
+            </span>
           </div>
           <div className="relative z-10 px-margin-edge text-center max-w-4xl mx-auto">
             <h2 className="font-headline-lg text-headline-lg text-white mb-8 reveal">
@@ -139,7 +178,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ─── Track Record ─── */}
+        {/* ─── Track Record (real props only) ─── */}
         <section className="px-margin-edge py-section-gap max-w-container-max mx-auto">
           <div className="mb-12">
             <Label withLine className="mb-4">
@@ -178,7 +217,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ─── Stats Bar ─── */}
+        {/* ─── Stats Bar (real, conservative) ─── */}
         <section className="bg-stone-white py-section-gap md:py-24 border-y border-mortar-grey">
           <div className="max-w-container-max mx-auto px-margin-edge grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
             {stats.map((stat) => (

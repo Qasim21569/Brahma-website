@@ -78,7 +78,7 @@ export default function CareersPage() {
               <div className="aspect-[3/4] w-full bg-surface-container-highest relative overflow-hidden">
                 <img
                   alt="Brahmas Architecture"
-                  className="absolute inset-0 w-full h-full object-cover grayscale mix-blend-multiply opacity-80"
+                  className="absolute inset-0 w-full h-full object-cover opacity-90"
                   data-alt="Architectural photograph of a modern institutional building interior with stone pillars and geometric shadows."
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_yWaGsrHLg4VADg1a0U3M2G18zhRIt8xYH5-m94Foyr1beDZ_QC-c7UNCY8QHd6qGx-ZUVvcDrzrRX8AD2YrXK2GGjbd1Aw2VeR1dxrOYgzqQosGTAOJ5ar7RLFGwi2veY4KmZDXBYYjWCNOrYBkyfvEEoEvYf__OBrDwSVpsBmS3qoLAKBKoNZTx_pCr8F890YJnxcKUmraZlVpA28Fwbh-axS8UKml8-vkYvTRBTDuUZAtUmavh"
                 />
