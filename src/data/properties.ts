@@ -1,78 +1,99 @@
+/**
+ * BMIG portfolio — 12 operating assets.
+ *
+ * STRUCTURE IS REAL. PROSE IS PLACEHOLDER.
+ * Names, addresses, phones, brands, and asset types are confirmed client data.
+ * Any field on a property whose `contentStatus` is "placeholder" contains
+ * scaffolding copy written to the BMIG thesis — replace before launch.
+ *
+ * `placeId`, `bookingUrl`, `coordinates`, and `gallery` are populated by
+ * `scripts/enrich-properties.mjs` (Google Places API). See docs/MASTER-PLAN.md §8.
+ */
+
+import generated from "./places.generated.json";
+
+export type AssetType = "hospitality" | "education" | "residential";
+
+export type GalleryPhoto = {
+  src: string;
+  alt: string;
+  /**
+   * Photographer / uploader credit that MUST be displayed alongside the image.
+   *
+   * Hand-authored photography (client-supplied, franchise media kits) leaves
+   * this null — we hold the rights and no credit is required. Photos pulled
+   * from the Google Places API carry `authorAttributions`, and Google requires
+   * that attribution be shown wherever the image appears. Render it with
+   * `<PhotoAttribution>`; do not add a Places-sourced photo to a surface that
+   * has nowhere to put the credit.
+   */
+  attribution?: string | null;
+};
+
 export type Property = {
   slug: string;
   name: string;
   shortName: string;
   address: string;
   city: string;
+  state: string;
+  phone: string | null;
+  /** Portfolio category — BMIG operates beyond hotels. */
+  assetType: AssetType;
+  /** Franchise/brand family, or null for independent assets. */
+  brand: string | null;
   category: string;
   acquiredYear: string;
   subunit: string;
+  /** Deep link to the property's own booking page. Filled by enrichment. */
+  bookingUrl: string | null;
+  /** Google Places ID. Filled by enrichment; stable, safe to persist. */
+  placeId: string | null;
+  coordinates: { lat: number; lng: number } | null;
   summary: string;
   longform: string;
   acquisition: string;
   renovation: string;
   operations: string;
   outcomesNote: string;
-  homeHeroSrc: string;
-  homeSatelliteSrc: string;
-  gallery: { src: string; alt: string }[];
+  homeHeroSrc: string | null;
+  homeSatelliteSrc: string | null;
+  gallery: GalleryPhoto[];
+  /** "final" = client-approved copy. "placeholder" = scaffolding, must be replaced. */
+  contentStatus: "final" | "placeholder";
 };
 
+/** Shared thesis language — used as scaffolding until per-asset copy is written. */
+const THESIS = {
+  acquisition:
+    "Identify underperforming assets in markets whose structural quality exceeds their current operating performance.",
+  renovation:
+    "Capital deployment into the physical asset, operating model, and brand positioning. We do not hand the keys to a third party.",
+  operations:
+    "Held and operated directly under Brahmas Hospitality Management. Quarterly performance review against investment thesis.",
+  outcomesNote: "Outcomes reported at financial close of fiscal year one.",
+} as const;
+
 export const properties: Property[] = [
-  {
-    slug: "hampton-inn-tampa-veterans-expwy",
-    name: "Hampton Inn Tampa-Veterans Expwy (Airport North)",
-    shortName: "Hampton Inn Tampa Veterans Expressway",
-    address: "5628 W Waters Ave, Tampa, FL 33634",
-    city: "Tampa, Florida",
-    category: "Acquisition",
-    acquiredYear: "2024",
-    subunit: "Brahmas Hospitality Management",
-    summary:
-      "Acquired below replacement cost. Renovation complete. Held and operated under Brahmas Hospitality Management since handover.",
-    longform:
-      "Acquired below replacement cost from a regional operator seeking liquidity. The asset had strong bones and a stable Florida hospitality position, but its operational performance lagged its location grade. Brahmas acquired with the intent to reposition the property under our hospitality thesis.",
-    acquisition:
-      "Identify underperforming hotels in prime markets where structural quality exceeds current operating performance.",
-    renovation:
-      "Building envelope, room interiors, public space modernization, and brand repositioning under capital improvement program.",
-    operations:
-      "Held and operated directly under Brahmas Hospitality Management. Quarterly performance review against investment thesis.",
-    outcomesNote: "Outcomes reported at financial close of fiscal year one.",
-    homeHeroSrc: "/properties/hampton-inn-tampa-veterans-expwy/01-hero.webp",
-    homeSatelliteSrc: "/properties/hampton-inn-tampa-veterans-expwy/02-satellite.webp",
-    gallery: [
-      {
-        src: "/properties/hampton-inn-tampa-veterans-expwy/01-hero.webp",
-        alt: "Hampton Inn Tampa Veterans Expressway exterior anchor shot",
-      },
-      {
-        src: "/properties/hampton-inn-tampa-veterans-expwy/03-gallery-1.webp",
-        alt: "Hampton Inn Tampa interior detail",
-      },
-      {
-        src: "/properties/hampton-inn-tampa-veterans-expwy/04-gallery-2.webp",
-        alt: "Hampton Inn Tampa room interior",
-      },
-      {
-        src: "/properties/hampton-inn-tampa-veterans-expwy/05-gallery-3.webp",
-        alt: "Hampton Inn Tampa public space",
-      },
-      {
-        src: "/properties/hampton-inn-tampa-veterans-expwy/06-gallery-4.webp",
-        alt: "Hampton Inn Tampa building exterior detail",
-      },
-    ],
-  },
+  // ── 01 ─────────────────────────────────────────────────────────────────────
+  // NOTE: slug retained from the original dataset because photography already
+  // lives at /properties/clarion-pointe-tampa-brandon/. Do not rename.
   {
     slug: "clarion-pointe-tampa-brandon",
     name: "Clarion Pointe Tampa-Brandon Near Fairgrounds and Casino",
-    shortName: "Clarion Pointe Tampa Brandon",
-    address: "Tampa, Florida",
-    city: "Tampa, Florida",
+    shortName: "Clarion Pointe Tampa",
+    address: "10007 Princess Palm Ave, Tampa, FL 33619",
+    city: "Tampa",
+    state: "Florida",
+    phone: "(813) 622-8557",
+    assetType: "hospitality",
+    brand: "Choice Hotels",
     category: "Acquisition",
     acquiredYear: "2024",
     subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
     summary:
       "Acquired below replacement cost. Renovation complete. Held and operated under Brahmas Hospitality Management since handover.",
     longform:
@@ -81,9 +102,8 @@ export const properties: Property[] = [
       "Identify underperforming hotels near secular demand drivers whose structure supports long-term performance.",
     renovation:
       "Interior refurbishment, building envelope improvements, operating model reset, and brand repositioning.",
-    operations:
-      "Held and operated directly under Brahmas Hospitality Management. Quarterly performance review against investment thesis.",
-    outcomesNote: "Outcomes reported at financial close of fiscal year one.",
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
     homeHeroSrc: "/properties/clarion-pointe-tampa-brandon/01-hero.webp",
     homeSatelliteSrc: "/properties/clarion-pointe-tampa-brandon/02-satellite.webp",
     gallery: [
@@ -108,5 +128,488 @@ export const properties: Property[] = [
         alt: "Clarion Pointe Tampa Brandon room interior",
       },
     ],
+    contentStatus: "final",
+  },
+
+  // ── 02 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "quality-inn-conference-center-tampa-brandon",
+    name: "Quality Inn Conference Center Tampa/Brandon",
+    shortName: "Quality Inn Conference Center",
+    address: "9331 E Adamo Dr, Tampa, FL 33619",
+    city: "Tampa",
+    state: "Florida",
+    phone: "(813) 621-5555",
+    assetType: "hospitality",
+    brand: "Choice Hotels",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Conference-oriented asset on the Adamo Drive corridor, held and operated under Brahmas Hospitality Management.",
+    longform:
+      "A conference and group-demand asset positioned on the Adamo Drive corridor east of downtown Tampa. Meeting space and access to the Selmon Expressway support a mixed base of corporate, group, and transient demand.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 03 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "quality-inn-suites-tampa-east",
+    name: "Quality Inn & Suites",
+    shortName: "Quality Inn & Suites Tampa",
+    address: "4955 E 18th Ave, Tampa, FL 33605",
+    city: "Tampa",
+    state: "Florida",
+    phone: "(813) 623-6000",
+    assetType: "hospitality",
+    brand: "Choice Hotels",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "East Tampa select-service asset with direct interstate access, operated under Brahmas Hospitality Management.",
+    longform:
+      "A select-service asset in east Tampa with direct access to I-4 and proximity to the Port of Tampa industrial corridor, supporting a durable base of extended-stay and contractor demand.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 04 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "microtel-inn-suites-zephyrhills",
+    name: "Microtel Inn & Suites by Wyndham Zephyrhills",
+    shortName: "Microtel Inn & Suites Zephyrhills",
+    address: "7839 Gall Blvd, Zephyrhills, FL 33541",
+    city: "Zephyrhills",
+    state: "Florida",
+    phone: "(813) 815-3007",
+    assetType: "hospitality",
+    brand: "Wyndham",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Efficient-format asset serving the Zephyrhills and east Pasco County market.",
+    longform:
+      "An efficient-format asset on the Gall Boulevard corridor serving east Pasco County. The market's healthcare, motorsport, and seasonal residential demand supports year-round occupancy at a low operating cost base.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 05 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "rodeway-inn-port-richey-north",
+    name: "Rodeway Inn Port Richey North",
+    shortName: "Rodeway Inn Port Richey",
+    address: "11810 US Hwy 19, Port Richey, FL 34668",
+    city: "Port Richey",
+    state: "Florida",
+    phone: "(727) 863-3336",
+    assetType: "hospitality",
+    brand: "Choice Hotels",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "US-19 corridor asset serving west Pasco County, operated under Brahmas Hospitality Management.",
+    longform:
+      "Positioned on the US-19 corridor in west Pasco County, the asset serves a steady base of coastal leisure, healthcare, and extended-stay demand with a low fixed-cost operating profile.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 06 ─────────────────────────────────────────────────────────────────────
+  // NOTE: slug retained from the original dataset because photography already
+  // lives at /properties/hampton-inn-tampa-veterans-expwy/. Do not rename.
+  {
+    slug: "hampton-inn-tampa-veterans-expwy",
+    name: "Hampton Inn & Suites Tampa Airport Westshore",
+    shortName: "Hampton Inn & Suites Tampa Airport",
+    address: "5628 W Waters Ave, Tampa, FL 33634",
+    city: "Tampa",
+    state: "Florida",
+    phone: "(813) 901-5900",
+    assetType: "hospitality",
+    brand: "Hilton",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Acquired below replacement cost. Renovation complete. Held and operated under Brahmas Hospitality Management since handover.",
+    longform:
+      "Acquired below replacement cost from a regional operator seeking liquidity. The asset had strong bones and a stable Florida hospitality position, but its operational performance lagged its location grade. Brahmas acquired with the intent to reposition the property under our hospitality thesis.",
+    acquisition:
+      "Identify underperforming hotels in prime markets where structural quality exceeds current operating performance.",
+    renovation:
+      "Building envelope, room interiors, public space modernization, and brand repositioning under capital improvement program.",
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: "/properties/hampton-inn-tampa-veterans-expwy/01-hero.webp",
+    homeSatelliteSrc:
+      "/properties/hampton-inn-tampa-veterans-expwy/02-satellite.webp",
+    gallery: [
+      {
+        src: "/properties/hampton-inn-tampa-veterans-expwy/01-hero.webp",
+        alt: "Hampton Inn & Suites Tampa Airport Westshore exterior anchor shot",
+      },
+      {
+        src: "/properties/hampton-inn-tampa-veterans-expwy/03-gallery-1.webp",
+        alt: "Hampton Inn Tampa interior detail",
+      },
+      {
+        src: "/properties/hampton-inn-tampa-veterans-expwy/04-gallery-2.webp",
+        alt: "Hampton Inn Tampa room interior",
+      },
+      {
+        src: "/properties/hampton-inn-tampa-veterans-expwy/05-gallery-3.webp",
+        alt: "Hampton Inn Tampa public space",
+      },
+      {
+        src: "/properties/hampton-inn-tampa-veterans-expwy/06-gallery-4.webp",
+        alt: "Hampton Inn Tampa building exterior detail",
+      },
+    ],
+    contentStatus: "final",
+  },
+
+  // ── 07 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "holiday-inn-express-orlando-seaworld",
+    name: "Holiday Inn Express & Suites Orlando at SeaWorld",
+    shortName: "Holiday Inn Express Orlando",
+    address: "2776 Destination Pkwy, Orlando, FL 32819",
+    city: "Orlando",
+    state: "Florida",
+    phone: "(407) 640-7500",
+    assetType: "hospitality",
+    brand: "IHG",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Orlando tourism-corridor asset adjacent to the Orange County Convention Center and SeaWorld.",
+    longform:
+      "Positioned in the Orlando International Drive tourism corridor, adjacent to SeaWorld and within reach of the Orange County Convention Center. The location captures both leisure and convention-driven demand across the calendar.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 08 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "hampton-inn-suites-tampa-east-seffner",
+    name: "Hampton Inn & Suites Tampa East (Casino Area)",
+    shortName: "Hampton Inn & Suites Tampa East",
+    address: "11740 Tampa Gateway Blvd, Seffner, FL 33584",
+    city: "Seffner",
+    state: "Florida",
+    phone: "(813) 630-4321",
+    assetType: "hospitality",
+    brand: "Hilton",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Interstate-adjacent asset serving the Seminole Hard Rock and east Hillsborough corridor.",
+    longform:
+      "An I-4 adjacent asset in Seffner serving the Seminole Hard Rock casino corridor and east Hillsborough County. Interstate visibility and event-driven demand underpin a resilient occupancy base.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 09 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "clarion-pointe-lakeland-i4",
+    name: "Clarion Pointe Lakeland I-4",
+    shortName: "Clarion Pointe Lakeland",
+    address: "4321 Lakeland Park Dr, Lakeland, FL 33809",
+    city: "Lakeland",
+    state: "Florida",
+    phone: "(863) 577-1170",
+    assetType: "hospitality",
+    brand: "Choice Hotels",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "I-4 corridor asset positioned between the Tampa and Orlando markets.",
+    longform:
+      "Positioned on the I-4 corridor between Tampa and Orlando, the asset captures logistics, corporate, and transient demand from one of Florida's most heavily trafficked interstate segments.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 10 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "sleep-inn-suites-fort-myers-airport",
+    name: "Sleep Inn & Suites Fort Myers Airport",
+    shortName: "Sleep Inn & Suites Fort Myers",
+    address: "9521 Market Place Rd, Fort Myers, FL 33912",
+    city: "Fort Myers",
+    state: "Florida",
+    phone: "(941) 585-0973",
+    assetType: "hospitality",
+    brand: "Choice Hotels",
+    category: "Acquisition",
+    acquiredYear: "2024",
+    subunit: "Brahmas Hospitality Management",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Southwest Florida asset serving the Fort Myers airport and Gulf coast market.",
+    longform:
+      "A southwest Florida asset serving Southwest Florida International Airport and the surrounding Gulf coast market, with demand supported by seasonal leisure travel and regional business activity.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
+    operations: THESIS.operations,
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 11 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "beach-house-weeki-wachee",
+    name: "Beach House",
+    shortName: "Beach House",
+    address: "10492 Pine Island Dr, Weeki Wachee, FL 34607",
+    city: "Weeki Wachee",
+    state: "Florida",
+    phone: null,
+    assetType: "residential",
+    brand: null,
+    category: "Residential",
+    acquiredYear: "2024",
+    subunit: "Brahmas Management and Investment Group",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Coastal residential asset on Pine Island, Weeki Wachee, held directly by the group.",
+    longform:
+      "A coastal residential asset on Pine Island in Weeki Wachee, held directly by Brahmas Management and Investment Group. The property sits on Florida's Nature Coast with direct Gulf access.",
+    acquisition:
+      "Selective acquisition of residential assets in coastal Florida markets with constrained supply.",
+    renovation:
+      "Capital improvement to the physical asset consistent with the group's standards.",
+    operations: "Held directly by Brahmas Management and Investment Group.",
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
+  },
+
+  // ── 12 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "primrose-school-of-oldsmar",
+    name: "Primrose School of Oldsmar",
+    shortName: "Primrose School of Oldsmar",
+    address: "3760 Tampa Rd, Oldsmar, FL 34677",
+    city: "Oldsmar",
+    state: "Florida",
+    phone: "(813) 818-1102",
+    assetType: "education",
+    brand: "Primrose Schools",
+    category: "Education",
+    acquiredYear: "2024",
+    subunit: "Brahmas Management and Investment Group",
+    bookingUrl: null,
+    placeId: null,
+    coordinates: null,
+    summary:
+      "Early education asset in Oldsmar, extending the group's operating model beyond hospitality.",
+    longform:
+      "An accredited early education and childcare asset serving the Oldsmar and north Pinellas market. The asset extends the group's operating discipline into education real estate, where demand is driven by long-term demographic rather than travel cycles.",
+    acquisition:
+      "Extend the operating model into education real estate, where demand is demographically rather than cyclically driven.",
+    renovation:
+      "Capital improvement to facilities consistent with brand standards and licensing requirements.",
+    operations:
+      "Held and operated under Brahmas Management and Investment Group with brand-standard oversight.",
+    outcomesNote: THESIS.outcomesNote,
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
   },
 ];
+
+/* ────────────────────────────────────────────────────────────────────────────
+   Google Places enrichment overlay
+   ────────────────────────────────────────────────────────────────────────────
+   `places.generated.json` is written by scripts/enrich-properties.mjs and is
+   safe to delete/regenerate. It only fills FACTUAL fields that are still empty
+   above — it can never overwrite hand-written prose, and an existing hand-set
+   value always wins. Gallery photos are appended only when we have none.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+type GeneratedPlace = {
+  placeId?: string | null;
+  verifiedAddress?: string | null;
+  phone?: string | null;
+  bookingUrl?: string | null;
+  coordinates?: { lat: number; lng: number } | null;
+  photos?: { src: string; attribution?: string | null }[];
+};
+
+const placesData = generated as Record<string, GeneratedPlace>;
+
+function enrich(p: Property): Property {
+  const g = placesData[p.slug];
+  if (!g) return p;
+
+  const photos = g.photos ?? [];
+  const gallery: GalleryPhoto[] =
+    p.gallery.length > 0
+      ? p.gallery
+      : photos.map((photo, i) => ({
+          src: photo.src,
+          alt: `${p.shortName} — photograph ${i + 1}`,
+          // Carried through so the gallery can render the required credit.
+          attribution: photo.attribution ?? null,
+        }));
+
+  return {
+    ...p,
+    // Hand-authored values always take precedence.
+    phone: p.phone ?? g.phone ?? null,
+    placeId: p.placeId ?? g.placeId ?? null,
+    bookingUrl: p.bookingUrl ?? g.bookingUrl ?? null,
+    coordinates: p.coordinates ?? g.coordinates ?? null,
+    gallery,
+    homeHeroSrc: p.homeHeroSrc ?? gallery[0]?.src ?? null,
+  };
+}
+
+/** The portfolio, with Places data overlaid. Import this everywhere. */
+export const enrichedProperties: Property[] = properties.map(enrich);
+
+/**
+ * A property guaranteed to have imagery — `homeHeroSrc` is non-null and the
+ * gallery is non-empty, so consumers can render images without null checks.
+ */
+export type FeaturedProperty = Property & { homeHeroSrc: string };
+
+/** Assets with photography ready — safe to feature on the homepage. */
+export const featuredProperties: FeaturedProperty[] = enrichedProperties.filter(
+  (p): p is FeaturedProperty => p.gallery.length > 0 && p.homeHeroSrc !== null
+);
+
+/**
+ * Assets whose photography we own outright, so no credit is required.
+ *
+ * Use this — not `featuredProperties` — for **chrome surfaces that have nowhere
+ * to render an attribution**: the homepage hero, marquees, section backdrops.
+ *
+ * This exists because `enrich()` falls back to `gallery[0].src` for
+ * `homeHeroSrc`. Once Places-sourced photos are in the data, that fallback can
+ * quietly promote an attributed photo onto the hero, where the composition has
+ * no room for a credit line and we would be displaying it in breach of the
+ * attribution requirement. Filtering by construction makes that impossible
+ * rather than relying on everyone remembering.
+ */
+export const ownPhotographyProperties: FeaturedProperty[] =
+  featuredProperties.filter((p) => p.gallery.every((photo) => !photo.attribution));
+
+export const propertiesByType = (type: AssetType) =>
+  enrichedProperties.filter((p) => p.assetType === type);
+
+export const getProperty = (slug: string) =>
+  enrichedProperties.find((p) => p.slug === slug);
+
+/**
+ * The assets either side of `slug` in portfolio order, for prev/next links.
+ *
+ * Wraps at both ends, so the last asset's "next" is the first. A detail page is
+ * a dead end otherwise — there is no other route out except the navbar.
+ */
+export function getAdjacentProperties(slug: string): {
+  previous: Property | null;
+  next: Property | null;
+} {
+  const i = enrichedProperties.findIndex((p) => p.slug === slug);
+  if (i === -1 || enrichedProperties.length < 2) {
+    return { previous: null, next: null };
+  }
+  const n = enrichedProperties.length;
+  return {
+    previous: enrichedProperties[(i - 1 + n) % n],
+    next: enrichedProperties[(i + 1) % n],
+  };
+}
+
+export const assetTypeLabels: Record<AssetType, string> = {
+  hospitality: "Hospitality",
+  education: "Education",
+  residential: "Residential",
+};

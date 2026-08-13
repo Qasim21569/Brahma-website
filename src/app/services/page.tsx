@@ -2,6 +2,9 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
+import { Icon } from "@/components/ui/Icon";
+import Accordion from "@/components/ui/Accordion";
+import Image from "next/image";
 
 const capabilities = [
   "Asset Management",
@@ -17,15 +20,15 @@ export default function ServicesPage() {
     <>
       <Navbar />
       <div aria-hidden="true" className="brand-overlay">BRAHMAS</div>
-      <main className="relative z-10 pt-[104px]">
+      <main className="relative z-10 pt-[var(--nav-h)]">
         {/* ─── Hero ─── */}
-        <header className="px-margin-edge max-w-container-max mx-auto mb-section-gap pt-12">
+        <header className="px-margin-edge mb-section-gap pt-12">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
             <div className="md:col-span-7">
               <Label withDot className="mb-4">
                 OUR SERVICES
               </Label>
-              <h1 className="font-display-hero text-display-hero text-primary mb-8 max-w-4xl reveal">
+              <h1 className="font-display-hero text-display-hero text-primary mb-8 max-w-4xl">
                 Architectural approaches to hospitality investment.
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
@@ -38,7 +41,7 @@ export default function ServicesPage() {
         </header>
 
         {/* ─── Acquisition ─── */}
-        <section className="px-margin-edge max-w-container-max mx-auto mb-section-gap">
+        <section className="px-margin-edge mb-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter hairline-t pt-12">
             <div className="md:col-span-4 mb-8 md:mb-0">
               <h2 className="font-headline-md text-headline-md text-primary sticky top-32">
@@ -46,12 +49,12 @@ export default function ServicesPage() {
               </h2>
             </div>
             <div className="md:col-span-8">
-              <div className="aspect-[16/9] w-full bg-stone-white mb-8 overflow-hidden">
-                <img
-                  className="w-full h-full object-cover opacity-90"
-                  data-alt="Brutalist concrete building exterior intersecting with a serene natural landscape."
+              <div className="aspect-[16/9] w-full bg-stone-white mb-8 overflow-hidden relative">
+                <Image
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg2xlDwvsxDSo5RdnvAPxS7qg31sHS9m20Q1kMGDOhiJ3QSKNW048wBLCzHcfqIP_xamC2IuaU2hbor3i1vJPSotS8PJYHTvzaV6wyPC-No5bxLRcRwMLW3SoYtIO6pR-rZFxQgw-duDTUpRbDzXpH2U3wadpJ-GwhSQq65zytm1Sq6SLrSDcVbR8L1n1XEEVlPINGxHzuUchFS4y_AJrSlZRYdCj4nb7PADLsgfcFR5_UrHEhzwKh"
                   alt="Acquisition architectural photography"
+                  fill
+                  className="object-cover opacity-90"
                 />
               </div>
               <h3 className="font-headline-md text-headline-md text-primary mb-4">
@@ -76,7 +79,7 @@ export default function ServicesPage() {
 
         {/* ─── Management (Dark Anchor) ─── */}
         <section className="bg-ink-navy text-on-primary w-full py-section-gap mb-section-gap">
-          <div className="px-margin-edge max-w-container-max mx-auto">
+          <div className="px-margin-edge">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
               <div className="md:col-span-4 mb-8 md:mb-0">
                 <h2 className="font-headline-md text-headline-md text-on-primary">
@@ -84,7 +87,7 @@ export default function ServicesPage() {
                 </h2>
               </div>
               <div className="md:col-span-8">
-                <h3 className="font-headline-md text-headline-md text-on-primary mb-6 reveal">
+                <h3 className="font-headline-md text-headline-md text-on-primary mb-6">
                   Rigorous operational oversight.
                 </h3>
                 <p className="font-body-lg text-body-lg text-on-primary-container mb-12 max-w-2xl">
@@ -93,13 +96,11 @@ export default function ServicesPage() {
                   distinct character of each property.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 hairline-t border-on-primary-fixed-variant pt-8">
-                  <div className="reveal">
-                    <span
-                      className="material-symbols-outlined text-[32px] text-muted-azure mb-4 block"
-                      style={{ fontVariationSettings: "'FILL' 0" }}
-                    >
-                      monitoring
-                    </span>
+                  <div >
+                    <Icon
+                      name="monitoring"
+                      className="text-[32px] text-muted-azure mb-4 block"
+                    />
                     <h4 className="font-body-lg text-body-lg mb-2">
                       Performance Analytics
                     </h4>
@@ -108,13 +109,11 @@ export default function ServicesPage() {
                       investment thesis parameters.
                     </p>
                   </div>
-                  <div className="reveal">
-                    <span
-                      className="material-symbols-outlined text-[32px] text-muted-azure mb-4 block"
-                      style={{ fontVariationSettings: "'FILL' 0" }}
-                    >
-                      architecture
-                    </span>
+                  <div >
+                    <Icon
+                      name="architecture"
+                      className="text-[32px] text-muted-azure mb-4 block"
+                    />
                     <h4 className="font-body-lg text-body-lg mb-2">
                       Capital Improvement
                     </h4>
@@ -130,7 +129,7 @@ export default function ServicesPage() {
         </section>
 
         {/* ─── Operations ─── */}
-        <section className="px-margin-edge max-w-container-max mx-auto mb-section-gap">
+        <section className="px-margin-edge mb-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter hairline-t pt-12">
             <div className="md:col-span-4 mb-8 md:mb-0">
               <h2 className="font-headline-md text-headline-md text-primary">
@@ -138,12 +137,12 @@ export default function ServicesPage() {
               </h2>
             </div>
             <div className="md:col-span-8">
-              <div className="aspect-[4/3] w-full bg-stone-white mb-8 overflow-hidden md:w-3/4 float-none md:float-right ml-0 md:ml-8">
-                <img
-                  className="w-full h-full object-cover opacity-90"
-                  data-alt="Interior view of a high-end minimalist hotel lobby with textured stone surfaces."
+              <div className="aspect-[4/3] w-full bg-stone-white mb-8 overflow-hidden md:w-3/4 float-none md:float-right ml-0 md:ml-8 relative">
+                <Image
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG1mnHazzZZ3k9hEA68fYJ7-fXopl3E6IROmErFd5GSyZEoyBVjhE3aQHjmp-lpwEVY8ZYZasi4KKgqW6cNpeDXaSagwknC_JtHIF8n5_Z8Y0-7UBx3O7miwuZoMK1uAEuWKYoJpnCkB_CJ-LS_NA4-S61yjPaAwjIIbiGS5YFU94K127XLHEuHJq_6EJxK7FemXoNTyUhA-wPvQP3BHMc8NUwYLcP4F_3Q5A_JA7ZZytuT0Yx-pmc"
                   alt="Hotel lobby interior"
+                  fill
+                  className="object-cover opacity-90"
                 />
               </div>
               <h3 className="font-headline-md text-headline-md text-primary mb-4">
@@ -167,7 +166,7 @@ export default function ServicesPage() {
         </section>
 
         {/* ─── Engagement Process ─── */}
-        <section className="px-margin-edge max-w-container-max mx-auto mb-section-gap">
+        <section className="px-margin-edge mb-section-gap">
           <Label withDot className="mb-12">
             ENGAGEMENT PROCESS
           </Label>
@@ -185,7 +184,7 @@ export default function ServicesPage() {
                 <span className="font-stat-display text-stat-display text-surface-dim md:absolute md:-top-8 md:-left-4 z-0 opacity-50 block mb-2 md:mb-0">
                   {step.num}
                 </span>
-                <div className="relative z-10 pt-0 md:pt-4 reveal">
+                <div className="relative z-10 pt-0 md:pt-4">
                   <h4 className="font-headline-md text-headline-md text-primary mb-4">
                     {step.title}
                   </h4>
@@ -199,7 +198,7 @@ export default function ServicesPage() {
         </section>
 
         {/* ─── Capabilities ─── */}
-        <section className="px-margin-edge max-w-container-max mx-auto mb-section-gap">
+        <section className="px-margin-edge mb-section-gap">
           <h2 className="font-headline-lg text-headline-lg text-primary mb-12">
             Core Capabilities
           </h2>
@@ -207,23 +206,53 @@ export default function ServicesPage() {
             {capabilities.map((cap, i) => (
               <div
                 key={cap}
-                className={`py-6 hairline-b flex justify-between items-start reveal ${
-                  i % 2 === 1 ? "md:hairline-l md:pl-6 border-mortar-grey" : ""
-                }`}
+                className={`py-6 hairline-b flex justify-between items-start ${
+ i % 2 === 1 ? "md:hairline-l md:pl-6 border-mortar-grey" : ""
+ }`}
               >
                 <span className="font-body-lg text-body-lg text-primary">
                   {cap}
                 </span>
-                <span className="material-symbols-outlined text-muted-azure">
-                  arrow_outward
-                </span>
+                <Icon name="arrow_outward" className="text-muted-azure" />
               </div>
             ))}
           </div>
         </section>
 
+        {/* ─── Methodology Accordion ─── */}
+        <section className="px-margin-edge mb-section-gap">
+          <Label withDot className="mb-12">
+            METHODOLOGY
+          </Label>
+          <Accordion
+            className="max-w-3xl"
+            items={[
+              {
+                title: "How do you identify acquisition targets?",
+                body: "We evaluate assets against two criteria: structural permanence of the real estate and a measurable gap between current operating performance and potential. We look for properties whose physical quality — location, construction, design intent — exceeds their current financial output, typically due to underinvestment or brand misalignment.",
+              },
+              {
+                title: "What does your renovation process look like?",
+                body: "Renovation is scoped property by property. We assess what each asset requires to reach its potential — structural repairs, systems upgrades, interior repositioning, or brand alignment — and deploy capital directly. We do not delegate to third-party management. Our construction team oversees every phase.",
+              },
+              {
+                title: "Why operate properties directly rather than franchising?",
+                body: "Operating directly allows us to maintain full accountability for the guest experience and financial performance. We found that the operators who run every asset as though they already own it produce better results. That discipline, applied consistently, is the Brahmas difference.",
+              },
+              {
+                title: "What types of properties are in your portfolio?",
+                body: "While hospitality is our core competency, Brahmas operates across operating asset classes — hotels, educational facilities, and residential properties. The unifying thread is structural quality that has been underleveraged, combined with a market position that rewards professional management.",
+              },
+              {
+                title: "How do you measure renovation success?",
+                body: "We benchmark against the investment thesis established at acquisition. RevPAR growth, GOP improvement, occupancy stabilization, and brand repositioning outcomes are tracked quarterly. We also measure structural improvements against the property's potential — not just against industry averages.",
+              },
+            ]}
+          />
+        </section>
+
         {/* ─── CTA ─── */}
-        <section className="px-margin-edge max-w-container-max mx-auto mb-section-gap text-center pt-12">
+        <section className="px-margin-edge mb-section-gap text-center pt-12">
           <h2 className="font-headline-lg text-headline-lg text-primary mb-8 max-w-2xl mx-auto">
             Discuss an investment or management opportunity.
           </h2>

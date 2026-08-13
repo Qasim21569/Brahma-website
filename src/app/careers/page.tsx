@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { Label } from "@/components/ui/Label";
 
 const values = [
@@ -51,15 +53,15 @@ export default function CareersPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[104px]">
+      <main className="pt-[var(--nav-h)]">
         {/* ─── Hero ─── */}
-        <section className="px-margin-edge py-section-gap max-w-container-max mx-auto relative architectural-grid">
+        <section className="px-margin-edge py-section-gap relative architectural-grid">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
             <div className="lg:col-span-8 flex flex-col justify-center z-10">
               <Label withDot className="mb-4">
                 Careers at Brahmas
               </Label>
-              <h1 className="font-display-hero text-display-hero text-ink-navy mb-8 max-w-4xl reveal">
+              <h1 className="font-display-hero text-display-hero text-ink-navy mb-8 max-w-4xl">
                 Building the foundations of modern hospitality.
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-12">
@@ -76,8 +78,9 @@ export default function CareersPage() {
             </div>
             <div className="lg:col-span-4 relative mt-12 lg:mt-0">
               <div className="aspect-[3/4] w-full bg-surface-container-highest relative overflow-hidden">
-                <img
+                <Image
                   alt="Brahmas Architecture"
+                  fill
                   className="absolute inset-0 w-full h-full object-cover opacity-90"
                   data-alt="Architectural photograph of a modern institutional building interior with stone pillars and geometric shadows."
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_yWaGsrHLg4VADg1a0U3M2G18zhRIt8xYH5-m94Foyr1beDZ_QC-c7UNCY8QHd6qGx-ZUVvcDrzrRX8AD2YrXK2GGjbd1Aw2VeR1dxrOYgzqQosGTAOJ5ar7RLFGwi2veY4KmZDXBYYjWCNOrYBkyfvEEoEvYf__OBrDwSVpsBmS3qoLAKBKoNZTx_pCr8F890YJnxcKUmraZlVpA28Fwbh-axS8UKml8-vkYvTRBTDuUZAtUmavh"
@@ -94,9 +97,9 @@ export default function CareersPage() {
           <div className="absolute top-0 left-0 w-full h-px bg-on-primary-fixed-variant opacity-20" />
           <div className="absolute bottom-0 left-0 w-full h-px bg-on-primary-fixed-variant opacity-20" />
           <div className="absolute top-0 left-[20%] w-px h-full bg-on-primary-fixed-variant opacity-10" />
-          <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative z-10">
             <div className="lg:col-span-4 lg:col-start-1 mb-16 lg:mb-0">
-              <h2 className="font-headline-lg text-headline-lg mb-6 reveal">
+              <h2 className="font-headline-lg text-headline-lg mb-6">
                 Structural Integrity in Action
               </h2>
               <p className="font-body-md text-body-md text-on-primary-container max-w-sm">
@@ -109,7 +112,7 @@ export default function CareersPage() {
               {values.map((value) => (
                 <div
                   key={value.num}
-                  className="border-t border-on-primary-fixed-variant pt-6 reveal"
+                  className="border-t border-on-primary-fixed-variant pt-6"
                 >
                   <Label className="mb-4 block">
                     {value.num}
@@ -128,7 +131,7 @@ export default function CareersPage() {
 
         {/* ─── Open Roles ─── */}
         <section
-          className="py-section-gap px-margin-edge max-w-container-max mx-auto"
+          className="py-section-gap px-margin-edge"
           id="open-roles"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-16">
@@ -158,7 +161,7 @@ export default function CareersPage() {
               <a
                 key={role.title}
                 href="#"
-                className="grid grid-cols-12 gap-4 py-8 border-b border-mortar-grey group hover:bg-surface-variant transition-colors items-center -mx-4 px-4 reveal"
+                className="grid grid-cols-12 gap-4 py-8 border-b border-mortar-grey group hover:bg-surface-variant transition-colors items-center -mx-4 px-4"
               >
                 <div className="col-span-12 md:col-span-4 mb-2 md:mb-0" data-label="Role">
                   <h3 className="font-headline-md text-headline-md text-ink-navy group-hover:text-muted-azure transition-colors">
@@ -174,9 +177,10 @@ export default function CareersPage() {
                   {role.location}
                 </div>
                 <div className="col-span-6 md:col-span-1 text-right flex justify-end items-center">
-                  <span className="material-symbols-outlined text-muted-azure group-hover:translate-x-2 transition-transform">
-                    arrow_forward
-                  </span>
+                  <Icon
+                    name="arrow_forward"
+                    className="text-muted-azure group-hover:translate-x-2 transition-transform"
+                  />
                 </div>
               </a>
             ))}
@@ -185,7 +189,7 @@ export default function CareersPage() {
 
         {/* ─── Application Process ─── */}
         <section className="bg-surface-container py-section-gap px-margin-edge border-t border-mortar-grey">
-          <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
             <div className="lg:col-span-4 lg:col-start-2">
               <Label withDot className="mb-4">
                 The Process
@@ -215,7 +219,7 @@ export default function CareersPage() {
                   <div className="font-stat-display text-stat-display text-muted-azure opacity-50">
                     {step.num}
                   </div>
-                  <div className="reveal">
+                  <div >
                     <h4 className="font-headline-md text-headline-md text-ink-navy mb-2">
                       {step.title}
                     </h4>

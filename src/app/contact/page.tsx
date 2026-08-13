@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
+import Image from "next/image";
 
 const contacts = [
   {
@@ -38,13 +39,13 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[104px] pb-section-gap">
-        <div className="max-w-container-max mx-auto px-margin-edge">
+      <main className="pt-[var(--nav-h)] pb-section-gap">
+        <div className="px-margin-edge">
           {/* ─── Header ─── */}
           <section className="mb-24 md:mb-32">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
               <div className="md:col-span-7">
-                <h1 className="font-display-hero text-display-hero text-primary mb-8 md:mb-0 reveal">
+                <h1 className="font-display-hero text-display-hero text-primary mb-8 md:mb-0">
                   Connect with Brahmas
                 </h1>
               </div>
@@ -155,7 +156,7 @@ export default function ContactPage() {
                 </div>
                 <div className="space-y-12">
                   {contacts.map((contact, i) => (
-                    <div key={contact.title} className="reveal">
+                    <div key={contact.title} >
                       <h3 className="font-headline-md text-headline-md text-primary mb-2">
                         {contact.title}
                       </h3>
@@ -184,7 +185,7 @@ export default function ContactPage() {
 
           {/* ─── Offices ─── */}
           <section className="bg-surface-container-high py-section-gap md:py-24 -mx-margin-edge px-margin-edge">
-            <div className="max-w-container-max mx-auto">
+            <div className="">
               <div className="mb-16">
                 <Label className="block mb-4 text-primary">
                   GLOBAL PRESENCE
@@ -195,13 +196,13 @@ export default function ContactPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                 {offices.map((office) => (
-                  <div key={office.city} className="reveal">
+                  <div key={office.city} >
                     <div className="aspect-[16/9] mb-8 relative overflow-hidden bg-surface-dim">
-                      <img
-                        className="object-cover w-full h-full hover:opacity-95 transition-opacity duration-700"
-                        data-alt={`${office.city} office building`}
+                      <Image
                         src={office.img}
                         alt={`${office.city} office`}
+                        fill
+                        className="object-cover w-full h-full hover:opacity-95 transition-opacity duration-700"
                       />
                     </div>
                     <h3 className="font-headline-md text-headline-md text-primary mb-4">
