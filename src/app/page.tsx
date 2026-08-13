@@ -17,6 +17,7 @@ import {
 } from "@/data/properties";
 import { founder } from "@/data/company";
 import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
+// import { AutoSlideImageContainer } from "@/components/ui/AutoSlideImageContainer";
 import Process from "@/components/sections/Process";
 import SelectedWork from "@/components/sections/SelectedWork";
 
@@ -166,6 +167,16 @@ export default function HomePage() {
                 />
               </div>
             </ResponsiveImage>
+
+            {/* <AutoSlideImageContainer
+              images={properties
+                .filter((p) => p.homeHeroSrc)
+                .map((p) => ({
+                  src: p.homeHeroSrc!,
+                  alt: `${p.shortName} exterior`,
+                }))}
+              alt="Brahmas hospitality asset exterior"
+            /> */}
           </div>
         </section>
 

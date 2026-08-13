@@ -168,15 +168,7 @@ export default function AboutPage() {
                     &ldquo;{founder.quotes[0].text}&rdquo;
                   </p>
                   <footer className="font-label-caps text-label-caps text-cream-dim/70 mt-6">
-                    {founder.name} — interviewed in{" "}
-                    <a
-                      href={SOURCES.lodgingMagazine.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline decoration-cream-dim/40 underline-offset-4 hover:text-cream transition-colors"
-                    >
-                      {SOURCES.lodgingMagazine.publication}
-                    </a>
+                    {founder.name} — CEO & President
                   </footer>
                 </blockquote>
               </Reveal>

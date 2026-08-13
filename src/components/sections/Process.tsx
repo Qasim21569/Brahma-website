@@ -155,14 +155,10 @@ export default function Process() {
                 viewport={{ once: false, amount: 0.6 }}
                 transition={{ duration: 0.6, ease: [0.24, 0.43, 0.15, 0.97] }}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-start">
                   <span className="font-label-caps text-label-caps text-muted-azure">
                     {stage.num}
                   </span>
-                  <span
-                    aria-hidden="true"
-                    className="h-px flex-1 bg-muted-azure/40 md:w-10 md:flex-none"
-                  />
                   <div className="relative h-9 w-9 shrink-0 opacity-70 md:hidden">
                     <Image
                       src={stage.icon}
