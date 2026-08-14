@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BMIG_LOGO_SRC } from "@/data/company";
 
 /**
  * The preload curtain — professional BRAHMAS logo reveal.
@@ -42,11 +43,13 @@ export default function Intro() {
         {/* BMIG logo mark — real vector asset */}
         <div className="intro-logo">
           <Image
-            src="/brahmas-vector-logo-preload.svg"
+            src={BMIG_LOGO_SRC}
             alt=""
-            width={150}
-            height={147}
+            width={2160}
+            height={2160}
+            className="h-full w-full object-contain"
             priority
+            unoptimized
           />
         </div>
 

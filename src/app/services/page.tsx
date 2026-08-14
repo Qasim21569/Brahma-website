@@ -1,264 +1,261 @@
+import type { Metadata } from "next";
+import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Button } from "@/components/ui/Button";
-import { Label } from "@/components/ui/Label";
-import { Icon } from "@/components/ui/Icon";
+import { SectionTitle } from "@/components/ui/SectionTitle";
+import { MaskText } from "@/components/ui/MaskText";
+import { Reveal } from "@/components/ui/Reveal";
+import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
+// PARKED — see the commented section below. Held back deliberately, not dead.
+// import { ThresholdReveal } from "@/components/sections/ThresholdReveal";
+import { InlineList } from "@/components/ui/InlineList";
+import { PillarCard } from "@/components/ui/PillarCard";
+import { FlickerText } from "@/components/ui/FlickerText";
+import { StyledLink } from "@/components/ui/StyledLink";
+import { GhostWordmark } from "@/components/ui/GhostWordmark";
 import Accordion from "@/components/ui/Accordion";
-import Image from "next/image";
+import { pillars, capabilityChips, constructionPartner } from "@/data/services";
 
-const capabilities = [
-  "Asset Management",
-  "Valuation & Advisory",
-  "Development Planning",
-  "Capital Restructuring",
-  "Operational Turnaround",
-  "Brand Positioning",
-];
+export const metadata: Metadata = {
+  title: "What We Do | Brahmas Management and Investment Group",
+  description:
+    "Brahmas acquires, repositions, and directly operates its own assets — capital, repositioning, and operations under one roof.",
+};
 
 export default function ServicesPage() {
   return (
     <>
       <Navbar />
-      <div aria-hidden="true" className="brand-overlay">BRAHMAS</div>
-      <main className="relative z-10 pt-[var(--nav-h)]">
-        {/* ─── Hero ─── */}
-        <header className="px-margin-edge mb-section-gap pt-12">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-            <div className="md:col-span-7">
-              <Label withDot className="mb-4">
-                OUR SERVICES
-              </Label>
-              <h1 className="font-display-hero text-display-hero text-primary mb-8 max-w-4xl">
-                Architectural approaches to hospitality investment.
+      <main className="pt-[var(--nav-h)]">
+        {/* ─── Hero — LIGHT ───
+            Capability framing, not a services menu. BMIG operates what it owns,
+            so this page proves execution to sellers, lenders and franchisors
+            rather than selling services to third parties. */}
+        <section className="px-margin-edge pt-16 pb-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              What We Do
+            </SectionTitle>
+            <div>
+              <h1>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-primary"
+                  lines={["Capital, construction,", "and operations under", "one roof."]}
+                />
               </h1>
-              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                We deploy capital with structural precision. From initial
-                acquisition to rigorous operational management, our
-                methodologies are built to endure.
-              </p>
+              <MaskText
+                delay={0.15}
+                className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
+                lines={[
+                  "We do not assemble a chain of vendors around",
+                  "an asset. The group underwrites it, funds it,",
+                  "rebuilds it, and then runs it.",
+                ]}
+              />
+              <InlineList
+                className="font-label-caps text-label-caps text-on-surface-variant mt-10 max-w-2xl"
+                items={capabilityChips}
+              />
             </div>
           </div>
-        </header>
+        </section>
 
-        {/* ─── Acquisition ─── */}
-        <section className="px-margin-edge mb-section-gap">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter hairline-t pt-12">
-            <div className="md:col-span-4 mb-8 md:mb-0">
-              <h2 className="font-headline-md text-headline-md text-primary sticky top-32">
-                Acquisition
-              </h2>
+        {/* ─── PARKED: the signature scroll sequence ─────────────────────────
+            `sections/ThresholdReveal.tsx` is BUILT, VERIFIED AND INTENTIONALLY
+            HELD BACK — the client is staging what they show, not rejecting it.
+
+            ⚠️ It is therefore NOT an orphan. The playbook's "delete dead code
+            immediately" rule does NOT apply to it. Do not remove the file.
+
+            To re-enable: uncomment the import at the top of this file, swap the
+            quiet band below for the block underneath, and drop the now-unused
+            `Image` / `ResponsiveImage` imports.
+
+            <ThresholdReveal
+              src="/site-photos/Clarion-Pointe-8.webp"
+              alt="Clarion Pointe Tampa, acquired and repositioned by Brahmas"
+              caption="Clarion Pointe Tampa — acquired and repositioned, 2024"
+              topLine="Underwritten,"
+              bottomLine="rebuilt, run."
+            />
+            ──────────────────────────────────────────────────────────────────── */}
+
+        {/* ─── Full-bleed band ─── the quiet stand-in while the sequence is
+            parked. parallaxAmount={20} is the full-bleed value per §2.3. */}
+        <section className="px-margin-edge pb-section-gap">
+          <ResponsiveImage parallaxAmount={20}>
+            <div className="relative aspect-[16/10] w-full bg-stone-white md:aspect-[21/9]">
+              <Image
+                src="/site-photos/Clarion-Pointe-8.webp"
+                alt="Clarion Pointe Tampa, acquired and repositioned by Brahmas"
+                fill
+                sizes="100vw"
+                className="object-cover"
+                loading="lazy"
+              />
             </div>
-            <div className="md:col-span-8">
-              <div className="aspect-[16/9] w-full bg-stone-white mb-8 overflow-hidden relative">
-                <Image
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg2xlDwvsxDSo5RdnvAPxS7qg31sHS9m20Q1kMGDOhiJ3QSKNW048wBLCzHcfqIP_xamC2IuaU2hbor3i1vJPSotS8PJYHTvzaV6wyPC-No5bxLRcRwMLW3SoYtIO6pR-rZFxQgw-duDTUpRbDzXpH2U3wadpJ-GwhSQq65zytm1Sq6SLrSDcVbR8L1n1XEEVlPINGxHzuUchFS4y_AJrSlZRYdCj4nb7PADLsgfcFR5_UrHEhzwKh"
-                  alt="Acquisition architectural photography"
-                  fill
-                  className="object-cover opacity-90"
+          </ResponsiveImage>
+        </section>
+
+        {/* ─── Pillars — LIGHT ───
+            A different axis from the homepage Process (Acquire → Renovate →
+            Operate), which describes what happens to an asset over time. These
+            describe what the group can do. Keep them distinct — see
+            data/services.ts. */}
+        <section className="px-margin-edge py-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              Capabilities
+            </SectionTitle>
+            <div className="flex flex-col gap-20 md:gap-32">
+              {pillars.map((pillar, i) => (
+                <PillarCard key={pillar.title} pillar={pillar} delay={i * 0.05} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── Construction partner — DARK ───
+            ⚠️ Credited as a PREFERRED PARTNER only. The copy states the
+            relationship and describes Heal Construct's own practice; it does
+            NOT claim they delivered any BMIG property, and must not, without
+            client confirmation. Their published portfolio is entirely
+            residential — do not call them a hospitality contractor.
+            See data/services.ts. */}
+        <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-cream-dim">
+              {constructionPartner.role}
+            </SectionTitle>
+            <div>
+              <h2>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-cream"
+                  lines={["Built with people who", "build for a living."]}
+                />
+              </h2>
+              <MaskText
+                delay={0.15}
+                className="font-body-lg text-body-lg text-cream-dim mt-8 max-w-xl"
+                lines={constructionPartner.body}
+              />
+
+              <Reveal delay={0.3}>
+                {/* Hairline-divided, not numbered — these are three parallel
+                    capabilities, not a sequence. */}
+                <div className="mt-12 grid grid-cols-1 border-t border-white/15 sm:grid-cols-3">
+                  {constructionPartner.capabilities.map((capability) => (
+                    <div
+                      key={capability}
+                      className="border-b border-white/15 py-6 sm:border-b-0 sm:border-l sm:first:border-l-0 sm:py-8 sm:pl-6 sm:first:pl-0"
+                    >
+                      <span className="font-headline-md text-headline-md text-cream leading-tight">
+                        {capability}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.45}>
+                <div className="mt-10 max-w-xl">
+                  <StyledLink
+                    href={constructionPartner.url}
+                    tone="light"
+                    external
+                  >
+                    {constructionPartner.name}
+                  </StyledLink>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── Methodology — LIGHT ─── */}
+        <section className="px-margin-edge py-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              Methodology
+            </SectionTitle>
+            <div>
+              <h2>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-primary"
+                  lines={["The questions we get", "asked most."]}
+                />
+              </h2>
+              <div className="mt-12">
+                <Accordion
+                  items={[
+                    {
+                      title: "How do you identify acquisition targets?",
+                      body: "We evaluate assets against two criteria: structural permanence of the real estate, and a measurable gap between current operating performance and potential. We look for properties whose physical quality — location, construction, design intent — exceeds their current financial output, typically because of underinvestment or brand misalignment.",
+                    },
+                    {
+                      /* Rewritten 2026-08-13. The previous answer claimed "our
+                         construction team oversees every phase", which asserted
+                         an in-house construction capability the group does not
+                         have and contradicted crediting an external partner. */
+                      title: "Who carries out the renovation work?",
+                      body: "Scope is defined property by property — structural repairs, systems upgrades, interior repositioning, or brand alignment — and Brahmas directs it. Delivery is carried out with specialist design-build partners rather than an in-house contracting arm. What we do not delegate is the operating model: the asset is run by Brahmas once the work is complete.",
+                    },
+                    {
+                      title: "Why operate properties directly rather than franchising out management?",
+                      body: "Operating directly keeps accountability for the guest experience and the financial result in the same place. Operators who run an asset as though they already own it produce better outcomes, and that discipline only survives if the people who underwrote the investment are the people answering for it.",
+                    },
+                    {
+                      title: "What types of properties are in the portfolio?",
+                      body: "Hospitality is the core competency, but the group operates across asset classes — hotels, an early-education facility, and residential property. The unifying thread is structural quality that has been underleveraged, in a market position that rewards professional management.",
+                    },
+                    {
+                      title: "How do you measure whether a repositioning worked?",
+                      body: "Against the investment thesis set at acquisition, reviewed quarterly. Performance is measured relative to what the specific asset should be capable of given its location and construction — not against a market average that may be set by weaker competitors.",
+                    },
+                  ]}
                 />
               </div>
-              <h3 className="font-headline-md text-headline-md text-primary mb-4">
-                Identifying structural value.
-              </h3>
-              <p className="font-body-md text-body-md text-on-surface-variant mb-6 max-w-2xl">
-                Our acquisition strategy focuses on undermanaged assets with
-                sound fundamental architecture. We look for structural integrity
-                in markets demonstrating long-term demographic resilience.
-              </p>
-              <div className="bg-surface-variant p-8 w-full max-w-xl">
-                <span className="font-label-caps text-label-caps text-on-surface-variant block mb-2">
-                  LEADING SUBSIDIARY
-                </span>
-                <span className="font-body-lg text-body-lg text-primary">
-                  Brahmas Capital Partners
-                </span>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* ─── Management (Dark Anchor) ─── */}
-        <section className="bg-ink-navy text-on-primary w-full py-section-gap mb-section-gap">
-          <div className="px-margin-edge">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-              <div className="md:col-span-4 mb-8 md:mb-0">
-                <h2 className="font-headline-md text-headline-md text-on-primary">
-                  Management
-                </h2>
-              </div>
-              <div className="md:col-span-8">
-                <h3 className="font-headline-md text-headline-md text-on-primary mb-6">
-                  Rigorous operational oversight.
-                </h3>
-                <p className="font-body-lg text-body-lg text-on-primary-container mb-12 max-w-2xl">
-                  We implement institutional-grade management frameworks
-                  designed to optimize asset performance while maintaining the
-                  distinct character of each property.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 hairline-t border-on-primary-fixed-variant pt-8">
-                  <div >
-                    <Icon
-                      name="monitoring"
-                      className="text-[32px] text-muted-azure mb-4 block"
+        {/* ─── CTA — DARK ───
+            GhostWordmark rather than the one-off .brand-overlay class the old
+            page used, so there is a single ghost-wordmark implementation. */}
+        <section className="relative overflow-hidden bg-primary py-section-gap text-cream md:py-24">
+          <GhostWordmark>BRAHMAS</GhostWordmark>
+          <div className="relative z-10 px-margin-edge text-center">
+            <h2 className="font-headline-lg text-headline-lg text-cream">
+              <FlickerText>Start a conversation.</FlickerText>
+            </h2>
+            <MaskText
+              delay={0.15}
+              className="font-body-lg text-body-lg mx-auto mt-8 max-w-xl text-cream/70"
+              lines={[
+                "Whether you are selling an asset or financing",
+                "one, we would rather talk early than late.",
+              ]}
+            />
+            <Reveal delay={0.4}>
+              <div className="mt-10 flex justify-center">
+                <a
+                  href="/contact"
+                  className="inline-flex min-h-11 items-center gap-3 rounded-full bg-cream px-8 py-3.5 font-label-caps text-label-caps text-ink-deep transition-opacity hover:opacity-90"
+                >
+                  Reach out to us
+                  <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
+                    <path
+                      d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
-                    <h4 className="font-body-lg text-body-lg mb-2">
-                      Performance Analytics
-                    </h4>
-                    <p className="font-body-md text-body-md text-on-primary-container">
-                      Granular tracking of operational metrics against
-                      investment thesis parameters.
-                    </p>
-                  </div>
-                  <div >
-                    <Icon
-                      name="architecture"
-                      className="text-[32px] text-muted-azure mb-4 block"
-                    />
-                    <h4 className="font-body-lg text-body-lg mb-2">
-                      Capital Improvement
-                    </h4>
-                    <p className="font-body-md text-body-md text-on-primary-container">
-                      Strategic deployment of renovation capital to maximize
-                      return on structural enhancements.
-                    </p>
-                  </div>
-                </div>
+                  </svg>
+                </a>
               </div>
-            </div>
+            </Reveal>
           </div>
-        </section>
-
-        {/* ─── Operations ─── */}
-        <section className="px-margin-edge mb-section-gap">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter hairline-t pt-12">
-            <div className="md:col-span-4 mb-8 md:mb-0">
-              <h2 className="font-headline-md text-headline-md text-primary">
-                Operations
-              </h2>
-            </div>
-            <div className="md:col-span-8">
-              <div className="aspect-[4/3] w-full bg-stone-white mb-8 overflow-hidden md:w-3/4 float-none md:float-right ml-0 md:ml-8 relative">
-                <Image
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG1mnHazzZZ3k9hEA68fYJ7-fXopl3E6IROmErFd5GSyZEoyBVjhE3aQHjmp-lpwEVY8ZYZasi4KKgqW6cNpeDXaSagwknC_JtHIF8n5_Z8Y0-7UBx3O7miwuZoMK1uAEuWKYoJpnCkB_CJ-LS_NA4-S61yjPaAwjIIbiGS5YFU94K127XLHEuHJq_6EJxK7FemXoNTyUhA-wPvQP3BHMc8NUwYLcP4F_3Q5A_JA7ZZytuT0Yx-pmc"
-                  alt="Hotel lobby interior"
-                  fill
-                  className="object-cover opacity-90"
-                />
-              </div>
-              <h3 className="font-headline-md text-headline-md text-primary mb-4">
-                Delivering hospitality at scale.
-              </h3>
-              <p className="font-body-md text-body-md text-on-surface-variant mb-6">
-                Execution is paramount. We operate assets with a focus on
-                standardizing excellence without commoditizing the guest
-                experience.
-              </p>
-              <div className="bg-surface-variant p-8 w-full clear-both mt-8">
-                <span className="font-label-caps text-label-caps text-on-surface-variant block mb-2">
-                  LEADING SUBSIDIARY
-                </span>
-                <span className="font-body-lg text-body-lg text-primary">
-                  Brahmas Hospitality Management
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ─── Engagement Process ─── */}
-        <section className="px-margin-edge mb-section-gap">
-          <Label withDot className="mb-12">
-            ENGAGEMENT PROCESS
-          </Label>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter hairline-t pt-8">
-            {[
-              { num: "01", title: "Discovery", desc: "Initial dialogue with the operating partner to align investment parameters." },
-              { num: "02", title: "Diligence", desc: "Rigorous financial and physical asset evaluation against our investment framework." },
-              { num: "03", title: "Renovation", desc: "Capital deployment under Brahmas-led scope: physical asset, brand position, operating model." },
-              { num: "04", title: "Operation", desc: "Direct operation under Brahmas Hospitality Management. Quarterly performance review." },
-            ].map((step, i) => (
-              <div
-                key={step.num}
-                className={`relative ${i > 0 ? "md:hairline-l md:pl-8 border-mortar-grey" : ""}`}
-              >
-                <span className="font-stat-display text-stat-display text-surface-dim md:absolute md:-top-8 md:-left-4 z-0 opacity-50 block mb-2 md:mb-0">
-                  {step.num}
-                </span>
-                <div className="relative z-10 pt-0 md:pt-4">
-                  <h4 className="font-headline-md text-headline-md text-primary mb-4">
-                    {step.title}
-                  </h4>
-                  <p className="font-body-md text-body-md text-on-surface-variant">
-                    {step.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ─── Capabilities ─── */}
-        <section className="px-margin-edge mb-section-gap">
-          <h2 className="font-headline-lg text-headline-lg text-primary mb-12">
-            Core Capabilities
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-0 hairline-t">
-            {capabilities.map((cap, i) => (
-              <div
-                key={cap}
-                className={`py-6 hairline-b flex justify-between items-start ${
- i % 2 === 1 ? "md:hairline-l md:pl-6 border-mortar-grey" : ""
- }`}
-              >
-                <span className="font-body-lg text-body-lg text-primary">
-                  {cap}
-                </span>
-                <Icon name="arrow_outward" className="text-muted-azure" />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ─── Methodology Accordion ─── */}
-        <section className="px-margin-edge mb-section-gap">
-          <Label withDot className="mb-12">
-            METHODOLOGY
-          </Label>
-          <Accordion
-            className="max-w-3xl"
-            items={[
-              {
-                title: "How do you identify acquisition targets?",
-                body: "We evaluate assets against two criteria: structural permanence of the real estate and a measurable gap between current operating performance and potential. We look for properties whose physical quality — location, construction, design intent — exceeds their current financial output, typically due to underinvestment or brand misalignment.",
-              },
-              {
-                title: "What does your renovation process look like?",
-                body: "Renovation is scoped property by property. We assess what each asset requires to reach its potential — structural repairs, systems upgrades, interior repositioning, or brand alignment — and deploy capital directly. We do not delegate to third-party management. Our construction team oversees every phase.",
-              },
-              {
-                title: "Why operate properties directly rather than franchising?",
-                body: "Operating directly allows us to maintain full accountability for the guest experience and financial performance. We found that the operators who run every asset as though they already own it produce better results. That discipline, applied consistently, is the Brahmas difference.",
-              },
-              {
-                title: "What types of properties are in your portfolio?",
-                body: "While hospitality is our core competency, Brahmas operates across operating asset classes — hotels, educational facilities, and residential properties. The unifying thread is structural quality that has been underleveraged, combined with a market position that rewards professional management.",
-              },
-              {
-                title: "How do you measure renovation success?",
-                body: "We benchmark against the investment thesis established at acquisition. RevPAR growth, GOP improvement, occupancy stabilization, and brand repositioning outcomes are tracked quarterly. We also measure structural improvements against the property's potential — not just against industry averages.",
-              },
-            ]}
-          />
-        </section>
-
-        {/* ─── CTA ─── */}
-        <section className="px-margin-edge mb-section-gap text-center pt-12">
-          <h2 className="font-headline-lg text-headline-lg text-primary mb-8 max-w-2xl mx-auto">
-            Discuss an investment or management opportunity.
-          </h2>
-          <Button href="/contact" icon="arrow_forward">
-            START A CONVERSATION
-          </Button>
         </section>
       </main>
       <Footer />

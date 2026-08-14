@@ -15,7 +15,7 @@ import {
   enrichedProperties,
   assetTypeLabels,
 } from "@/data/properties";
-import { founder } from "@/data/company";
+import { founder, BMIG_LOGO_SRC } from "@/data/company";
 import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 // import { AutoSlideImageContainer } from "@/components/ui/AutoSlideImageContainer";
 import Process from "@/components/sections/Process";
@@ -88,11 +88,12 @@ export default function HomePage() {
               <SectionTitle>About Brahmas</SectionTitle>
               <Reveal delay={0.15} distance={14}>
                 <Image
-                  src="/brahmas-vector-logo-preload.svg"
+                  src={BMIG_LOGO_SRC}
                   alt="Brahmas Management and Investment Group"
-                  width={150}
-                  height={147}
+                  width={2160}
+                  height={2160}
                   className="mt-14 h-auto w-52 md:mt-20 md:w-[30vw] md:max-w-[520px]"
+                  unoptimized
                 />
               </Reveal>
             </div>

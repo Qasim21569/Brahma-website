@@ -33,8 +33,10 @@ Working directory is `brahma-web/`. References sit as siblings, so from
 | `../the-line-awwwards-SOTM/` | Accordion (`components/AccordianItem.tsx`), hover text swap (`HoverReveal.tsx`), scroll-linked card entrance (`ProjectCard.tsx`), Desktop/Mobile component split. |
 | `../otis-valen-next/` | Page transitions (`app/template.tsx` + `components/chrome/TransitionOverlay.tsx`). |
 | `../ochi.design-UI-Clone/` | Image hover: scale-down + title rise (`src/components/Featured.jsx`). |
-| `../hetari-portfolio/` | Marquee velocity (`src/components/design/horizontal-loop.js`). Rarely needed. |
-| `../Axel-Vanhessche/`, `../awwwards-collection/` | Not used. Ignore. |
+| `../hetari-portfolio/` | **More useful than previously recorded.** `src/components/ServicesCard.vue` is the numbered-pillar pattern ported as `ui/PillarCard.tsx` + `ui/RotatingMark.tsx`. Also `MagneticEffect.vue` (unused so far) and marquee velocity (`src/components/design/horizontal-loop.js`). It is Vue — read it for the pattern, not the code. |
+| `../sequent-media-house-main/` | **Closest stack to ours** — Next 16, React 19, Tailwind v4, Motion v12, GSAP, Lenis. Code ports almost verbatim. `src/app/home.jsx` is the reference for **pinned multi-layer scroll choreography**: one pinned container, one master timeline, stacked layers taking over in sequence. `ExpandingSection.jsx` opens by `height`, not by mask. Also worth mining: `RowAnimation` (multi-speed row parallax), `CursorTrail`, `CharReveal`, `Loader`, `hyper-text`. |
+| `../Axel-Vanhessche/` | Origin of the aperture idea (`mask-size: 0% → 170%` scrubbed on a pinned trigger). **Superseded by sequent's height-based shutter** — see the E1 record for why. Read for the concept, not the implementation. |
+| `../awwwards-collection/` | Not used. Ignore. |
 
 ### The Elementis files that matter most
 
@@ -116,6 +118,10 @@ single most recognisable Elementis trait.
 | Emphasised button | `BorderedButton` | SVG border draws on hover |
 | Label swap on hover | `HoverReveal` | |
 | Section label | `SectionTitle` | hamburger + uppercase |
+| **Signature scroll sequence** | `sections/ThresholdReveal` | pinned 420vh; type splits → shutter opens by `height` → mark settles. Desktop only — see Phase E1 |
+| Numbered capability pillar | `ui/PillarCard` + `ui/RotatingMark` | `( 01 )`, sub-rows, ghost numeral, slow-turning mark |
+| Per-letter hover flicker | `ui/FlickerText` | **must** carry `aria-label` + `aria-hidden` letters |
+| Slash-separated inline list | `ui/InlineList` | `staggerChildren: 0.06` |
 
 **One easing everywhere:** `[0.24, 0.43, 0.15, 0.97]`. No bounce, no spring
 (except the Process progress rail). Durations 0.6–0.8s. Stagger 0.05–0.1s.
@@ -182,7 +188,8 @@ Newsreader (display) + Manrope (body). **No bold anywhere** — weights 300/400/
 | **D-6** | **`CountUp` server-rendered `00`**, not the target, contradicting its own docstring — every figure was invisible with JS off and to crawlers. | `src/components/ui/CountUp.tsx` | ✅ fixed — motion value seeded at `to`, reset to 0 on enter-view |
 | **D-7** | 🚨 **LAUNCH BLOCKER — the static folder was `Public/`, not `public/`.** Git tracked it capitalised. Windows' case-insensitive filesystem hid this locally, but Vercel builds on Linux, where Next.js does not recognise `Public/` — every image, the logo and all property photography would have 404'd in production. | `brahma-web/public/` | ✅ fixed — case-only `git mv`; 32 renames staged, on-disk name verified lowercase, build re-run clean. **Not yet committed.** |
 | **D-8** | `scripts/enrich-properties.mjs` **did not exist.** Both `HANDOFF.md` and this playbook name it as the thing that unblocks booking URLs; `src/data/places.generated.json` is `{}`. The overlay in `properties.ts` was already built and correct — only the generator was missing. | `brahma-web/scripts/` | ✅ written — facts by default, photographs behind an opt-in `--photos` flag. Both guards offline-tested via `npm run enrich:check`. See [PHOTO-PIPELINE.md](./PHOTO-PIPELINE.md). Still needs the client's API key to run. |
-| **D-9** | **21 client-supplied photos are sitting unused** in `public/site-photos/` (11 Clarion Pointe, 10 Hampton Inn) — a superset of the 11 wired under `public/properties/`. Decide whether the extras join the galleries. | `public/site-photos/` | ⬅ **open** |
+| **D-9** | **21 client-supplied photos were sitting unused** in `public/site-photos/` (11 Clarion Pointe, 10 Hampton Inn) — a superset of the 11 wired under `public/properties/`. Decide whether the rest join the galleries. | `public/site-photos/` | ⬅ **partly done** — 3 now in use (About ×2, Services ×1); 18 still unused |
+| **D-10** | 🚨 **AI-generated placeholder images hotlinked from Google's CDN.** Five `<Image src="https://lh3.googleusercontent.com/aida-public/…">` — Google Stitch/AI Studio output served live from Google. Not owned, not licensed, and they break whenever Google expires the URL. This is also the only reason `next.config.mjs` whitelists that host. | services, `contact`, `careers` | ✅ **fixed** — all five removed 2026-08-13 and the `remotePatterns` entry deleted from `next.config.mjs`. Every image now comes from `public/`. |
 
 ---
 
@@ -299,15 +306,161 @@ headline that read **"Two properties."** against a portfolio of 12.
 
 ### Phase E — remaining pages
 
-- [ ] **E1 Services** (267 lines) — grammar retro-fit; `Accordion` for detail
-      under each pillar.
-- [ ] **E2 Contact** (224 lines) — architectural underline inputs
-      (border-bottom only), phone/email prominent, no map.
-- [ ] **E3 Careers** (239 lines) — grammar retro-fit; `Accordion` for roles.
+- [x] **E1 Services** ✅ **complete 2026-08-13** — see the decision record below.
+- [x] **E2 Contact** ✅ **complete 2026-08-13** — see the fabrication note below.
+- [x] **E3 Careers** ✅ **complete 2026-08-13** — see the fabrication note below.
+
+#### 🚨 E2/E3 — the pages were largely fabricated
+
+Both pages published invented facts. This is the same class of error as the
+"02 properties" stat and "Brahmas Capital Partners", but more serious, because
+these were things a visitor could act on.
+
+**Deleted from Contact:**
+
+| Fabrication | Why it is provably false |
+|---|---|
+| Offices in **New York** and **London**, with full street addresses | BMIG is a Florida operator; all 12 assets are in Florida |
+| `+1 (212) 555-0198` / `-0199` | 212 is Manhattan, and `555-01xx` is the range **reserved for fiction** |
+| 2 hotlinked Google CDN images captioned as those offices | D-10 |
+
+**Deleted from Careers:** three named vacancies — *Director of Acquisitions*
+(New York, NY), *VP Asset Management* (Miami, FL), *Design Director*
+(London, UK). **Publishing roles that do not exist is worse than a wrong
+address, because people apply to them.** Replaced with the disciplines the group
+actually operates in, plus an open application.
+
+**Kept but flagged:** the `@brahmagroup.com` addresses. Unlike the above they
+are *unconfirmed rather than provably false* — the domain may be real. Note it
+has **no "s"**, which contradicts the F4 brand rule. Do not silently "correct"
+the spelling: that would invent an address that may not resolve. All contact
+values now live in `src/data/contact.ts` behind
+`CONTACT_DETAILS_UNCONFIRMED = true`, so the client fills one file.
+
+**What the pages are built from instead:**
+- Contact — email routes, Florida as the stated operating region, and a "reach
+  an asset" section pointing at the 12 property pages, which carry **real,
+  confirmed phone numbers** from `properties.ts`.
+- Careers — the sourced LODGING narrative in `company.ts`: the owner's-mindset
+  and "How we hire" blocks, and the verbatim quote *"I don't look for a degree.
+  I look at the passion the person has."*
+
+**The form has no backend.** It posts via `mailto:` deliberately — there is no
+handler and no form service configured, and a form that silently swallows
+submissions is worse than one that opens a mail client. Replace the action if a
+real endpoint is added. (`sequent-media-house` uses `@emailjs/browser` if a
+no-backend service is wanted.)
 - [ ] **E4 Privacy / Terms** (52 / 69 lines) — minimal editorial treatment,
       correct legal entity name.
 - [ ] **E5 Footer** — multi-column, hairline borders,
       "© {year} Brahmas Management and Investment Group."
+      Note it still uses `md:grid-cols-12` rather than the `[1fr_1.9fr]` grammar.
+
+#### E1 Services — decision record
+
+Brainstormed and agreed with the client 2026-08-13. Recorded here rather than in
+a separate spec file so it lives where the rest of the project's decisions do.
+
+**It is a capability page, not a services menu.** BMIG operates what it owns, so
+a page selling services to third parties contradicts the thesis. The page exists
+to prove end-to-end execution to sellers, lenders and franchisors. H1 and title
+reframed to "What We Do".
+
+**The three pillars run on a different axis from the homepage `Process`.** That
+section is Acquire → Renovate → Operate — *what happens to an asset over time*.
+The pillars are Capital / Repositioning / Operations — *what the group can do*.
+Keeping them on separate axes is what stops this becoming the duplicate-copy
+trap that put the founder story on the homepage twice (D-2). **If you edit
+either, preserve the distinction.**
+
+**Only `Brahmas Hospitality Management` is named as a subsidiary**, because all
+12 properties carry it as `subunit` in `properties.ts`. The other registered
+entities have real names but inferred business purposes — the same content
+pulled from the About page — so they are not assigned to pillars.
+
+**Heal Construct is credited as a preferred partner only.** Client-confirmed as
+an affiliation, *not* a claim that they delivered a BMIG property. Their
+published portfolio (read 2026-08-13) is entirely residential — a 90,000 sq ft
+residence, a 15,000 sq ft clubhouse, a 6,500 sq ft remodel — with no hospitality
+work, so they must not be described as a hotel contractor. "Design · Build · BIM"
+are their own three stated capabilities. Full constraints in `data/services.ts`.
+
+**Ported for this page** (all gated on reduced motion):
+
+| New component | Ported from |
+|---|---|
+| `ui/PillarCard.tsx` | `../hetari-portfolio/src/components/ServicesCard.vue` — `( 01 )` numeral, title, numbered sub-rows with the middle row hairline-bounded |
+| `ui/RotatingMark.tsx` | same file's `animate-[spin_10s_linear_infinite]`, slowed to 20s. CSS-only, so it needs `motion-reduce:animate-none` — the global `MotionConfig` does not cover CSS animations |
+| `ui/FlickerText.tsx` | `../the-line-awwwards-SOTM/components/FlickerText.tsx` — simplified from its hand-built `times` array to per-letter delay; rule collapses right via `origin-right` |
+| `ui/InlineList.tsx` | `../the-line-awwwards-SOTM/components/List.tsx` — slash-separated, `staggerChildren: 0.06`; made to wrap |
+
+`FlickerText` sets `aria-label` on the wrapper and `aria-hidden` on every letter
+span. Without that, splitting a heading per character makes assistive tech
+announce it letter by letter and breaks text selection. **Any future per-letter
+effect needs the same treatment.**
+
+**REVERSED 2026-08-13 — there IS a second pinned section.** The first build of
+this page followed "Elementis has exactly one sticky section, and the homepage
+spends it on SelectedWork". The result was correct and completely flat, and the
+client rejected it on exactly those grounds. The rule was a stylistic inference
+of mine, not a client constraint, and enforcing it cost a rebuild.
+
+**Then the signature itself was rebuilt a second time.** v2 was an *aperture* —
+the Brahmas mark as a CSS mask scrubbing `mask-size: 0% → 320%`, ported from
+Axel-Vanhessche. The client's verdict: right idea, wrong execution. They were
+correct, and `../sequent-media-house-main/` shows why.
+
+> 🅿️ **PARKED 2026-08-13 — built, verified, and deliberately not shipped yet.**
+> The client is staging what they show, holding the upgrade back rather than
+> playing every card at once. It is **commented out** in
+> `src/app/services/page.tsx`, with a quiet full-bleed photo band standing in.
+>
+> **`sections/ThresholdReveal.tsx` is NOT an orphan. The "delete dead code
+> immediately" rule in §7 does not apply to it. Do not delete the file.**
+>
+> To re-enable: uncomment the import and the `<ThresholdReveal />` block in
+> `services/page.tsx`, remove the stand-in band, and drop the then-unused
+> `Image` / `ResponsiveImage` imports.
+
+`sections/ThresholdReveal.tsx` is the current signature — a 420vh pinned
+section ported from sequent's `src/app/home.jsx` + `ExpandingSection.jsx`:
+
+| | v2 aperture (deleted) | v3 threshold (current) |
+|---|---|---|
+| Mechanic | `mask-size` scrub | `height: 0svh → 100svh` shutter |
+| Cost | repaints the masked area **every frame** | height on a clipping box — cheap |
+| Beats | one: a shape grows | three: type splits → shutter opens → mark settles |
+| "Passing through" | a shape grows toward you | the **headline splits and you fly between the lines** |
+| Content in the reveal | scales with the mask | held at fixed `100svh`, revealed not squashed |
+
+The `height`-not-`mask-size` swap is the substance of the fix. The three-beat
+structure is what makes it feel authored rather than applied.
+
+**Constraints that matter if you touch it:**
+- **Motion, not GSAP — deliberately.** Sequent pins with GSAP ScrollTrigger. We
+  do not, because `SmoothScrollProvider` runs Lenis on **its own RAF loop and is
+  not wired to `ScrollTrigger.update()`**. A ScrollTrigger pin would desync and
+  judder. Wiring them is a global change with sitewide blast radius. CSS
+  `position: sticky` pins for free and `useScroll` reads the same native scroll
+  Lenis writes — exactly how `SelectedWork` already works at 500vh.
+  **If you ever do wire Lenis to ScrollTrigger, revisit this.**
+- **Desktop only.** Mobile and `prefers-reduced-motion` get the headline, photo
+  and caption stacked plainly — same content, no pin, no sequence.
+- **Never returns `null`** — the desktop branch renders server-side.
+- **A11y:** the split lines are two transformed spans, so they carry
+  `aria-hidden` and the section has an `sr-only <h2>` with the full sentence.
+  Same rule as `FlickerText`. Any effect that fragments text needs it.
+
+The two pinned sections remain distinct in kind: homepage `SelectedWork` is a
+500vh stepped carousel with a 28-bar `useMaskImage` wipe; this is a 420vh
+three-beat sequence. Different height, mechanic and driver.
+
+**Deleted with the rewrite:** both hotlinked Google images · the invented
+subsidiary "Brahmas Capital Partners" · `grid-cols-12` · `Label` in favour of
+`SectionTitle` · the one-off `.brand-overlay` class in favour of the existing
+`GhostWordmark`. The accordion answer claiming "our construction team oversees
+every phase" was rewritten — it asserted an in-house contracting arm the group
+does not have and contradicted crediting an external partner.
 
 ### Phase F — global polish (MASTER-PLAN §6 Phase 4 remainder)
 
@@ -361,7 +514,8 @@ grep -o "Your text" .next/server/app/index.html
 - **Never reintroduce a page-level `max-w-*` container.**
 - **Never resurrect the split hero.** `HeroSplit.tsx` is deleted (D11).
 - **Delete orphans immediately.** Dead files and dead `data-*` attributes have
-  repeatedly caused confusion here.
+  repeatedly caused confusion here. **One deliberate exception:**
+  `sections/ThresholdReveal.tsx` is parked, not dead — see Phase E1.
 - `properties.ts` merges `places.generated.json` at import; **hand-authored
   values always win**, so re-running enrichment cannot clobber approved copy.
 - Two slugs deliberately mismatch their names

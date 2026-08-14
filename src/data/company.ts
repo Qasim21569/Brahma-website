@@ -17,6 +17,9 @@ export const SOURCES = {
   },
 } as const;
 
+/** Client-supplied brand mark — intro, navbar, homepage About. */
+export const BMIG_LOGO_SRC = "/BMIG LOGO FINAL.svg";
+
 export const founder = {
   name: "Sanjay Patel",
   role: "Chief Executive Officer & President",

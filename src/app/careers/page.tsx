@@ -1,235 +1,273 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
-import { Label } from "@/components/ui/Label";
+import { SectionTitle } from "@/components/ui/SectionTitle";
+import { MaskText } from "@/components/ui/MaskText";
+import { Reveal } from "@/components/ui/Reveal";
+import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
+import { DrawnRule } from "@/components/ui/DrawnRule";
+import { GhostWordmark } from "@/components/ui/GhostWordmark";
+import { FlickerText } from "@/components/ui/FlickerText";
+import Accordion from "@/components/ui/Accordion";
+import { founder, SOURCES } from "@/data/company";
+import { primaryEmail } from "@/data/contact";
+import { enrichedProperties, assetTypeLabels } from "@/data/properties";
 
-const values = [
-  {
-    num: "01",
-    title: "Calculated Precision",
-    desc: "Every decision is grounded in data. We approach investments with a meticulous eye for detail, ensuring long-term viability and structural soundness.",
-  },
-  {
-    num: "02",
-    title: "Elevated Execution",
-    desc: "We don't just allocate capital; we cultivate spaces. We value an aesthetic sensibility that elevates the guest experience and drives asset appreciation.",
-  },
-  {
-    num: "03",
-    title: "Enduring Vision",
-    desc: "We build for the long term. Our perspective extends beyond immediate cycles, focusing on sustainable growth and generational asset preservation.",
-  },
-  {
-    num: "04",
-    title: "Collaborative Discipline",
-    desc: "Rigorous debate is encouraged. We forge stronger strategies through diverse perspectives unified by a shared commitment to excellence.",
-  },
-];
+export const metadata: Metadata = {
+  title: "Careers | Brahmas Management and Investment Group",
+  description:
+    "Brahmas hires for disposition rather than credentials, and offers equity in new projects to those who prove it.",
+};
 
-const roles = [
+const assetCount = enrichedProperties.length;
+const assetClasses = [...new Set(enrichedProperties.map((p) => p.assetType))];
+
+/**
+ * The disciplines the group operates across — derived from the portfolio and
+ * the pillars, NOT a list of open vacancies.
+ *
+ * ⚠️ The page this replaced advertised three specific job openings in
+ * "New York, NY", "Miami, FL" and "London, UK". BMIG is a Florida operator with
+ * no New York or London presence, and there is no confirmed vacancy list.
+ * Publishing roles that do not exist is worse than a wrong address, because
+ * people apply to them. Do not add named vacancies without the client
+ * supplying them.
+ */
+const disciplines = [
   {
-    title: "Director of Acquisitions",
-    summary:
-      "Lead identification and underwriting of premium hospitality assets across North American gateway markets.",
-    location: "New York, NY",
+    title: "Acquisitions and underwriting",
+    body: "Sourcing assets whose structural quality exceeds their operating performance, and building the case for what they could be. Market selection, diligence, and the numbers behind an offer.",
   },
   {
-    title: "VP, Asset Management",
-    summary:
-      "Drive operational excellence and execute value-add capital improvement programs for our flagship properties.",
-    location: "Miami, FL",
+    title: "Asset management and repositioning",
+    body: "Defining scope property by property — the building, the systems, the brand position — and holding delivery to it. Works alongside specialist design-build partners rather than an in-house contracting arm.",
   },
   {
-    title: "Design Director",
-    summary:
-      "Oversee architectural standards and interior narratives for all new developments and major renovations.",
-    location: "London, UK",
+    title: "Hotel operations",
+    body: "Running the assets day to day under Brahmas Hospitality Management. Front desk through to general management, across a portfolio operating under Choice, Hilton, IHG and Wyndham brand standards.",
+  },
+  {
+    title: "Finance and franchise compliance",
+    body: "Reporting, treasury, lender relationships, and keeping a multi-brand portfolio compliant with each franchisor's standards.",
   },
 ];
 
 export default function CareersPage() {
+  /* Two blocks of the founder narrative carry the hiring philosophy. Sourced
+     from the LODGING interview — see company.ts SOURCES. */
+  const hiringBlock = founder.story.find((b) => b.heading === "How we hire");
+  const mindsetBlock = founder.story.find((b) => b.heading === "The owner's mindset");
+  /* The second LODGING quote is the hiring one: "I don't look for a degree…" */
+  const hiringQuote = founder.quotes[1];
+
   return (
     <>
       <Navbar />
       <main className="pt-[var(--nav-h)]">
-        {/* ─── Hero ─── */}
-        <section className="px-margin-edge py-section-gap relative architectural-grid">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-            <div className="lg:col-span-8 flex flex-col justify-center z-10">
-              <Label withDot className="mb-4">
-                Careers at Brahmas
-              </Label>
-              <h1 className="font-display-hero text-display-hero text-ink-navy mb-8 max-w-4xl">
-                Building the foundations of modern hospitality.
-              </h1>
-              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-12">
-                We seek rigorous thinkers, strategic operators, and
-                design-minded professionals who understand that enduring value
-                requires both structural discipline and exceptional vision. Join
-                us in shaping institutional-grade investments.
-              </p>
-              <div>
-                <Button href="#open-roles" icon="arrow_downward">
-                  View Open Roles
-                </Button>
-              </div>
-            </div>
-            <div className="lg:col-span-4 relative mt-12 lg:mt-0">
-              <div className="aspect-[3/4] w-full bg-surface-container-highest relative overflow-hidden">
-                <Image
-                  alt="Brahmas Architecture"
-                  fill
-                  className="absolute inset-0 w-full h-full object-cover opacity-90"
-                  data-alt="Architectural photograph of a modern institutional building interior with stone pillars and geometric shadows."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_yWaGsrHLg4VADg1a0U3M2G18zhRIt8xYH5-m94Foyr1beDZ_QC-c7UNCY8QHd6qGx-ZUVvcDrzrRX8AD2YrXK2GGjbd1Aw2VeR1dxrOYgzqQosGTAOJ5ar7RLFGwi2veY4KmZDXBYYjWCNOrYBkyfvEEoEvYf__OBrDwSVpsBmS3qoLAKBKoNZTx_pCr8F890YJnxcKUmraZlVpA28Fwbh-axS8UKml8-vkYvTRBTDuUZAtUmavh"
+        {/* ─── Hero — LIGHT ─── */}
+        <section className="px-margin-edge pt-16 pb-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              Careers
+            </SectionTitle>
+            <div>
+              <h1>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-primary"
+                  lines={["We hire for disposition,", "not credentials."]}
                 />
-                <div className="absolute right-8 top-0 bottom-0 w-px bg-mortar-grey opacity-50" />
-                <div className="absolute bottom-8 left-0 right-0 h-px bg-mortar-grey opacity-50" />
+              </h1>
+              <MaskText
+                delay={0.15}
+                className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
+                lines={[
+                  "The people who run an asset as though they",
+                  "already own it are the ones who produce the",
+                  "results. That is what we look for, and it is",
+                  "not something a degree tells us.",
+                ]}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* ─── Full-bleed band ─── */}
+        <section className="px-margin-edge pb-section-gap">
+          <ResponsiveImage parallaxAmount={20}>
+            <div className="relative aspect-[16/10] w-full bg-stone-white md:aspect-[21/9]">
+              <Image
+                src="/site-photos/Hampton-Inn-6.webp"
+                alt="A Brahmas-operated hospitality asset"
+                fill
+                sizes="100vw"
+                className="object-cover"
+                loading="lazy"
+              />
+            </div>
+          </ResponsiveImage>
+        </section>
+
+        {/* ─── The path — DARK ───
+            All copy here is the sourced founder narrative, not invented
+            employer branding. */}
+        <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-cream-dim">The Path</SectionTitle>
+            <div>
+              <h2>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-cream"
+                  lines={["From operator", "to owner."]}
+                />
+              </h2>
+
+              <div className="mt-12 grid grid-cols-1 gap-x-gutter gap-y-10 sm:grid-cols-2">
+                {mindsetBlock && (
+                  <Reveal>
+                    <div>
+                      <DrawnRule className="mb-6 bg-white/20" />
+                      <h3 className="font-label-caps text-label-caps text-muted-azure">
+                        {mindsetBlock.heading}
+                      </h3>
+                      <p className="font-body-md text-body-md text-cream-dim mt-4 leading-relaxed">
+                        {mindsetBlock.body}
+                      </p>
+                    </div>
+                  </Reveal>
+                )}
+                {hiringBlock && (
+                  <Reveal delay={0.1}>
+                    <div>
+                      <DrawnRule className="mb-6 bg-white/20" delay={0.1} />
+                      <h3 className="font-label-caps text-label-caps text-muted-azure">
+                        {hiringBlock.heading}
+                      </h3>
+                      <p className="font-body-md text-body-md text-cream-dim mt-4 leading-relaxed">
+                        {hiringBlock.body}
+                      </p>
+                    </div>
+                  </Reveal>
+                )}
+              </div>
+
+              <Reveal delay={0.25}>
+                <blockquote className="mt-16 max-w-3xl">
+                  <p className="font-headline-md text-headline-md text-cream leading-tight">
+                    &ldquo;{hiringQuote.text}&rdquo;
+                  </p>
+                  <footer className="font-label-caps text-label-caps text-cream-dim/70 mt-6">
+                    {founder.name} — interviewed in{" "}
+                    <a
+                      href={SOURCES.lodgingMagazine.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-cream-dim/40 underline-offset-4 transition-colors hover:text-cream"
+                    >
+                      {hiringQuote.source}
+                    </a>
+                  </footer>
+                </blockquote>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── Disciplines — LIGHT ───
+            Accordion per §5 E3. These are the areas the group operates in, NOT
+            open vacancies — see the note on `disciplines` above. */}
+        <section id="disciplines" className="px-margin-edge py-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              Disciplines
+            </SectionTitle>
+            <div>
+              <h2>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-primary"
+                  lines={["Where the work sits."]}
+                />
+              </h2>
+              <MaskText
+                delay={0.15}
+                className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
+                lines={[
+                  `We operate ${assetCount} assets across ${assetClasses.length} asset classes —`,
+                  `${assetClasses.map((t) => assetTypeLabels[t]).join(", ")}.`,
+                  "These are the areas we hire into.",
+                ]}
+              />
+              <div className="mt-12">
+                <Accordion items={disciplines} />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ─── Values ─── */}
-        <section className="bg-ink-navy text-stone-white py-section-gap px-margin-edge relative overflow-hidden bg-pattern-stone">
-          <div className="absolute top-0 left-0 w-full h-px bg-on-primary-fixed-variant opacity-20" />
-          <div className="absolute bottom-0 left-0 w-full h-px bg-on-primary-fixed-variant opacity-20" />
-          <div className="absolute top-0 left-[20%] w-px h-full bg-on-primary-fixed-variant opacity-10" />
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative z-10">
-            <div className="lg:col-span-4 lg:col-start-1 mb-16 lg:mb-0">
-              <h2 className="font-headline-lg text-headline-lg mb-6">
-                Structural Integrity in Action
+        {/* ─── Applying — LIGHT (stone-white) ───
+            An open application, because there is no confirmed vacancy list.
+            When the client supplies real openings, they belong here. */}
+        <section className="bg-stone-white border-y border-mortar-grey px-margin-edge py-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              Applying
+            </SectionTitle>
+            <div>
+              <h2>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-primary"
+                  lines={["No posting for the role", "you want? Write anyway."]}
+                />
               </h2>
-              <p className="font-body-md text-body-md text-on-primary-container max-w-sm">
-                Our culture is engineered for excellence. We operate with the
-                precision of a blueprint, balancing rigorous analysis with an
-                appreciation for the aesthetics of hospitality.
-              </p>
-            </div>
-            <div className="lg:col-span-7 lg:col-start-6 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-              {values.map((value) => (
-                <div
-                  key={value.num}
-                  className="border-t border-on-primary-fixed-variant pt-6"
-                >
-                  <Label className="mb-4 block">
-                    {value.num}
-                  </Label>
-                  <h3 className="font-headline-md text-headline-md mb-4">
-                    {value.title}
-                  </h3>
-                  <p className="font-body-md text-body-md text-on-primary-container">
-                    {value.desc}
-                  </p>
+              <MaskText
+                delay={0.15}
+                className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
+                lines={[
+                  "Tell us which discipline you belong in and what",
+                  "you have actually run. We would rather read that",
+                  "than a list of qualifications.",
+                ]}
+              />
+              <Reveal delay={0.35}>
+                <div className="mt-10">
+                  <a
+                    href={`mailto:${primaryEmail}?subject=${encodeURIComponent(
+                      "Careers — open application"
+                    )}`}
+                    className="inline-flex min-h-11 items-center gap-3 rounded-full bg-primary px-8 py-3.5 font-label-caps text-label-caps text-on-primary transition-opacity hover:opacity-90"
+                  >
+                    Send an open application
+                    <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
+                      <path
+                        d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </a>
                 </div>
-              ))}
+              </Reveal>
             </div>
           </div>
         </section>
 
-        {/* ─── Open Roles ─── */}
-        <section
-          className="py-section-gap px-margin-edge"
-          id="open-roles"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-16">
-            <div className="lg:col-span-5">
-              <h2 className="font-headline-lg text-headline-lg text-ink-navy">
-                Current Openings
-              </h2>
-            </div>
-            <div className="lg:col-span-7 flex items-end">
-              <p className="font-body-md text-body-md text-on-surface-variant max-w-xl">
-                Explore opportunities to contribute to our portfolio. We are
-                continually seeking exceptional talent across acquisitions,
-                asset management, and design operations.
-              </p>
-            </div>
-          </div>
-          <div className="w-full">
-            <div className="grid grid-cols-12 gap-4 pb-4 border-b border-mortar-grey font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
-              <div className="col-span-5 md:col-span-4">Role</div>
-              <div className="col-span-7 md:col-span-5">Summary</div>
-              <div className="hidden md:block col-span-2 text-right">
-                Location
-              </div>
-              <div className="hidden md:block col-span-1 text-right" />
-            </div>
-            {roles.map((role) => (
-              <a
-                key={role.title}
-                href="#"
-                className="grid grid-cols-12 gap-4 py-8 border-b border-mortar-grey group hover:bg-surface-variant transition-colors items-center -mx-4 px-4"
-              >
-                <div className="col-span-12 md:col-span-4 mb-2 md:mb-0" data-label="Role">
-                  <h3 className="font-headline-md text-headline-md text-ink-navy group-hover:text-muted-azure transition-colors">
-                    {role.title}
-                  </h3>
-                </div>
-                <div className="col-span-12 md:col-span-5 mb-4 md:mb-0 pr-8" data-label="Summary">
-                  <p className="font-body-md text-body-md text-on-surface-variant">
-                    {role.summary}
-                  </p>
-                </div>
-                <div className="col-span-6 md:col-span-2 text-left md:text-right font-body-md text-body-md text-ink-navy" data-label="Location">
-                  {role.location}
-                </div>
-                <div className="col-span-6 md:col-span-1 text-right flex justify-end items-center">
-                  <Icon
-                    name="arrow_forward"
-                    className="text-muted-azure group-hover:translate-x-2 transition-transform"
-                  />
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        {/* ─── Application Process ─── */}
-        <section className="bg-surface-container py-section-gap px-margin-edge border-t border-mortar-grey">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-            <div className="lg:col-span-4 lg:col-start-2">
-              <Label withDot className="mb-4">
-                The Process
-              </Label>
-              <h2 className="font-headline-lg text-headline-lg text-ink-navy mb-8">
-                How to Apply
-              </h2>
-              <p className="font-body-md text-body-md text-on-surface-variant mb-8">
-                We value clarity and intent. If you do not see a role that fits
-                your expertise but believe you align with our investment
-                philosophy, we invite you to submit a general application.
-              </p>
-              <Button href="mailto:careers@brahmagroup.com" icon="mail">
-                Email Curriculum Vitae
-              </Button>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-7 mt-12 lg:mt-0 flex flex-col gap-8">
-              {[
-                { num: "1", title: "Submission", desc: "Provide a comprehensive CV and a concise statement of intent detailing your relevant track record." },
-                { num: "2", title: "Review", desc: "Our principal partners review all submissions. Expect correspondence within fourteen business days." },
-                { num: "3", title: "Dialogue", desc: "Selected candidates will engage in a series of strategic discussions with leadership." },
-              ].map((step, i) => (
-                <div
-                  key={step.num}
-                  className={`flex gap-6 ${i < 2 ? "border-b border-mortar-grey pb-8" : ""}`}
-                >
-                  <div className="font-stat-display text-stat-display text-muted-azure opacity-50">
-                    {step.num}
-                  </div>
-                  <div >
-                    <h4 className="font-headline-md text-headline-md text-ink-navy mb-2">
-                      {step.title}
-                    </h4>
-                    <p className="font-body-md text-body-md text-on-surface-variant">
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* ─── CTA — DARK ─── */}
+        <section className="relative overflow-hidden bg-primary py-section-gap text-cream md:py-24">
+          <GhostWordmark>BRAHMAS</GhostWordmark>
+          <div className="relative z-10 px-margin-edge text-center">
+            <h2 className="font-headline-lg text-headline-lg text-cream">
+              <FlickerText>Run it like you own it.</FlickerText>
+            </h2>
+            <MaskText
+              delay={0.15}
+              className="font-body-lg text-body-lg mx-auto mt-8 max-w-xl text-cream/70"
+              lines={[
+                "The strongest performers are offered equity",
+                "in new projects.",
+              ]}
+            />
           </div>
         </section>
       </main>

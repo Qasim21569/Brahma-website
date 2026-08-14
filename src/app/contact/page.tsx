@@ -1,222 +1,299 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Button } from "@/components/ui/Button";
-import { Label } from "@/components/ui/Label";
-import Image from "next/image";
+import { SectionTitle } from "@/components/ui/SectionTitle";
+import { MaskText } from "@/components/ui/MaskText";
+import { Reveal } from "@/components/ui/Reveal";
+import { DrawnRule } from "@/components/ui/DrawnRule";
+import { StyledLink } from "@/components/ui/StyledLink";
+import { GhostWordmark } from "@/components/ui/GhostWordmark";
+import { FlickerText } from "@/components/ui/FlickerText";
+import {
+  contactRoutes,
+  primaryEmail,
+  operatingRegion,
+  enquiryTopics,
+} from "@/data/contact";
+import { enrichedProperties } from "@/data/properties";
 
-const contacts = [
-  {
-    title: "Investment Relations",
-    email: "investments@brahmagroup.com",
-    phone: "+1 (212) 555-0198",
-  },
-  {
-    title: "Media & Press",
-    email: "press@brahmagroup.com",
-    phone: "+1 (212) 555-0199",
-  },
-  {
-    title: "Global Headquarters",
-    email: "info@brahmagroup.com",
-    desc: "General inquiries regarding corporate operations.",
-  },
-];
+export const metadata: Metadata = {
+  title: "Contact | Brahmas Management and Investment Group",
+  description:
+    "Talk to Brahmas Management and Investment Group about an asset, a joint venture, or the group's operations in Florida.",
+};
 
-const offices = [
-  {
-    city: "New York",
-    address: "120 Avenue of the Americas, Suite 4500, New York, NY 10013",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuATjhzCQhP2eDSYwGrJ5dy_Z1w8DJqFpS1-kmfk6B6jVE4NMu7mLbuzPmYSE2zMMnMODqE5brapbPt46zT5ZzmJnLTM73_SJBLPShjdK_4RTZqe7VXifkImsea2RgxNPbdjChmZvzh2AzTT-l0b9h2uW7diMP5jmPxSaq_xvU8gpOWZJXUebP4UouMnAlafTUBor-K3giX5j6BszAsAhy95I0aSeB50rtlcjUnDkzR2bxvDTYQU9rOC",
-  },
-  {
-    city: "London",
-    address: "15 St Helen's Place, Floor 8, London EC3A 6DQ",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAAPyUANnnUhr627pyHGwOTQblSHU3Lul-Y9h9sc1DPO4AxKXQh6PzX4eN5cUj3IKZAAlBvQJl5Qka_tR55dXFA7kVLxPc85q277QmmGDoTkdfrTho7Na0kSU6FlJIU4PkZ4j3_6PQiV_HUlccKOZ-WUtyVSdfhzkGWbj1_AP7x7yWx0s4qIEBc4XIzeblUapJI0bG5eRZ_CaMwMrZm35hFVEI4ctj-vTzQBJwt707tnh9NuQfrqXlk",
-  },
-];
+const assetCount = enrichedProperties.length;
 
 export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-[var(--nav-h)] pb-section-gap">
-        <div className="px-margin-edge">
-          {/* ─── Header ─── */}
-          <section className="mb-24 md:mb-32">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-              <div className="md:col-span-7">
-                <h1 className="font-display-hero text-display-hero text-primary mb-8 md:mb-0">
-                  Connect with Brahmas
-                </h1>
-              </div>
-              <div className="md:col-span-5 flex items-end">
-                <p className="font-body-lg text-body-lg text-on-surface-variant">
-                  For investment inquiries, press relations, or architectural
-                  consultations, please direct your correspondence to the
-                  appropriate department.
-                </p>
-              </div>
+      <main className="pt-[var(--nav-h)]">
+        {/* ─── Hero — LIGHT ─── */}
+        <section className="px-margin-edge pt-16 pb-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              Contact
+            </SectionTitle>
+            <div>
+              <h1>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-primary"
+                  lines={["We would rather talk", "early than late."]}
+                />
+              </h1>
+              <MaskText
+                delay={0.15}
+                className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
+                lines={[
+                  "Whether you are selling an operating asset,",
+                  "financing one, or want to understand how the",
+                  "group works — start here.",
+                ]}
+              />
             </div>
-            <div className="w-full h-px bg-mortar-grey mt-16" />
-          </section>
+          </div>
+        </section>
 
-          {/* ─── Form + Contacts ─── */}
-          <section className="mb-section-gap">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-              {/* Form */}
-              <div className="md:col-span-7 pr-0 md:pr-12">
-                <div className="mb-12">
-                  <Label className="block mb-4 text-primary">
-                    INQUIRIES
-                  </Label>
-                  <div className="w-8 h-px bg-muted-azure mb-8" />
-                </div>
-                <form className="space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">
-                        FULL NAME
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="First Last"
-                        required
-                        className="architectural-input"
-                      />
+        {/* ─── Direct routes — DARK ───
+            Email is prominent and comes before the form, per §5 E2: someone who
+            already knows what they want should not have to fill anything in.
+            ⚠️ Addresses are unconfirmed — see data/contact.ts. */}
+        <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-cream-dim">Direct</SectionTitle>
+            <div>
+              <div className="flex flex-col">
+                {contactRoutes.map((route, i) => (
+                  <Reveal key={route.email} delay={i * 0.08}>
+                    <div className="py-8">
+                      <DrawnRule className="mb-8 bg-white/20" delay={i * 0.08} />
+                      <div className="grid grid-cols-1 gap-x-gutter gap-y-3 md:grid-cols-[1fr_1.4fr]">
+                        <div>
+                          <span className="font-label-caps text-label-caps text-muted-azure">
+                            {route.label}
+                          </span>
+                          <p className="font-body-md text-body-md text-cream-dim mt-2 max-w-xs">
+                            {route.description}
+                          </p>
+                        </div>
+                        <a
+                          href={`mailto:${route.email}`}
+                          className="font-headline-md text-headline-md text-cream leading-tight underline decoration-cream/25 underline-offset-[6px] transition-colors hover:decoration-cream"
+                        >
+                          {route.email}
+                        </a>
+                      </div>
                     </div>
-                    <div>
-                      <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">
-                        ORGANIZATION
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Company Name"
-                        className="architectural-input"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                      <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">
-                        EMAIL ADDRESS
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="email@example.com"
-                        required
-                        className="architectural-input"
-                      />
-                    </div>
-                    <div>
-                      <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">
-                        AREA OF INTEREST
-                      </label>
-                      <select required className="architectural-select">
-                        <option value="" disabled selected>
-                          Select an option
-                        </option>
-                        <option value="investment">
-                          Investment Opportunities
-                        </option>
-                        <option value="press">Press & Media</option>
-                        <option value="acquisitions">
-                          Property Acquisitions
-                        </option>
-                        <option value="careers">Careers</option>
-                        <option value="other">General Inquiry</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="font-label-caps text-label-caps text-on-surface-variant block mb-2">
-                      MESSAGE
-                    </label>
-                    <textarea
-                      placeholder="How can we assist you?"
-                      required
-                      rows={4}
-                      className="architectural-textarea"
-                    />
-                  </div>
-                  <div className="pt-4">
-                    <Button type="submit" icon="arrow_forward">
-                      SUBMIT INQUIRY
-                    </Button>
-                  </div>
-                </form>
-              </div>
-
-              {/* Direct Contacts */}
-              <div className="md:col-span-5 mt-16 md:mt-0 pt-16 md:pt-0 border-t md:border-t-0 md:border-l border-mortar-grey pl-0 md:pl-12">
-                <div className="mb-12">
-                  <Label className="block mb-4 text-primary">
-                    DIRECT CONTACTS
-                  </Label>
-                  <div className="w-8 h-px bg-muted-azure mb-8" />
-                </div>
-                <div className="space-y-12">
-                  {contacts.map((contact, i) => (
-                    <div key={contact.title} >
-                      <h3 className="font-headline-md text-headline-md text-primary mb-2">
-                        {contact.title}
-                      </h3>
-                      {contact.desc && (
-                        <p className="font-body-md text-body-md text-on-surface-variant mb-1">
-                          {contact.desc}
-                        </p>
-                      )}
-                      <p className="font-body-md text-body-md text-on-surface-variant mb-1">
-                        {contact.email}
-                      </p>
-                      {contact.phone && (
-                        <p className="font-body-md text-body-md text-on-surface-variant">
-                          {contact.phone}
-                        </p>
-                      )}
-                      {i < contacts.length - 1 && (
-                        <div className="w-full h-px bg-mortar-grey opacity-50 mt-12" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ─── Offices ─── */}
-          <section className="bg-surface-container-high py-section-gap md:py-24 -mx-margin-edge px-margin-edge">
-            <div className="">
-              <div className="mb-16">
-                <Label className="block mb-4 text-primary">
-                  GLOBAL PRESENCE
-                </Label>
-                <h2 className="font-headline-lg text-headline-lg text-primary">
-                  Our Offices
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                {offices.map((office) => (
-                  <div key={office.city} >
-                    <div className="aspect-[16/9] mb-8 relative overflow-hidden bg-surface-dim">
-                      <Image
-                        src={office.img}
-                        alt={`${office.city} office`}
-                        fill
-                        className="object-cover w-full h-full hover:opacity-95 transition-opacity duration-700"
-                      />
-                    </div>
-                    <h3 className="font-headline-md text-headline-md text-primary mb-4">
-                      {office.city}
-                    </h3>
-                    <p className="font-body-md text-body-md text-on-surface-variant whitespace-pre-line">
-                      {office.address}
-                    </p>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
+
+              <Reveal delay={0.3}>
+                <p className="font-label-caps text-label-caps text-cream-dim mt-10">
+                  Operating in {operatingRegion}
+                </p>
+              </Reveal>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
+
+        {/* ─── Enquiry form — LIGHT ───
+            Architectural underline inputs (border-bottom only) per §5 E2.
+
+            ⚠️ NO BACKEND. The form posts via `mailto:` because there is no
+            handler and no form service configured. That is deliberate: a form
+            that silently swallows submissions is worse than one that opens the
+            visitor's mail client. If a real endpoint is added later, replace the
+            action and drop `method="post"`. */}
+        <section className="px-margin-edge py-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <div>
+              <SectionTitle className="text-on-surface-variant">
+                Send a Note
+              </SectionTitle>
+              <p className="font-body-md text-body-md text-on-surface-variant mt-6 max-w-xs">
+                This opens your own mail client with the details filled in.
+              </p>
+            </div>
+
+            <form
+              action={`mailto:${primaryEmail}`}
+              method="post"
+              encType="text/plain"
+              className="max-w-2xl"
+            >
+              <div className="grid grid-cols-1 gap-x-gutter gap-y-10 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="font-label-caps text-label-caps text-on-surface-variant mb-2 block"
+                  >
+                    Full name
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    placeholder="First Last"
+                    className="architectural-input"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="organization"
+                    className="font-label-caps text-label-caps text-on-surface-variant mb-2 block"
+                  >
+                    Organisation
+                  </label>
+                  <input
+                    id="organization"
+                    name="organization"
+                    type="text"
+                    autoComplete="organization"
+                    placeholder="Company name"
+                    className="architectural-input"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="font-label-caps text-label-caps text-on-surface-variant mb-2 block"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    className="architectural-input"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="topic"
+                    className="font-label-caps text-label-caps text-on-surface-variant mb-2 block"
+                  >
+                    Reason for contact
+                  </label>
+                  <select
+                    id="topic"
+                    name="topic"
+                    required
+                    defaultValue=""
+                    className="architectural-select"
+                  >
+                    <option value="" disabled>
+                      Select one
+                    </option>
+                    {enquiryTopics.map((topic) => (
+                      <option key={topic.value} value={topic.value}>
+                        {topic.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="message"
+                    className="font-label-caps text-label-caps text-on-surface-variant mb-2 block"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={4}
+                    placeholder="A sentence or two is plenty."
+                    className="architectural-textarea"
+                  />
+                </div>
+              </div>
+
+              <Reveal delay={0.2}>
+                <button
+                  type="submit"
+                  className="mt-12 inline-flex min-h-11 items-center gap-3 rounded-full bg-primary px-8 py-3.5 font-label-caps text-label-caps text-on-primary transition-opacity hover:opacity-90"
+                >
+                  Send enquiry
+                  <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
+                    <path
+                      d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </Reveal>
+            </form>
+          </div>
+        </section>
+
+        {/* ─── Reach an asset — LIGHT (stone-white) ───
+            Real, verifiable routes: every property carries a confirmed phone
+            number in properties.ts. This is the part of the page that is not
+            waiting on client confirmation. */}
+        <section className="bg-stone-white border-y border-mortar-grey px-margin-edge py-section-gap">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
+            <SectionTitle className="text-on-surface-variant">
+              Reach an Asset
+            </SectionTitle>
+            <div>
+              <h2>
+                <MaskText
+                  className="font-headline-lg text-headline-lg text-primary"
+                  lines={["Booking, or calling", "a property directly?"]}
+                />
+              </h2>
+              <MaskText
+                delay={0.15}
+                className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
+                lines={[
+                  `Each of the ${assetCount} assets lists its own address and`,
+                  "phone number on its page.",
+                ]}
+              />
+              <Reveal delay={0.35}>
+                <div className="mt-10 flex max-w-xl flex-col gap-2">
+                  <StyledLink href="/portfolio">
+                    View all {assetCount} assets
+                  </StyledLink>
+                  <StyledLink href="/about#group">
+                    Companies in the group
+                  </StyledLink>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── CTA — DARK ─── */}
+        <section className="relative overflow-hidden bg-primary py-section-gap text-cream md:py-24">
+          <GhostWordmark>BRAHMAS</GhostWordmark>
+          <div className="relative z-10 px-margin-edge text-center">
+            <h2 className="font-headline-lg text-headline-lg text-cream">
+              <FlickerText>Let&rsquo;s talk.</FlickerText>
+            </h2>
+            <Reveal delay={0.3}>
+              <div className="mt-10 flex justify-center">
+                <a
+                  href={`mailto:${primaryEmail}`}
+                  className="inline-flex min-h-11 items-center gap-3 rounded-full bg-cream px-8 py-3.5 font-label-caps text-label-caps text-ink-deep transition-opacity hover:opacity-90"
+                >
+                  {primaryEmail}
+                </a>
+              </div>
+            </Reveal>
+          </div>
+        </section>
       </main>
       <Footer />
     </>

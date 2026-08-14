@@ -96,8 +96,14 @@ export default function AboutPage() {
         </section>
 
         {/* ─── Founder — DARK ─── sets bg AND text explicitly per §2.4. */}
-        <section id="leadership" className="bg-ink-deep py-section-gap text-cream">
-          <div className="px-margin-edge">
+        <section
+          id="leadership"
+          className="relative isolate bg-ink-deep py-section-gap text-cream"
+        >
+          <div className="editorial-grain" aria-hidden="true">
+            <div className="editorial-grain__bar" />
+          </div>
+          <div className="relative z-10 px-margin-edge">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
               <SectionTitle className="text-cream-dim">Leadership</SectionTitle>
               <h2>
@@ -117,15 +123,17 @@ export default function AboutPage() {
                 read as a wall of text. */}
             <div className="mt-16 grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter md:mt-24">
               <div>
-                <RevealImage className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
-                  <Image
-                    src="/founder-image.jpeg"
-                    alt={`${founder.name}, ${founder.role}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 30vw"
-                    className="object-cover"
-                  />
-                </RevealImage>
+                <ResponsiveImage parallaxAmount={8}>
+                  <div className="relative aspect-[3/4] w-full bg-white/5">
+                    <Image
+                      src="/founder-image.png"
+                      alt={`${founder.name}, ${founder.role}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 30vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </ResponsiveImage>
                 <Reveal delay={0.2}>
                   <p className="font-body-lg text-body-lg text-cream mt-6 leading-tight">
                     {founder.name}
@@ -168,7 +176,15 @@ export default function AboutPage() {
                     &ldquo;{founder.quotes[0].text}&rdquo;
                   </p>
                   <footer className="font-label-caps text-label-caps text-cream-dim/70 mt-6">
-                    {founder.name} — CEO & President
+                    {founder.name} — interviewed in{" "}
+                    <a
+                      href={SOURCES.lodgingMagazine.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline decoration-cream-dim/40 underline-offset-4 transition-colors hover:text-cream"
+                    >
+                      {founder.quotes[0].source}
+                    </a>
                   </footer>
                 </blockquote>
               </Reveal>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
+import { BMIG_LOGO_SRC } from "@/data/company";
 
 const links = [
   { href: "/about", label: "About Us" },
@@ -121,12 +122,13 @@ export function Navbar() {
           {/* Logo lockup */}
           <Link href="/" className="flex items-center gap-2.5 md:gap-3 shrink-0" aria-label="Brahmas — home">
             <Image
-              src="/brahmas-vector-logo-preload.svg"
+              src={BMIG_LOGO_SRC}
               alt=""
-              width={56}
-              height={55}
+              width={2160}
+              height={2160}
               className="h-12 w-auto md:h-14"
               priority
+              unoptimized
             />
             <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
               <span className="font-serif font-normal text-primary text-[22px] md:text-[26px] tracking-[-0.01em] leading-none whitespace-nowrap">
@@ -196,7 +198,7 @@ export function Navbar() {
               onClick={() => setDrawerOpen(false)}
               className="flex items-center gap-2.5"
             >
-              <Image src="/brahmas-vector-logo-preload.svg" alt="" width={56} height={55} className="h-10 w-auto" />
+              <Image src={BMIG_LOGO_SRC} alt="" width={2160} height={2160} className="h-10 w-auto" unoptimized />
               <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
                 <span className="font-serif font-normal text-cream text-[20px] tracking-[-0.01em] leading-none whitespace-nowrap">BRAHMAS</span>
                 <span

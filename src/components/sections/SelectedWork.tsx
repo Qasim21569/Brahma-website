@@ -20,29 +20,37 @@ import { enrichedProperties } from "@/data/properties";
 
 const EASE = [0.24, 0.43, 0.15, 0.97] as const;
 
-/** How many assets the section steps through before linking to the portfolio. */
-const COUNT = 5;
+/** Homepage Selected Work — client-curated trio (not the first N in portfolio order). */
+const SELECTED_WORK_SLUGS = [
+  "rodeway-inn-port-richey-north",
+  "hampton-inn-tampa-veterans-expwy",
+  "hampton-inn-suites-tampa-east-seffner",
+] as const;
 
 /** Photography exists for 2 assets; cycle it until the rest is shot. */
 const withPhotos = enrichedProperties.filter((p) => p.gallery.length > 0);
 
-const items = enrichedProperties.slice(0, COUNT).map((p, i) => ({
-  slug: p.slug,
-  name: p.shortName,
-  city: `${p.city}, ${p.state}`,
-  summary: p.summary,
-  src:
-    p.homeHeroSrc ??
-    withPhotos[i % Math.max(withPhotos.length, 1)]?.homeHeroSrc ??
-    "",
-}));
+const items = SELECTED_WORK_SLUGS.map((slug, i) => {
+  const p = enrichedProperties.find((property) => property.slug === slug);
+  if (!p) return null;
+  return {
+    slug: p.slug,
+    name: p.shortName,
+    city: `${p.city}, ${p.state}`,
+    summary: p.summary,
+    src:
+      p.homeHeroSrc ??
+      withPhotos[i % Math.max(withPhotos.length, 1)]?.homeHeroSrc ??
+      "",
+  };
+}).filter((item): item is NonNullable<typeof item> => item != null);
 
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
 /**
  * SelectedWork — exact port of Elementis `components/Client/Innovation.tsx`.
  *
- * A 500vh parent with a sticky child. TWO image systems run at once, as in the
+ * A 300vh parent with a sticky child. TWO image systems run at once, as in the
  * reference:
  *   1. full-bleed background layers revealed by the 28-bar `useMaskImage`,
  *      settling 1.075 → 1;
@@ -50,7 +58,7 @@ const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
  * Card text swaps with `SwapMaskText`, and the whole section is clickable
  * through to the portfolio.
  *
- * `step` is `1 / (n - 1)` — the reference's 0.25 for five items. It is NOT
+ * `step` is `1 / (n - 1)` — the reference's 0.5 for three items. It is NOT
  * `1 / n`; that mis-maps the final layer.
  */
 export default function SelectedWork() {
@@ -70,7 +78,7 @@ export default function SelectedWork() {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["15vh 0", "485vh end"],
+    offset: ["15vh 0", "285vh end"],
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -93,7 +101,7 @@ export default function SelectedWork() {
     <div
       ref={ref}
       onClick={() => router.push("/portfolio")}
-      className="relative h-[500vh] cursor-pointer overflow-clip bg-ink-deep"
+      className="relative h-[300vh] cursor-pointer overflow-clip bg-ink-deep"
     >
       {/* The sticky frame pins at top:0 and fills the viewport, so the imagery
           is always edge-to-edge — offsetting it by var(--nav-h) left a strip of
