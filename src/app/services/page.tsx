@@ -33,7 +33,7 @@ export default function ServicesPage() {
             rather than selling services to third parties. */}
         <section className="px-margin-edge pt-16 pb-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               What We Do
             </SectionTitle>
             <div>
@@ -104,7 +104,7 @@ export default function ServicesPage() {
             data/services.ts. */}
         <section className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Capabilities
             </SectionTitle>
             <div className="flex flex-col gap-20 md:gap-32">
@@ -124,7 +124,7 @@ export default function ServicesPage() {
             See data/services.ts. */}
         <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-cream-dim">
+            <SectionTitle tone="light">
               {constructionPartner.role}
             </SectionTitle>
             <div>
@@ -175,7 +175,7 @@ export default function ServicesPage() {
         {/* ─── Methodology — LIGHT ─── */}
         <section className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Methodology
             </SectionTitle>
             <div>

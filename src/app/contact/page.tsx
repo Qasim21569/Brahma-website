@@ -32,7 +32,7 @@ export default function ContactPage() {
         {/* ─── Hero — LIGHT ─── */}
         <section className="px-margin-edge pt-16 pb-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Contact
             </SectionTitle>
             <div>
@@ -61,7 +61,7 @@ export default function ContactPage() {
             ⚠️ Addresses are unconfirmed — see data/contact.ts. */}
         <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-cream-dim">Direct</SectionTitle>
+            <SectionTitle tone="light">Direct</SectionTitle>
             <div>
               <div className="flex flex-col">
                 {contactRoutes.map((route, i) => (
@@ -109,7 +109,7 @@ export default function ContactPage() {
         <section className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
             <div>
-              <SectionTitle className="text-on-surface-variant">
+              <SectionTitle>
                 Send a Note
               </SectionTitle>
               <p className="font-body-md text-body-md text-on-surface-variant mt-6 max-w-xs">
@@ -243,7 +243,7 @@ export default function ContactPage() {
             waiting on client confirmation. */}
         <section className="bg-stone-white border-y border-mortar-grey px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Reach an Asset
             </SectionTitle>
             <div>
@@ -266,8 +266,8 @@ export default function ContactPage() {
                   <StyledLink href="/portfolio">
                     View all {assetCount} assets
                   </StyledLink>
-                  <StyledLink href="/about#group">
-                    Companies in the group
+                  <StyledLink href="/about#construction-partners">
+                    Construction partners
                   </StyledLink>
                 </div>
               </Reveal>

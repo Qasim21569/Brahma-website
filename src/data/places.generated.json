@@ -8,7 +8,37 @@
       "lat": 27.9795627,
       "lng": -82.33823389999999
     },
-    "photos": []
+    "photos": [],
+    "amenities": [
+      {
+        "label": "Free WiFi",
+        "icon": "wifi"
+      },
+      {
+        "label": "Free Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Fitness Center",
+        "icon": "fitness"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
+      }
+    ]
   },
   "quality-inn-conference-center-tampa-brandon": {
     "placeId": "ChIJbbSOHAHPwogRBhJ7NtU7BK0",
@@ -22,27 +52,61 @@
     "photos": [
       {
         "src": "/properties/quality-inn-conference-center-tampa-brandon/g-01.jpg",
-        "attribution": null
+        "attribution": "Quality Inn and Conference Center Tampa-Brandon"
       },
       {
         "src": "/properties/quality-inn-conference-center-tampa-brandon/g-02.jpg",
-        "attribution": null
+        "attribution": "Quality Inn and Conference Center Tampa-Brandon"
       },
       {
         "src": "/properties/quality-inn-conference-center-tampa-brandon/g-03.jpg",
-        "attribution": null
+        "attribution": "Quality Inn and Conference Center Tampa-Brandon"
       },
       {
         "src": "/properties/quality-inn-conference-center-tampa-brandon/g-04.jpg",
-        "attribution": null
+        "attribution": "Quality Inn and Conference Center Tampa-Brandon"
       },
       {
         "src": "/properties/quality-inn-conference-center-tampa-brandon/g-05.jpg",
-        "attribution": null
+        "attribution": "Quality Inn and Conference Center Tampa-Brandon"
       },
       {
         "src": "/properties/quality-inn-conference-center-tampa-brandon/g-06.jpg",
-        "attribution": null
+        "attribution": "Quality Inn and Conference Center Tampa-Brandon"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Fitness Center",
+        "icon": "fitness"
+      },
+      {
+        "label": "Meeting Space",
+        "icon": "meeting"
+      },
+      {
+        "label": "Restaurant",
+        "icon": "restaurant"
+      },
+      {
+        "label": "Bar",
+        "icon": "bar"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   },
@@ -58,27 +122,61 @@
     "photos": [
       {
         "src": "/properties/quality-inn-suites-tampa-east/g-01.jpg",
-        "attribution": null
+        "attribution": "Quality Inn & Suites Tampa near Fairgrounds and Casino"
       },
       {
         "src": "/properties/quality-inn-suites-tampa-east/g-02.jpg",
-        "attribution": null
+        "attribution": "Quality Inn & Suites Tampa near Fairgrounds and Casino"
       },
       {
         "src": "/properties/quality-inn-suites-tampa-east/g-03.jpg",
-        "attribution": null
+        "attribution": "Quality Inn & Suites Tampa near Fairgrounds and Casino"
       },
       {
         "src": "/properties/quality-inn-suites-tampa-east/g-04.jpg",
-        "attribution": null
+        "attribution": "Quality Inn & Suites Tampa near Fairgrounds and Casino"
       },
       {
         "src": "/properties/quality-inn-suites-tampa-east/g-05.jpg",
-        "attribution": null
+        "attribution": "Quality Inn & Suites Tampa near Fairgrounds and Casino"
       },
       {
         "src": "/properties/quality-inn-suites-tampa-east/g-06.jpg",
-        "attribution": null
+        "attribution": "Quality Inn & Suites Tampa near Fairgrounds and Casino"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free WiFi",
+        "icon": "wifi"
+      },
+      {
+        "label": "Free Continental Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Swimming Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Meeting Space",
+        "icon": "meeting"
+      },
+      {
+        "label": "Free Parking",
+        "icon": "parking"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   },
@@ -94,27 +192,61 @@
     "photos": [
       {
         "src": "/properties/microtel-inn-suites-zephyrhills/g-01.jpg",
-        "attribution": null
+        "attribution": "Microtel Inn & Suites by Wyndham Zephyrhills"
       },
       {
         "src": "/properties/microtel-inn-suites-zephyrhills/g-02.jpg",
-        "attribution": null
+        "attribution": "Microtel Inn & Suites by Wyndham Zephyrhills"
       },
       {
         "src": "/properties/microtel-inn-suites-zephyrhills/g-03.jpg",
-        "attribution": null
+        "attribution": "Microtel Inn & Suites by Wyndham Zephyrhills"
       },
       {
         "src": "/properties/microtel-inn-suites-zephyrhills/g-04.jpg",
-        "attribution": null
+        "attribution": "Microtel Inn & Suites by Wyndham Zephyrhills"
       },
       {
         "src": "/properties/microtel-inn-suites-zephyrhills/g-05.jpg",
-        "attribution": null
+        "attribution": "Microtel Inn & Suites by Wyndham Zephyrhills"
       },
       {
         "src": "/properties/microtel-inn-suites-zephyrhills/g-06.jpg",
-        "attribution": null
+        "attribution": "Microtel Inn & Suites by Wyndham Zephyrhills"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free WiFi",
+        "icon": "wifi"
+      },
+      {
+        "label": "Free Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Meeting Space",
+        "icon": "meeting"
+      },
+      {
+        "label": "Pet Friendly",
+        "icon": "pets"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   },
@@ -130,27 +262,53 @@
     "photos": [
       {
         "src": "/properties/rodeway-inn-port-richey-north/g-01.jpg",
-        "attribution": null
+        "attribution": "Rodeway Inn Port Richey North"
       },
       {
         "src": "/properties/rodeway-inn-port-richey-north/g-02.jpg",
-        "attribution": null
+        "attribution": "Rodeway Inn Port Richey North"
       },
       {
         "src": "/properties/rodeway-inn-port-richey-north/g-03.jpg",
-        "attribution": null
+        "attribution": "Rodeway Inn Port Richey North"
       },
       {
         "src": "/properties/rodeway-inn-port-richey-north/g-04.jpg",
-        "attribution": null
+        "attribution": "Rodeway Inn Port Richey North"
       },
       {
         "src": "/properties/rodeway-inn-port-richey-north/g-05.jpg",
-        "attribution": null
+        "attribution": "Rodeway Inn Port Richey North"
       },
       {
         "src": "/properties/rodeway-inn-port-richey-north/g-06.jpg",
-        "attribution": null
+        "attribution": "Rodeway Inn Port Richey North"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free WiFi",
+        "icon": "wifi"
+      },
+      {
+        "label": "Free Continental Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   },
@@ -163,7 +321,62 @@
       "lat": 28.0247857,
       "lng": -82.53980849999999
     },
-    "photos": []
+    "photos": [
+      {
+        "src": "/properties/hampton-inn-tampa-veterans-expwy/g-01.jpg",
+        "attribution": "Hampton Inn Tampa-Veterans Expwy (Airport North)"
+      },
+      {
+        "src": "/properties/hampton-inn-tampa-veterans-expwy/g-02.jpg",
+        "attribution": "Hampton Inn Tampa-Veterans Expwy (Airport North)"
+      },
+      {
+        "src": "/properties/hampton-inn-tampa-veterans-expwy/g-03.jpg",
+        "attribution": "Hampton Inn Tampa-Veterans Expwy (Airport North)"
+      },
+      {
+        "src": "/properties/hampton-inn-tampa-veterans-expwy/g-04.jpg",
+        "attribution": "Hampton Inn Tampa-Veterans Expwy (Airport North)"
+      },
+      {
+        "src": "/properties/hampton-inn-tampa-veterans-expwy/g-05.jpg",
+        "attribution": "Hampton Inn Tampa-Veterans Expwy (Airport North)"
+      },
+      {
+        "src": "/properties/hampton-inn-tampa-veterans-expwy/g-06.jpg",
+        "attribution": "Hampton Inn Tampa-Veterans Expwy (Airport North)"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free WiFi",
+        "icon": "wifi"
+      },
+      {
+        "label": "Free Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Airport Shuttle",
+        "icon": "shuttle"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
+      }
+    ]
   },
   "hampton-inn-suites-tampa-east-seffner": {
     "placeId": "ChIJ7XVW9-HLwogRlgI8geK-FmA",
@@ -177,27 +390,57 @@
     "photos": [
       {
         "src": "/properties/hampton-inn-suites-tampa-east-seffner/g-01.jpg",
-        "attribution": null
+        "attribution": "Hampton Inn & Suites Tampa East (Casino Area)"
       },
       {
         "src": "/properties/hampton-inn-suites-tampa-east-seffner/g-02.jpg",
-        "attribution": null
+        "attribution": "Hampton Inn & Suites Tampa East (Casino Area)"
       },
       {
         "src": "/properties/hampton-inn-suites-tampa-east-seffner/g-03.jpg",
-        "attribution": null
+        "attribution": "Hampton Inn & Suites Tampa East (Casino Area)"
       },
       {
         "src": "/properties/hampton-inn-suites-tampa-east-seffner/g-04.jpg",
-        "attribution": null
+        "attribution": "Hampton Inn & Suites Tampa East (Casino Area)"
       },
       {
         "src": "/properties/hampton-inn-suites-tampa-east-seffner/g-05.jpg",
-        "attribution": null
+        "attribution": "Hampton Inn & Suites Tampa East (Casino Area)"
       },
       {
         "src": "/properties/hampton-inn-suites-tampa-east-seffner/g-06.jpg",
-        "attribution": null
+        "attribution": "Hampton Inn & Suites Tampa East (Casino Area)"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free WiFi",
+        "icon": "wifi"
+      },
+      {
+        "label": "Free Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Free Parking",
+        "icon": "parking"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   },
@@ -213,27 +456,49 @@
     "photos": [
       {
         "src": "/properties/clarion-pointe-lakeland-i4/g-01.jpg",
-        "attribution": null
+        "attribution": "Clarion Pointe Lakeland I-4"
       },
       {
         "src": "/properties/clarion-pointe-lakeland-i4/g-02.jpg",
-        "attribution": null
+        "attribution": "Clarion Pointe Lakeland I-4"
       },
       {
         "src": "/properties/clarion-pointe-lakeland-i4/g-03.jpg",
-        "attribution": null
+        "attribution": "Clarion Pointe Lakeland I-4"
       },
       {
         "src": "/properties/clarion-pointe-lakeland-i4/g-04.jpg",
-        "attribution": null
+        "attribution": "Clarion Pointe Lakeland I-4"
       },
       {
         "src": "/properties/clarion-pointe-lakeland-i4/g-05.jpg",
-        "attribution": null
+        "attribution": "Clarion Pointe Lakeland I-4"
       },
       {
         "src": "/properties/clarion-pointe-lakeland-i4/g-06.jpg",
-        "attribution": null
+        "attribution": "Clarion Pointe Lakeland I-4"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Fitness Center",
+        "icon": "fitness"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   },
@@ -249,27 +514,61 @@
     "photos": [
       {
         "src": "/properties/sleep-inn-suites-fort-myers-airport/g-01.jpg",
-        "attribution": null
+        "attribution": "La Quinta Inn and Suites Fort Myers I-75"
       },
       {
         "src": "/properties/sleep-inn-suites-fort-myers-airport/g-02.jpg",
-        "attribution": null
+        "attribution": "La Quinta Inn and Suites Fort Myers I-75"
       },
       {
         "src": "/properties/sleep-inn-suites-fort-myers-airport/g-03.jpg",
-        "attribution": null
+        "attribution": "La Quinta Inn and Suites Fort Myers I-75"
       },
       {
         "src": "/properties/sleep-inn-suites-fort-myers-airport/g-04.jpg",
-        "attribution": null
+        "attribution": "La Quinta Inn and Suites Fort Myers I-75"
       },
       {
         "src": "/properties/sleep-inn-suites-fort-myers-airport/g-05.jpg",
-        "attribution": null
+        "attribution": "La Quinta Inn and Suites Fort Myers I-75"
       },
       {
         "src": "/properties/sleep-inn-suites-fort-myers-airport/g-06.jpg",
-        "attribution": null
+        "attribution": "La Quinta Inn and Suites Fort Myers I-75"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Free WiFi",
+        "icon": "wifi"
+      },
+      {
+        "label": "Free Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Indoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "Airport Shuttle",
+        "icon": "shuttle"
+      },
+      {
+        "label": "Pet Friendly",
+        "icon": "pets"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   },
@@ -285,27 +584,99 @@
     "photos": [
       {
         "src": "/properties/primrose-school-of-oldsmar/g-01.jpg",
-        "attribution": null
+        "attribution": "Primrose School of Oldsmar"
       },
       {
         "src": "/properties/primrose-school-of-oldsmar/g-02.jpg",
-        "attribution": null
+        "attribution": "Primrose School of Oldsmar"
       },
       {
         "src": "/properties/primrose-school-of-oldsmar/g-03.jpg",
-        "attribution": null
+        "attribution": "Primrose School of Oldsmar"
       },
       {
         "src": "/properties/primrose-school-of-oldsmar/g-04.jpg",
-        "attribution": null
+        "attribution": "Primrose School of Oldsmar"
       },
       {
         "src": "/properties/primrose-school-of-oldsmar/g-05.jpg",
-        "attribution": null
+        "attribution": "Primrose School of Oldsmar"
       },
       {
         "src": "/properties/primrose-school-of-oldsmar/g-06.jpg",
-        "attribution": null
+        "attribution": "Primrose School of Oldsmar"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
+      }
+    ]
+  },
+  "holiday-inn-express-orlando-seaworld": {
+    "placeId": "ChIJwQIeTYt_54gRMrtud0Z1yV4",
+    "verifiedAddress": "2776 Destination Pkwy, Orlando, FL 32819",
+    "phone": "(407) 640-7500",
+    "bookingUrl": "https://www.ihg.com/holidayinnexpress/hotels/us/en/orlando/mcojy/hoteldetail?cm_mmc=GoogleMaps-_-EX-_-US-_-MCOJY",
+    "coordinates": {
+      "lat": 28.437289800000002,
+      "lng": -81.42831679999999
+    },
+    "photos": [
+      {
+        "src": "/properties/holiday-inn-express-orlando-seaworld/g-01.jpg",
+        "attribution": "Holiday Inn Express Orlando - South Park by IHG"
+      },
+      {
+        "src": "/properties/holiday-inn-express-orlando-seaworld/g-02.jpg",
+        "attribution": "Holiday Inn Express Orlando - South Park by IHG"
+      },
+      {
+        "src": "/properties/holiday-inn-express-orlando-seaworld/g-03.jpg",
+        "attribution": "Holiday Inn Express Orlando - South Park by IHG"
+      },
+      {
+        "src": "/properties/holiday-inn-express-orlando-seaworld/g-04.jpg",
+        "attribution": "Holiday Inn Express Orlando - South Park by IHG"
+      },
+      {
+        "src": "/properties/holiday-inn-express-orlando-seaworld/g-05.jpg",
+        "attribution": "Holiday Inn Express Orlando - South Park by IHG"
+      },
+      {
+        "src": "/properties/holiday-inn-express-orlando-seaworld/g-06.jpg",
+        "attribution": "Holiday Inn Express Orlando - South Park by IHG"
+      }
+    ],
+    "amenities": [
+      {
+        "label": "Breakfast",
+        "icon": "breakfast"
+      },
+      {
+        "label": "Outdoor Pool",
+        "icon": "pool"
+      },
+      {
+        "label": "24-Hour Fitness Center",
+        "icon": "fitness"
+      },
+      {
+        "label": "Family Friendly",
+        "icon": "family"
+      },
+      {
+        "label": "Accessible Entrance",
+        "icon": "accessible"
+      },
+      {
+        "label": "Accessible Parking",
+        "icon": "accessible-parking"
       }
     ]
   }

@@ -12,6 +12,7 @@ import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 import { PhotoAttribution } from "@/components/ui/PhotoAttribution";
 import { PropertyCardMedia } from "@/components/ui/PropertyCardMedia";
 import { StyledLink } from "@/components/ui/StyledLink";
+import { PropertyAmenities } from "@/components/sections/PropertyAmenities";
 import {
   enrichedProperties,
   getProperty,
@@ -60,10 +61,6 @@ export default async function PropertyPage({
     bookingUrl,
     summary,
     longform,
-    acquisition,
-    renovation,
-    operations,
-    outcomesNote,
     gallery,
   } = property;
 
@@ -76,12 +73,6 @@ export default async function PropertyPage({
     ...(brand ? [{ label: "Brand", value: brand }] : []),
     { label: "Acquired", value: acquiredYear },
     { label: "Operated By", value: subunit },
-  ];
-
-  const stages = [
-    { num: "01", title: "Acquire", body: acquisition },
-    { num: "02", title: "Renovate", body: renovation },
-    { num: "03", title: "Operate", body: operations },
   ];
 
   const hero = gallery[0];
@@ -103,7 +94,7 @@ export default async function PropertyPage({
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
             <div>
-              <SectionTitle className="text-on-surface-variant">
+              <SectionTitle>
                 {assetTypeLabels[assetType]}
               </SectionTitle>
               {/* Position in the portfolio — carries the NN — 12 counter through
@@ -198,7 +189,7 @@ export default async function PropertyPage({
         {/* ─── Facts — LIGHT ─── */}
         <section className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Asset Detail
             </SectionTitle>
             <div>
@@ -236,36 +227,16 @@ export default async function PropertyPage({
           </div>
         </section>
 
-        {/* ─── Thesis stages — DARK ─── */}
-        <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-cream-dim">Our Approach</SectionTitle>
-            <div>
-              <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
-                {stages.map((stage, i) => (
-                  <Reveal key={stage.num} delay={i * 0.1}>
-                    <div className="flex h-full flex-col border border-white/10 p-8">
-                      <span className="font-label-caps text-label-caps text-muted-azure mb-6">
-                        {stage.num}
-                      </span>
-                      <h3 className="font-headline-md text-headline-md text-cream mb-4 leading-tight">
-                        {stage.title}
-                      </h3>
-                      <p className="font-body-md text-body-md text-cream-dim leading-relaxed">
-                        {stage.body}
-                      </p>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-              <Reveal delay={0.4}>
-                <p className="font-body-md text-body-md text-cream-dim/70 mt-12">
-                  {outcomesNote}
-                </p>
-              </Reveal>
-            </div>
-          </div>
-        </section>
+        {/* ─── Amenities — DARK ───
+            Replaced the "Our Approach" (Acquire / Renovate / Operate) block
+            here on 2026-08-17. That section rendered the same three thesis
+            stages on all 12 pages — the copy came from the shared THESIS
+            constant for 10 of them — so it duplicated the homepage Process
+            section and told a visitor nothing about the asset they were
+            looking at. Amenities are per-property and sourced.
+
+            Renders nothing when no amenity data exists; see the component. */}
+        <PropertyAmenities property={property} />
 
         {/* ─── Gallery — LIGHT ───
             Hidden entirely below 2 images rather than rendering an empty or
@@ -273,7 +244,7 @@ export default async function PropertyPage({
         {gallery.length > 1 && (
           <section className="px-margin-edge py-section-gap">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-              <SectionTitle className="text-on-surface-variant">Gallery</SectionTitle>
+              <SectionTitle>Gallery</SectionTitle>
               <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2">
                 {gallery.slice(1).map((photo, i) => (
                   <div key={photo.src}>
@@ -304,7 +275,7 @@ export default async function PropertyPage({
         {(previous || next) && (
           <section className="bg-stone-white border-y border-mortar-grey px-margin-edge py-section-gap">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-              <SectionTitle className="text-on-surface-variant">
+              <SectionTitle>
                 More Assets
               </SectionTitle>
               <div className="flex flex-col">

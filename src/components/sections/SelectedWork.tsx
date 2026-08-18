@@ -117,7 +117,7 @@ export default function SelectedWork() {
           viewport={{ amount: 0.5, once: true }}
           className="relative z-10 flex h-full flex-col items-center justify-between pb-[6vh] pt-[calc(var(--nav-h)+4vh)] text-cream backdrop-brightness-[60%] md:flex-row md:px-margin-edge md:pb-[8vh] md:pt-[calc(var(--nav-h)+6vh)]"
         >
-          <SectionTitle className="text-cream">Selected Work</SectionTitle>
+          <SectionTitle tone="light">Selected Work</SectionTitle>
 
           <motion.div
             variants={{ initial: { y: "50%" }, inView: { y: "0%" } }}

@@ -5,7 +5,16 @@
  */
 
 const INTRO_SESSION_KEY = "brahma:intro-played";
-const FAILSAFE_MS = 6000;
+
+/**
+ * Backstop for `heroReady()` if the boot script never fires its release event
+ * — a JS error before paint, or the script being stripped.
+ *
+ * MUST stay comfortably above the boot script's `tD` (5000ms). At the previous
+ * 6000ms this left only 1s of headroom once the intro went to 5s, so a slow
+ * frame could have resolved the promise while the curtain was still up.
+ */
+const FAILSAFE_MS = 7000;
 
 export function introMode(): "play" | "exit" | "skip" | "done" {
   const el = document.documentElement;

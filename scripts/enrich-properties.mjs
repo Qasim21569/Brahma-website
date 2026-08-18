@@ -65,6 +65,16 @@ const BASE_FIELDS = [
   "places.location",
   "places.nationalPhoneNumber",
   "places.websiteUri",
+  // ── Amenity source fields ──────────────────────────────────────────────────
+  // Added 2026-08-17 to unblock the property Amenities section. These move the
+  // request into a higher Place Details SKU tier, so a run costs more than it
+  // did when only the six fields above were requested. That is deliberate:
+  // the brand sites (Choice, Hilton, IHG) all block automated fetching, so
+  // Google is the only machine-readable amenity source we actually have.
+  "places.editorialSummary",
+  "places.accessibilityOptions",
+  "places.allowsDogs",
+  "places.goodForChildren",
 ];
 /** Only requested under --photos; photos are a separately billed SKU. */
 const PHOTO_FIELDS = ["places.photos"];
@@ -153,20 +163,36 @@ function readProperties() {
   const found = [];
   const slugRe = /(?:^|\s)slug:\s*"([^"]+)"/g;
 
+  // Each literal runs from its own `slug:` to the next one, so a block can
+  // never bleed into the following property. This replaced a fixed 2000-char
+  // window, which was sized to reach `address` and therefore stopped short of
+  // `gallery` — fine while the only flag read here came from `homeHeroSrc`,
+  // wrong as soon as the gallery had to be inspected.
+  const starts = [];
   let match;
-  while ((match = slugRe.exec(src)) !== null) {
-    // Each property literal is well under 2000 chars up to its `address` field.
-    const block = src.slice(match.index, match.index + 2000);
+  while ((match = slugRe.exec(src)) !== null) starts.push({ index: match.index, slug: match[1] });
+
+  for (const [i, start] of starts.entries()) {
+    const block = src.slice(start.index, starts[i + 1]?.index ?? src.length);
     const name = /(?:^|\s)name:\s*"([^"]+)"/.exec(block)?.[1];
     const address = /(?:^|\s)address:\s*"([^"]+)"/.exec(block)?.[1];
     const shortName = /(?:^|\s)shortName:\s*"([^"]+)"/.exec(block)?.[1] ?? null;
     const brand = /(?:^|\s)brand:\s*"([^"]+)"/.exec(block)?.[1] ?? null;
-    // A non-null homeHeroSrc means hand-authored photography exists. enrich()
-    // ignores generated photos for these, so downloading them would burn
-    // Place Photo quota on images that can never be displayed.
-    const hasOwnPhotos = /(?:^|\s)homeHeroSrc:\s*"/.test(block);
+    /**
+     * A NON-EMPTY hand-authored `gallery` is what makes generated photos
+     * unusable — `enrich()` keeps `p.gallery` whenever it has entries, so
+     * downloading Place photos for those assets burns quota on images that can
+     * never be displayed.
+     *
+     * This used to test `homeHeroSrc` instead, which is a different question.
+     * `homeHeroSrc` is the hand-held still used for creditless chrome (the
+     * homepage hero and image band); a property can legitimately keep that
+     * while taking its detail-page gallery from Places. Testing the wrong
+     * field made those assets skip their photo fetch entirely.
+     */
+    const hasOwnPhotos = /(?:^|\s)gallery:\s*\[\s*\{/.test(block);
     if (name && address) {
-      found.push({ slug: match[1], name, shortName, brand, address, hasOwnPhotos });
+      found.push({ slug: start.slug, name, shortName, brand, address, hasOwnPhotos });
     }
   }
 
@@ -230,8 +256,73 @@ function selfTest() {
   let failures = 0;
   failures += testConfidence();
   failures += testOwnerHeuristic();
+  failures += testAmenities();
   console.log(failures === 0 ? "\nAll self-test cases pass." : `\n${failures} FAILED`);
   return failures === 0;
+}
+
+/**
+ * Exercises deriveAmenities() against the exact editorialSummary strings Google
+ * returned for this portfolio on 2026-08-17, plus the traps in the wording.
+ */
+function testAmenities() {
+  const labels = (place) => deriveAmenities(place).map((a) => a.label);
+  const sum = (text) => ({ editorialSummary: { text } });
+
+  const cases = [
+    // Real summaries from our own 12 assets.
+    [
+      sum("Simple low-rise hotel with an outdoor pool & a fitness room, plus free breakfast & Wi-Fi."),
+      ["Free WiFi", "Free Breakfast", "Outdoor Pool", "Fitness Center"],
+      "clarion pointe tampa",
+    ],
+    [
+      sum("Casual hotel offering free continental breakfast, WiFi & parking, plus meeting space & a pool."),
+      ["Free WiFi", "Free Continental Breakfast", "Swimming Pool", "Meeting Space", "Free Parking"],
+      "quality inn suites — 'free' distributes across the list",
+    ],
+    [
+      sum("Streamlined quarters in a relaxed hotel featuring a 24-hour gym & an outdoor pool, plus breakfast."),
+      ["Breakfast", "Outdoor Pool", "24-Hour Fitness Center"],
+      "holiday inn express — unqualified breakfast stays unqualified",
+    ],
+    [
+      sum("Traditional lodging with free airport shuttle service, breakfast & WiFi, plus an indoor pool."),
+      ["Free WiFi", "Free Breakfast", "Indoor Pool", "Airport Shuttle"],
+      "indoor pool must beat the generic pool rule",
+    ],
+    [
+      sum("Relaxed budget hotel offering an outdoor pool, a bar & a restaurant, plus a gym & meeting space."),
+      ["Outdoor Pool", "Fitness Center", "Meeting Space", "Restaurant", "Bar"],
+      "bar and restaurant both detected",
+    ],
+    // The guard that makes the 60-char "free" window safe to use.
+    [
+      sum("Casual hotel with free breakfast, plus paid parking and a pool."),
+      ["Free Breakfast", "Swimming Pool", "Parking"],
+      "'paid' between qualifier and term blocks Free Parking",
+    ],
+    // Nothing stated → nothing emitted. The Primrose school case.
+    [{}, [], "no editorial summary at all"],
+    // Structured fields only.
+    [
+      { allowsDogs: true, goodForChildren: true, accessibilityOptions: { wheelchairAccessibleEntrance: true, wheelchairAccessibleParking: true } },
+      ["Pet Friendly", "Family Friendly", "Accessible Entrance", "Accessible Parking"],
+      "structured booleans only",
+    ],
+    // allowsDogs:false must NOT become "Pet Friendly", and must not emit at all.
+    [{ allowsDogs: false }, [], "allowsDogs false emits nothing"],
+  ];
+
+  let failures = 0;
+  for (const [place, expected, label] of cases) {
+    const got = labels(place);
+    const pass = JSON.stringify(got) === JSON.stringify(expected);
+    if (!pass) failures++;
+    console.log(`${pass ? "PASS" : "FAIL"}  amenities  ${label}`);
+    if (!pass) console.log(`        expected ${JSON.stringify(expected)}\n        got      ${JSON.stringify(got)}`);
+  }
+  return failures;
 }
 
 function testOwnerHeuristic() {
@@ -361,6 +452,119 @@ function isLikelyOwnerPhoto(photo, property) {
     credit: attributions[0]?.displayName ?? null,
     why: `author "${attributions[0]?.displayName ?? "?"}" does not match business`,
   };
+}
+
+/* ── amenities ───────────────────────────────────────────────────────────── */
+
+/**
+ * Derives a per-property amenity list from what Google actually states.
+ *
+ * ── WHY THIS EXISTS, AND WHAT IT IS NOT ──────────────────────────────────────
+ * The obvious source is the property's own brand page — the Choice/Hilton/IHG
+ * "Featured Amenities" grid. **All three block automated fetching**: Choice
+ * drops the TLS connection outright, Hilton returns 403. So they are not
+ * reachable from a script, and hand-copying 12 lists would go stale silently.
+ *
+ * This function therefore reads only two Google-supplied sources:
+ *   1. `editorialSummary` — Google's own one-line description, which names
+ *      amenities explicitly ("an outdoor pool & a fitness room, plus free
+ *      breakfast & Wi-Fi").
+ *   2. The structured booleans (`accessibilityOptions`, `allowsDogs`,
+ *      `goodForChildren`).
+ *
+ * **Every emitted amenity traces to a Google assertion. Nothing is inferred
+ * from the franchise brand.** That distinction is the whole point: this project
+ * has repeatedly shipped and then had to retract invented facts, and
+ * "it's a Hampton Inn, so it must have a business centre" is exactly that
+ * mistake. If Google does not say it, this returns nothing for it.
+ *
+ * Consequence to expect: these lists are SHORTER than the brand pages' (5–9
+ * items against Choice's 18). That is the honest floor. To publish the fuller
+ * list, someone must supply the brand data by hand — `properties.ts` already
+ * lets a hand-authored `amenities` array win over this one.
+ *
+ * Order is specific-before-generic ("indoor pool" before "pool") because the
+ * first rule that matches a concept wins and the rest of that group is skipped.
+ */
+/**
+ * Does "free"/"complimentary" apply to `term` in this summary?
+ *
+ * Google writes these as distributed lists — "free airport shuttle service,
+ * breakfast & WiFi" means all three are free, with 38 characters between the
+ * qualifier and the last item it governs. So the window has to be generous.
+ * The `PAID_SIGNAL` check is what makes a generous window safe: if anything
+ * between the qualifier and the term reverses it ("free breakfast, paid
+ * parking"), the match is rejected rather than silently publishing "Free
+ * Parking" for a hotel that charges for it. Non-greedy, so the NEAREST
+ * qualifier wins.
+ */
+const PAID_SIGNAL = /\b(paid|fee|fees|surcharge|charge|extra)\b/;
+
+function isFree(summary, termSource) {
+  const match = new RegExp(`(?:free|complimentary)([^.]{0,60}?)${termSource}`).exec(summary);
+  return match ? !PAID_SIGNAL.test(match[1]) : false;
+}
+
+function deriveAmenities(place) {
+  const summary = (place.editorialSummary?.text ?? "").toLowerCase();
+  const found = [];
+  const seen = new Set();
+
+  const add = (label, icon, why) => {
+    if (seen.has(icon)) return;
+    seen.add(icon);
+    found.push({ label, icon, why });
+  };
+
+  // ── from the editorial summary ──
+  if (/wi-?\s?fi/.test(summary)) {
+    add(isFree(summary, "wi-?\\s?fi") ? "Free WiFi" : "WiFi", "wifi", "editorialSummary");
+  }
+  if (/breakfast/.test(summary)) {
+    const continental = /continental breakfast/.test(summary);
+    const free = isFree(summary, "breakfast");
+    const label = continental
+      ? free
+        ? "Free Continental Breakfast"
+        : "Continental Breakfast"
+      : free
+        ? "Free Breakfast"
+        : "Breakfast";
+    add(label, "breakfast", "editorialSummary");
+  }
+  if (/indoor pool/.test(summary)) add("Indoor Pool", "pool", "editorialSummary");
+  else if (/outdoor pool/.test(summary)) add("Outdoor Pool", "pool", "editorialSummary");
+  else if (/\bpool\b/.test(summary)) add("Swimming Pool", "pool", "editorialSummary");
+
+  if (/24-hour gym|24 hour gym/.test(summary)) {
+    add("24-Hour Fitness Center", "fitness", "editorialSummary");
+  } else if (/\bgym\b|fitness room|exercise room|fitness cent/.test(summary)) {
+    add("Fitness Center", "fitness", "editorialSummary");
+  }
+
+  if (/airport shuttle|shuttle service/.test(summary)) {
+    add("Airport Shuttle", "shuttle", "editorialSummary");
+  }
+  if (/meeting space|conference/.test(summary)) add("Meeting Space", "meeting", "editorialSummary");
+  if (/restaurant/.test(summary)) add("Restaurant", "restaurant", "editorialSummary");
+  if (/\bbar\b/.test(summary)) add("Bar", "bar", "editorialSummary");
+  if (/parking/.test(summary)) {
+    add(isFree(summary, "parking") ? "Free Parking" : "Parking", "parking", "editorialSummary");
+  }
+
+  // ── from the structured fields ──
+  if (place.allowsDogs === true) add("Pet Friendly", "pets", "allowsDogs");
+  if (place.goodForChildren === true) add("Family Friendly", "family", "goodForChildren");
+
+  const access = place.accessibilityOptions ?? {};
+  if (access.wheelchairAccessibleEntrance === true) {
+    add("Accessible Entrance", "accessible", "accessibilityOptions");
+  }
+  if (access.wheelchairAccessibleParking === true) {
+    add("Accessible Parking", "accessible-parking", "accessibilityOptions");
+  }
+
+  return found;
 }
 
 const EXT_BY_MIME = {
@@ -502,21 +706,40 @@ async function main() {
         place.location?.latitude != null && place.location?.longitude != null
           ? { lat: place.location.latitude, lng: place.location.longitude }
           : null,
+      /**
+       * Carried forward BEFORE the --photos branches below can touch it.
+       *
+       * `out[slug] = record` replaces the record wholesale, so anything absent
+       * here is dropped. Photos used to be set only inside the `WITH_PHOTOS`
+       * branches, which meant an ordinary facts-only run — the DEFAULT
+       * invocation — silently emptied every gallery in the file while the image
+       * files sat untouched on disk. Hit for real on 2026-08-17. Preserving at
+       * construction time is what makes the default run non-destructive.
+       */
+      photos: existing[property.slug]?.photos ?? [],
     };
+
+    // Amenities are derived, never invented — see deriveAmenities(). Stored
+    // without the `why` field, which is a run-time audit aid only.
+    const amenities = deriveAmenities(place);
+    record.amenities = amenities.map(({ label, icon }) => ({ label, icon }));
 
     console.log(
       `ok${verdict.ok ? "" : " (forced)"} — ${record.placeId}` +
         (record.bookingUrl ? "" : "  [no website returned]")
     );
+    if (amenities.length > 0) {
+      console.log(`    amenities: ${amenities.length} derived`);
+      for (const a of amenities) console.log(`      · ${a.label}  (${a.why})`);
+    } else {
+      console.log("    amenities: none — Google states nothing itemisable");
+    }
 
     if (WITH_PHOTOS && property.hasOwnPhotos) {
       console.log("    photos: skipped — hand-authored gallery already wins here");
-      record.photos = existing[property.slug]?.photos ?? [];
     } else if (WITH_PHOTOS) {
-      // Preserve any photos already recorded, so a re-run without --photos or a
-      // failed download pass never silently empties a gallery.
-      record.photos = existing[property.slug]?.photos ?? [];
-
+      // record.photos already holds the previously-saved list; a failed download
+      // pass below leaves it in place rather than emptying the gallery.
       const all = place.photos ?? [];
       let owned;
       if (ALL_PHOTOS) {

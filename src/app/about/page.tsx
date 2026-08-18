@@ -11,7 +11,8 @@ import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 import { StyledLink } from "@/components/ui/StyledLink";
 import { HoverReveal } from "@/components/ui/HoverReveal";
 import { CountUp } from "@/components/ui/CountUp";
-import { founder, team, affiliates, initials, SOURCES } from "@/data/company";
+import { founder, team, initials, SOURCES } from "@/data/company";
+import { constructionPartner } from "@/data/services";
 import { enrichedProperties } from "@/data/properties";
 
 export const metadata: Metadata = {
@@ -47,7 +48,7 @@ export default function AboutPage() {
             is the shape the homepage hero was rebuilt three times to escape. */}
         <section className="px-margin-edge pt-16 pb-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Our Story
             </SectionTitle>
             <div>
@@ -71,7 +72,9 @@ export default function AboutPage() {
                 <div className="mt-10 flex max-w-xl flex-col gap-2">
                   <StyledLink href="#leadership">The founder</StyledLink>
                   <StyledLink href="#team">Meet the team</StyledLink>
-                  <StyledLink href="#group">Companies in the group</StyledLink>
+                  <StyledLink href="#construction-partners">
+                    Construction partners
+                  </StyledLink>
                 </div>
               </Reveal>
             </div>
@@ -105,7 +108,7 @@ export default function AboutPage() {
           </div>
           <div className="relative z-10 px-margin-edge">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-              <SectionTitle className="text-cream-dim">Leadership</SectionTitle>
+              <SectionTitle tone="light">Leadership</SectionTitle>
               <h2>
                 <MaskText
                   className="font-headline-lg text-headline-lg text-cream"
@@ -169,7 +172,7 @@ export default function AboutPage() {
             {/* Pull quote — the narrow column carries a label so the row is not
                 half empty, matching the inverted block on the homepage. */}
             <div className="mt-20 grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter md:mt-28">
-              <SectionTitle className="text-cream-dim">In his words</SectionTitle>
+              <SectionTitle tone="light">In his words</SectionTitle>
               <Reveal>
                 <blockquote className="max-w-3xl">
                   <p className="font-headline-md text-headline-md text-cream leading-tight">
@@ -196,7 +199,7 @@ export default function AboutPage() {
         <section className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
             <div>
-              <SectionTitle className="text-on-surface-variant">
+              <SectionTitle>
                 Our Approach
               </SectionTitle>
               <ResponsiveImage parallaxAmount={8}>
@@ -259,7 +262,7 @@ export default function AboutPage() {
         >
           <div className="px-margin-edge">
             <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-              <SectionTitle className="text-on-surface-variant">
+              <SectionTitle>
                 The Team
               </SectionTitle>
               <div>
@@ -333,55 +336,44 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ─── The Group — LIGHT ─── */}
-        <section id="group" className="px-margin-edge py-section-gap">
+        {/* ─── Construction partners — LIGHT ───
+            Same partner data as /services; kept compact on About. */}
+        <section id="construction-partners" className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
-              The Group
+            <SectionTitle>
+              Construction partners
             </SectionTitle>
             <div>
-              <h2>
-                <MaskText
-                  className="font-headline-lg text-headline-lg text-primary"
-                  lines={["One operating discipline,", "several ventures."]}
-                />
-              </h2>
               <MaskText
-                delay={0.15}
-                className="font-body-lg text-body-lg text-on-surface-variant mt-6 max-w-xl"
-                lines={[
-                  "Brahmas Management and Investment Group sits",
-                  "alongside a number of affiliated entities under",
-                  "common ownership, each registered in Florida",
-                  "and run to the same operating standard.",
-                ]}
+                className="font-body-lg text-body-lg text-on-surface-variant max-w-xl"
+                lines={constructionPartner.body}
               />
 
-              {/* StyledLink rows per §5 B6.
-                  ⚠️ `sector` and `description` from company.ts are deliberately
-                  NOT rendered. Both are INFERRED FROM ENTITY NAMES, not client
-                  fact — see the warning in company.ts and HANDOFF blocked-item 4.
-                  Publishing an inferred business purpose for a real registered
-                  company is a risk not worth taking for the sake of layout. Once
-                  the client signs them off, add the sector back as a muted suffix
-                  inside the StyledLink children. */}
-              <div className="mt-12 flex flex-col">
-                {affiliates.map((company, i) => (
-                  <Reveal key={company.name} delay={Math.min(i, 5) * 0.06}>
-                    {company.sunbizUrl ? (
-                      <StyledLink href={company.sunbizUrl} external>
-                        {company.displayName}
-                      </StyledLink>
-                    ) : (
-                      <div className="flex w-full items-center justify-between gap-6 border-b border-primary/40 py-4 pr-2">
-                        <span className="font-body-lg text-body-lg text-primary leading-tight">
-                          {company.displayName}
-                        </span>
-                      </div>
-                    )}
-                  </Reveal>
-                ))}
-              </div>
+              <Reveal delay={0.15}>
+                <div className="mt-10 grid grid-cols-1 border-t border-mortar-grey sm:grid-cols-3">
+                  {constructionPartner.capabilities.map((capability) => (
+                    <div
+                      key={capability}
+                      className="border-b border-mortar-grey py-5 sm:border-b-0 sm:border-l sm:first:border-l-0 sm:py-6 sm:pl-6 sm:first:pl-0"
+                    >
+                      <span className="font-headline-md text-headline-md text-primary leading-tight">
+                        {capability}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.3}>
+                <div className="mt-8 max-w-xl">
+                  <StyledLink
+                    href={constructionPartner.url}
+                    external
+                  >
+                    {constructionPartner.name}
+                  </StyledLink>
+                </div>
+              </Reveal>
             </div>
           </div>
         </section>

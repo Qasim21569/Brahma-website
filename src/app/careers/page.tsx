@@ -68,7 +68,7 @@ export default function CareersPage() {
         {/* ─── Hero — LIGHT ─── */}
         <section className="px-margin-edge pt-16 pb-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Careers
             </SectionTitle>
             <div>
@@ -113,7 +113,7 @@ export default function CareersPage() {
             employer branding. */}
         <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-cream-dim">The Path</SectionTitle>
+            <SectionTitle tone="light">The Path</SectionTitle>
             <div>
               <h2>
                 <MaskText
@@ -178,7 +178,7 @@ export default function CareersPage() {
             open vacancies — see the note on `disciplines` above. */}
         <section id="disciplines" className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Disciplines
             </SectionTitle>
             <div>
@@ -209,7 +209,7 @@ export default function CareersPage() {
             When the client supplies real openings, they belong here. */}
         <section className="bg-stone-white border-y border-mortar-grey px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Applying
             </SectionTitle>
             <div>

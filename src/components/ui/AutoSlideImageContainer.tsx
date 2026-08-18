@@ -3,18 +3,17 @@
 import { useRef, useEffect } from "react";
 import Image from "next/image";
 
-const SLIDE_INTERVAL = 1500; // ms each image stays visible
-const WIPE_DURATION = 600; // ms for the bottom-to-top wipe transition
+const HOLD_MS = 3000; // each image stays fully visible for 3 seconds
+const WIPE_MS = 1200; // slow, smooth crossfade wipe
 
 /**
- * AutoSlideImageContainer — cycles through images with the same
- * bottom-to-top wipe as ClipImageContainer, but driven by a timer
- * instead of scroll position.
+ * AutoSlideImageContainer — timed image cycle with a smooth bottom-to-top wipe.
  *
- * Architecture (matching ClipImageContainer exactly):
- *   - Multiple layers stacked with z-index
- *   - Current image clips away bottom-to-top via clipPath inset
- *   - Next image sits behind, revealed as current wipes away
+ * Architecture:
+ *   - All layers are always present and visible — no visibility toggling
+ *   - clipPath controls what shows (inset clips from the chosen edge)
+ *   - Outgoing image wipes away while incoming image wipes in — both animated
+ *     simultaneously so there is never a blank frame
  *   - Uses Web Animations API for 60fps — no React re-renders
  */
 export function AutoSlideImageContainer({
@@ -44,52 +43,75 @@ export function AutoSlideImageContainer({
       const currentEl = layerRefs.current[current];
       const nextEl = layerRefs.current[next];
 
-      // Ensure next image is visible behind current
-      if (nextEl) {
-        nextEl.style.visibility = "visible";
-        nextEl.style.zIndex = "1";
+      if (!currentEl || !nextEl) {
+        wiping.current = false;
+        return;
       }
 
-      // Wipe current image away bottom-to-top
-      if (currentEl) {
-        currentEl.style.zIndex = "2";
-        const anim = currentEl.animate(
-          [
-            { clipPath: "inset(0 0 0% 0)" },
-            { clipPath: "inset(0 0 100% 0)" },
-          ],
-          {
-            duration: WIPE_DURATION,
-            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-            fill: "forwards",
-          },
-        );
+      // Ensure both are stacked correctly — incoming behind outgoing
+      nextEl.style.zIndex = "1";
+      currentEl.style.zIndex = "2";
 
-        anim.onfinish = () => {
-          // Reset current layer
+      // Both animate simultaneously:
+      //   - current wipes away bottom-to-top (clip shrinks)
+      //   - next wipes in bottom-to-top (clip opens)
+      const animOut = currentEl.animate(
+        [
+          { clipPath: "inset(0 0 0% 0)" },
+          { clipPath: "inset(0 0 100% 0)" },
+        ],
+        {
+          duration: WIPE_MS,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          fill: "forwards",
+        },
+      );
+
+      const animIn = nextEl.animate(
+        [
+          { clipPath: "inset(0 0 100% 0)" },
+          { clipPath: "inset(0 0 0% 0)" },
+        ],
+        {
+          duration: WIPE_MS,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          fill: "forwards",
+        },
+      );
+
+      animOut.onfinish = () => {
+        // Reset outgoing layer for its next turn
+        currentEl.style.zIndex = "0";
+        currentEl.style.clipPath = "";
+
+        // Promote next to current
+        nextEl.style.zIndex = "2";
+        nextEl.style.clipPath = "";
+        currentIndex.current = next;
+        wiping.current = false;
+      };
+
+      // Safety fallback — if onfinish doesn't fire, unblock after WIPE_MS + 50ms
+      setTimeout(() => {
+        if (wiping.current) {
           currentEl.style.zIndex = "0";
-          currentEl.style.visibility = "hidden";
           currentEl.style.clipPath = "";
-
-          // Promote next to current
-          if (nextEl) {
-            nextEl.style.zIndex = "2";
-          }
+          nextEl.style.zIndex = "2";
+          nextEl.style.clipPath = "";
           currentIndex.current = next;
           wiping.current = false;
-        };
-      }
+        }
+      }, WIPE_MS + 100);
     };
 
-    // Set initial state
+    // Set initial state: first image fully visible, rest clipped away
     layerRefs.current.forEach((el, i) => {
-      if (el) {
-        el.style.visibility = i === 0 ? "visible" : "hidden";
-        el.style.zIndex = i === 0 ? "2" : "0";
-      }
+      if (!el) return;
+      el.style.zIndex = i === 0 ? "2" : "1";
+      el.style.clipPath = i === 0 ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)";
     });
 
-    const timer = setInterval(tick, SLIDE_INTERVAL);
+    const timer = setInterval(tick, HOLD_MS);
     return () => clearInterval(timer);
   }, [images.length, images]);
 

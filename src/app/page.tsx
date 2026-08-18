@@ -16,8 +16,7 @@ import {
   assetTypeLabels,
 } from "@/data/properties";
 import { founder, BMIG_LOGO_SRC } from "@/data/company";
-import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
-// import { AutoSlideImageContainer } from "@/components/ui/AutoSlideImageContainer";
+import { AutoSlideImageContainer } from "@/components/ui/AutoSlideImageContainer";
 import Process from "@/components/sections/Process";
 import SelectedWork from "@/components/sections/SelectedWork";
 
@@ -135,7 +134,9 @@ export default function HomePage() {
                 <div className="mt-10 flex flex-col gap-2 max-w-xl">
                   <StyledLink href="/about">Discover Brahmas</StyledLink>
                   <StyledLink href="/about#team">Meet the team</StyledLink>
-                  <StyledLink href="/about#group">Companies in the group</StyledLink>
+                  <StyledLink href="/about#construction-partners">
+                    Construction partners
+                  </StyledLink>
                 </div>
               </Reveal>
             </div>
@@ -156,20 +157,7 @@ export default function HomePage() {
               />
             </div>
 
-            <ResponsiveImage parallaxAmount={8}>
-              <div className="relative aspect-[16/10] w-full bg-stone-white">
-                <Image
-                  src={properties[0].homeHeroSrc}
-                  alt="Brahmas hospitality asset exterior"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 65vw"
-                  className="object-cover"
-                  loading="lazy"
-                />
-              </div>
-            </ResponsiveImage>
-
-            {/* <AutoSlideImageContainer
+            <AutoSlideImageContainer
               images={properties
                 .filter((p) => p.homeHeroSrc)
                 .map((p) => ({
@@ -177,7 +165,7 @@ export default function HomePage() {
                   alt: `${p.shortName} exterior`,
                 }))}
               alt="Brahmas hospitality asset exterior"
-            /> */}
+            />
           </div>
         </section>
 
@@ -237,7 +225,7 @@ export default function HomePage() {
              never drift from the portfolio. Do not hardcode these. */}
         <section className="bg-stone-white py-section-gap md:py-24 border-y border-mortar-grey">
           <div className="px-margin-edge grid grid-cols-1 gap-gutter md:grid-cols-[1fr_1.9fr]">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               By the numbers
             </SectionTitle>
             <div className="grid grid-cols-2 gap-x-gutter gap-y-12 md:grid-cols-4">

@@ -85,7 +85,7 @@ export function ThresholdReveal({
   if (isMobile || reduceMotion) {
     return (
       <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
-        <SectionTitle className="text-cream-dim">{label}</SectionTitle>
+        <SectionTitle tone="light">{label}</SectionTitle>
         <h2 className="font-headline-lg text-headline-lg text-cream mt-8">
           {topLine}
           <br />
@@ -173,7 +173,7 @@ export function ThresholdReveal({
 
         {/* Chrome — always above, so the label reads from the first frame. */}
         <div className="pointer-events-none absolute inset-0 flex flex-col justify-between px-margin-edge py-[calc(var(--nav-h)+4vh)]">
-          <SectionTitle className="text-cream-dim">{label}</SectionTitle>
+          <SectionTitle tone="light">{label}</SectionTitle>
           <div className="flex items-end justify-between gap-6">
             <motion.p
               style={{ opacity: captionOpacity }}

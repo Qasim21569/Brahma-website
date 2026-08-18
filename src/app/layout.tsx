@@ -41,12 +41,19 @@ export default function RootLayout({
           ── INTRO BOOT ──
           Runs before paint. Decides play vs skip, owns the scroll lock and the
           two JS timers (release / done), handles click/key skip. Motion is 100%
-          CSS; this only flips `data-intro` on <html>. Timers MUST match the CSS
-          delays in globals.css:  release tR=2500ms, done tD=3350ms.
+          CSS; this only flips `data-intro` on <html>.
+
+          ⚠️ Timers MUST match the CSS delays in globals.css — the full schedule
+          is documented there. release tR=4150ms, done tD=5000ms.
+
+          Note the two escape hatches, both of which matter at this length:
+            · sessionStorage 'brahma:intro-played' — plays once per session
+            · prefers-reduced-motion — skips entirely, never plays
+            · any pointerdown/keydown skips to a 450ms exit
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var d=document.documentElement,KEY='brahma:intro-played',played=false,reduce=false;try{played=sessionStorage.getItem(KEY)==='1'}catch(e){}try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}if(played||reduce){d.setAttribute('data-intro','skip');return}d.setAttribute('data-intro','play');d.setAttribute('data-intro-lock','');if('scrollRestoration' in history)history.scrollRestoration='manual';try{window.scrollTo(0,0)}catch(e){}var tR=2500,tD=3350,released=false,done=false,timerR,timerD;function fire(n){try{document.dispatchEvent(new Event(n))}catch(e){}}function release(){if(released)return;released=true;d.setAttribute('data-intro-released','');fire('brahma:intro-release')}function cleanup(){document.removeEventListener('pointerdown',onSkip);document.removeEventListener('keydown',onSkip)}function finish(){if(done)return;done=true;release();d.setAttribute('data-intro','done');d.removeAttribute('data-intro-lock');try{sessionStorage.setItem(KEY,'1')}catch(e){}fire('brahma:intro-done');cleanup()}function onSkip(){if(done)return;d.setAttribute('data-intro','exit');clearTimeout(timerR);clearTimeout(timerD);release();setTimeout(finish,460)}timerR=setTimeout(release,tR);timerD=setTimeout(finish,tD);document.addEventListener('pointerdown',onSkip);document.addEventListener('keydown',onSkip)}catch(e){try{document.documentElement.setAttribute('data-intro','skip')}catch(_){}}})();`,
+            __html: `(function(){try{var d=document.documentElement,KEY='brahma:intro-played',played=false,reduce=false;try{played=sessionStorage.getItem(KEY)==='1'}catch(e){}try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}if(played||reduce){d.setAttribute('data-intro','skip');return}d.setAttribute('data-intro','play');d.setAttribute('data-intro-lock','');if('scrollRestoration' in history)history.scrollRestoration='manual';try{window.scrollTo(0,0)}catch(e){}var tR=4150,tD=5000,released=false,done=false,timerR,timerD;function fire(n){try{document.dispatchEvent(new Event(n))}catch(e){}}function release(){if(released)return;released=true;d.setAttribute('data-intro-released','');fire('brahma:intro-release')}function cleanup(){document.removeEventListener('pointerdown',onSkip);document.removeEventListener('keydown',onSkip)}function finish(){if(done)return;done=true;release();d.setAttribute('data-intro','done');d.removeAttribute('data-intro-lock');try{sessionStorage.setItem(KEY,'1')}catch(e){}fire('brahma:intro-done');cleanup()}function onSkip(){if(done)return;d.setAttribute('data-intro','exit');clearTimeout(timerR);clearTimeout(timerD);release();setTimeout(finish,460)}timerR=setTimeout(release,tR);timerD=setTimeout(finish,tD);document.addEventListener('pointerdown',onSkip);document.addEventListener('keydown',onSkip)}catch(e){try{document.documentElement.setAttribute('data-intro','skip')}catch(_){}}})();`,
           }}
         />
       </head>

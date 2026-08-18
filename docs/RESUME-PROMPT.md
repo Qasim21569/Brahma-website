@@ -2,7 +2,7 @@
 
 > For starting a fresh session, in this tool or another (Cursor, ChatGPT, a
 > colleague). Attach the files listed below, paste the prompt, done.
-> **Last updated:** 2026-08-13
+> **Last updated:** 2026-08-17
 
 ---
 
@@ -82,11 +82,18 @@ Start with: <YOUR TASK HERE>
 
 ## Filling in the last line
 
-Point it at a phase from BUILD-PLAYBOOK §5, e.g.:
+**Check HANDOFF's "The client's own to-do list" first** — that table is the
+live priority order and supersedes the phase numbering. As of 2026-08-13 the
+next unblocked items are:
 
-- `Start with: BUILD-PLAYBOOK §5 Phase C1 — switch the portfolio page from featuredProperties to all 12 via enrichedProperties, with a graceful no-photo card for the 10 without imagery.`
-- `Start with: BUILD-PLAYBOOK §5 Phase B — retro-fit the About page to the §2 grammar.`
-- `Start with: defect D-9 in BUILD-PLAYBOOK §4 — wire the 21 unused photos in public/site-photos/ into the two existing galleries.`
+- `Start with: to-do #5 — Portfolio page hero and desktop view images rework.`
+- `Start with: to-do #9 — Mobile navbar rework (components/layout/Navbar.tsx).`
+- `Start with: to-do #7 — Bottom CTA and footer rework (also Phase E5).`
+
+Or point it at a phase from BUILD-PLAYBOOK §5:
+
+- `Start with: BUILD-PLAYBOOK §5 Phase E4 — legal pages.`
+- `Start with: defect D-9 in BUILD-PLAYBOOK §4 — wire the remaining unused photos in public/site-photos/ into the two existing galleries.`
 
 ---
 
@@ -116,3 +123,23 @@ If `next build` fails with repeated `Error while requesting resource`, that is
 - Assuming all 12 properties have images. **Ten do not.** Use
   `featuredProperties` where an image is required, and
   `ownPhotographyProperties` for chrome with no credit slot.
+- **Redesigning `SectionTitle`.** It went through **five** treatments in one
+  day and is now settled. Before touching it, read its file header — every
+  rejected version and the reason is listed there. In particular:
+  · no `w-full` / `flex-1` rule (reads as a flow diagram, and breaks
+    `SelectedWork`'s centre card)
+  · **no numbering of any kind** — the client rejected `( 01 )` outright
+  · the label must NOT be the same colour as the headline it introduces;
+    that's why it's fixed `text-muted-azure`.
+- **Deleting `sections/ThresholdReveal.tsx` as an orphan.** It is built,
+  verified, and deliberately commented out in `services/page.tsx` — the
+  client is staging what they reveal, not rejecting it. Do not remove it;
+  re-enabling is uncommenting one import and one block.
+- **Adding a second pass over an already-drawn line** (e.g. a fill animation
+  chasing a rule that already drew). Reads as "the line loading twice" —
+  happened in the preloader. One line, one event, done.
+- Publishing anything in `src/data/contact.ts` as fact. Every value there is
+  flagged `CONTACT_DETAILS_UNCONFIRMED = true` for a reason — the page it
+  replaced had invented offices and a phone number in the range reserved for
+  fiction. Same caution applies to `company.ts` affiliate `sector`/
+  `description` fields — inferred from entity names, not confirmed.

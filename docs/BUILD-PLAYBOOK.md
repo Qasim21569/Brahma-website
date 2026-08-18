@@ -33,7 +33,7 @@ Working directory is `brahma-web/`. References sit as siblings, so from
 | `../the-line-awwwards-SOTM/` | Accordion (`components/AccordianItem.tsx`), hover text swap (`HoverReveal.tsx`), scroll-linked card entrance (`ProjectCard.tsx`), Desktop/Mobile component split. |
 | `../otis-valen-next/` | Page transitions (`app/template.tsx` + `components/chrome/TransitionOverlay.tsx`). |
 | `../ochi.design-UI-Clone/` | Image hover: scale-down + title rise (`src/components/Featured.jsx`). |
-| `../hetari-portfolio/` | **More useful than previously recorded.** `src/components/ServicesCard.vue` is the numbered-pillar pattern ported as `ui/PillarCard.tsx` + `ui/RotatingMark.tsx`. Also `MagneticEffect.vue` (unused so far) and marquee velocity (`src/components/design/horizontal-loop.js`). It is Vue — read it for the pattern, not the code. |
+| `../hetari-portfolio/` | **More useful than previously recorded.** `src/components/ServicesCard.vue` is the pillar pattern ported as `ui/PillarCard.tsx`. **Its numbering and its spinning mark were both rejected and removed** — take the layout, not those. Also `MagneticEffect.vue` (unused so far) and marquee velocity (`src/components/design/horizontal-loop.js`). It is Vue — read it for the pattern, not the code. |
 | `../sequent-media-house-main/` | **Closest stack to ours** — Next 16, React 19, Tailwind v4, Motion v12, GSAP, Lenis. Code ports almost verbatim. `src/app/home.jsx` is the reference for **pinned multi-layer scroll choreography**: one pinned container, one master timeline, stacked layers taking over in sequence. `ExpandingSection.jsx` opens by `height`, not by mask. Also worth mining: `RowAnimation` (multi-speed row parallax), `CursorTrail`, `CharReveal`, `Loader`, `hyper-text`. |
 | `../Axel-Vanhessche/` | Origin of the aperture idea (`mask-size: 0% → 170%` scrubbed on a pinned trigger). **Superseded by sequent's height-based shutter** — see the E1 record for why. Read for the concept, not the implementation. |
 | `../awwwards-collection/` | Not used. Ignore. |
@@ -117,9 +117,10 @@ single most recognisable Elementis trait.
 | List link | `StyledLink` | underline sweeps from right |
 | Emphasised button | `BorderedButton` | SVG border draws on hover |
 | Label swap on hover | `HoverReveal` | |
-| Section label | `SectionTitle` | hamburger + uppercase |
+| Section label | `SectionTitle` | square mark + uppercase at `--t-section-title`. **Colour is tone-aware (v6):** `muted-azure-dim` on light canvases, `muted-azure` on dark — **pass `tone="light"` on every dark section** or it drops to 2.48:1. **No numeral, no rule** (v4's bracketed numeral was reverted at the client's request) — **never pass a `text-*` class** |
 | **Signature scroll sequence** | `sections/ThresholdReveal` | pinned 420vh; type splits → shutter opens by `height` → mark settles. Desktop only — see Phase E1 |
-| Numbered capability pillar | `ui/PillarCard` + `ui/RotatingMark` | `( 01 )`, sub-rows, ghost numeral, slow-turning mark |
+| Capability pillar | `ui/PillarCard` | ghost **word** behind, hairline sub-rows, `DrawnRule` top edge. **No numerals** — see E1 |
+| Rule that draws on entry | `ui/DrawnRule` | replaced `RotatingMark` (deleted); moves once and settles rather than spinning ambiently |
 | Per-letter hover flicker | `ui/FlickerText` | **must** carry `aria-label` + `aria-hidden` letters |
 | Slash-separated inline list | `ui/InlineList` | `staggerChildren: 0.06` |
 
@@ -150,6 +151,67 @@ Newsreader (display) + Manrope (body). **No bold anywhere** — weights 300/400/
 `line-height: 1` on display, `1.3` on body. Sizes come from `--t-*` variables in
 `globals.css`, never hardcoded. To resize, edit those variables, not the config.
 
+**Section labels — redesigned 2026-08-13.** `SectionTitle` was
+`text-xs md:text-sm` (12/14px) in a muted colour behind a hamburger mark, and
+**31 of its 33 call sites additionally passed `text-on-surface-variant` or
+`text-cream-dim`.** So it was dimmed on top of being smaller than the body copy
+it introduced. On the homepage `Process` block the label read as a caption
+while "Explore our thesis" looked like the heading — the hierarchy was inverted.
+
+**The first fix over-corrected and was also rejected.** It kept the size and
+colour but added `w-full` plus a `flex-1` hairline running out to fill the
+column. In a grid cell — which stretches — that renders a label with a long
+**leader line pointing across empty space at the content**, which reads as a
+flow diagram rather than a section label. `w-full` also broke `SelectedWork`:
+the title is a flex child there, so full width shoved the centre card right.
+
+**v3** fixed the diagram problem with a short fixed-width rule above the label,
+but the label was still the SAME colour as the headline it introduced — still
+read as "a smaller heading," not a distinct label. Right diagnosis, wrong fix.
+
+**v4** tried a bracketed numeral, `( 01 )`, extending the `01 — 12` counter
+language already used on the portfolio grid and property detail pages, driven
+by a render-time counter (`lib/sectionCounter.ts`) so conditional sections
+(property Gallery, More Assets) didn't produce gaps. **Reverted same day at
+the client's explicit request — no numbering on section labels, full stop,**
+not even a self-correcting one. The counter file was deleted with it.
+
+**Current (v6, 2026-08-17):** a solid square mark plus the label, in the
+**accent colour, picked to suit the canvas** — no rule, no numeral, single line.
+
+```
+■  CAPABILITIES
+```
+
+- The accent colour is v3's actual missing piece: it is what differentiates
+  the label from the ink/cream headline beside it. Size alone was never the
+  fix.
+- 🔑 **Colour IS `tone`-driven as of v6.** v5 fixed it to `text-muted-azure` on
+  every background for consistency. That reads well on dark (6.72:1) and
+  **fails on light: #7b9ec4 on #f4f1ec is 2.48:1**, against a WCAG AA
+  requirement of 4.5:1 — so on the 22 light sections the label was measurably
+  hard to read. One fixed colour cannot serve both canvases; anything legible
+  on cream is too dark for ink. Now:
+  | canvas | class | ratio |
+  |---|---|---|
+  | light (default) | `text-muted-azure-dim` #4a6d94 | **4.77:1** ✓ AA |
+  | dark (`tone="light"`) | `text-muted-azure` #7b9ec4 | **6.72:1** ✓ AA |
+  **So `tone` is now load-bearing** — getting it wrong costs contrast, not just
+  hue. Pass `tone="light"` on every `bg-ink-*` / `bg-primary` section.
+- **Size and tracking, v6.** `--t-section-title` raised to 22px at the 1440
+  reference (was 19px), capped 24px so it stays under ~0.7 of the
+  `--t-headline-md` beside it. **Tracking cut 0.18em → 0.08em**, which does more
+  for readability than the size did: wide positive tracking is a *small*-caps
+  device and at 22px it pulls words apart into loose letters. Both primary
+  references agree — Elementis' section label uses no tracking at all, and
+  the-line runs its uppercase labels at *negative* tracking as they scale.
+- The mark is sized in `em` off the label, so it needs no breakpoint of its
+  own. This requires the type classes to sit on the flex CONTAINER, not the
+  label span — on the span, `em` resolves against inherited size instead.
+- Nothing stretches, nothing points at anything, nothing counts anything.
+  Simplicity was the brief the third time around — don't re-add a mark, rule,
+  or numeral without being asked.
+
 ### 2.6 Mobile
 
 - CSS-first (`md:`) for layout. Only branch in JS when behaviour genuinely differs.
@@ -157,6 +219,14 @@ Newsreader (display) + Manrope (body). **No bold anywhere** — weights 300/400/
   server-side, swap after hydration, or crawlers see nothing.
 - Sticky/500vh sections need mobile-specific geometry; don't ship desktop values.
 - Test 375 / 768 / 1024 / 1440. Touch targets ≥44px. No horizontal overflow.
+- **`HoverReveal` needs a mobile fallback wherever it is the only affordance
+  telling a visitor a card is clickable.** Touch has no hover state, so
+  `onMouseEnter`/`onMouseLeave` never fires — a phone user sees the default
+  text forever. Fixed 2026-08-13 in `PortfolioGrid`: `HoverReveal` is now
+  `hidden md:block` (desktop keeps the hover swap), with an explicit
+  always-visible pill button (`View property →`, `min-h-11`, styled as a
+  button but a `<span>` — see the component for why) shown `md:hidden`. Apply
+  the same pattern anywhere else `HoverReveal` is a card's only CTA cue.
 
 ---
 
@@ -165,6 +235,12 @@ Newsreader (display) + Manrope (body). **No bold anywhere** — weights 300/400/
 1. Wrap in `<section className="px-margin-edge py-section-gap">` (+ explicit
    `bg-*` and `text-*` if dark).
 2. Inside: `grid grid-cols-1 gap-gutter md:grid-cols-[1fr_1.9fr]`.
+   ⚠️ **Exception: a multi-column card/media grid.** Nesting one inside the
+   1.9fr column squeezes it into 66% of the section width and leaves a
+   full-height empty gutter beside it — happened on the portfolio page's
+   asset grid, fixed 2026-08-13. For a card grid, put `<SectionTitle>` full
+   width on its own row instead and let the grid span the whole section below
+   it, uncontained by the `[1fr_1.9fr]` split.
 3. `<SectionTitle>` in column 1.
 4. Column 2: headline via `MaskText` with hand-broken lines.
 5. Body copy via `MaskText` with hand-broken lines (**not** `<p>`).
@@ -390,7 +466,7 @@ are their own three stated capabilities. Full constraints in `data/services.ts`.
 | New component | Ported from |
 |---|---|
 | `ui/PillarCard.tsx` | `../hetari-portfolio/src/components/ServicesCard.vue` — `( 01 )` numeral, title, numbered sub-rows with the middle row hairline-bounded |
-| `ui/RotatingMark.tsx` | same file's `animate-[spin_10s_linear_infinite]`, slowed to 20s. CSS-only, so it needs `motion-reduce:animate-none` — the global `MotionConfig` does not cover CSS animations |
+| ~~`ui/RotatingMark.tsx`~~ **deleted** | was hetari's `animate-[spin_10s_linear_infinite]`. Rejected as ambient noise and replaced by `ui/DrawnRule` — a hairline that draws once and settles, used as the card's top edge. Worth keeping the lesson: a CSS animation needs its own `motion-reduce:` variant, because the global `MotionConfig` only covers Motion |
 | `ui/FlickerText.tsx` | `../the-line-awwwards-SOTM/components/FlickerText.tsx` — simplified from its hand-built `times` array to per-letter delay; rule collapses right via `origin-right` |
 | `ui/InlineList.tsx` | `../the-line-awwwards-SOTM/components/List.tsx` — slash-separated, `staggerChildren: 0.06`; made to wrap |
 
@@ -464,8 +540,35 @@ does not have and contradicted crediting an external partner.
 
 ### Phase F — global polish (MASTER-PLAN §6 Phase 4 remainder)
 
-- [ ] **F1** Re-enable the intro/preloader — `Intro.tsx` and the boot script in
-      `layout.tsx` are built and currently disabled. Verify session-once + skip.
+- [x] **F1 Preloader** ✅ **complete 2026-08-13, retimed to a full 5000ms.**
+      The doc previously said it was "disabled" — it was not; it was live at
+      ~3350ms. It now runs 5s at the client's request.
+
+      **The CSS schedule and the boot timers are one system.** Change a delay in
+      `globals.css` and you must change `layout.tsx` to match, or the curtain
+      lifts before or after the animation it is meant to be ending. Both files
+      carry the full schedule in a comment. `FAILSAFE_MS` in `lib/introGate.ts`
+      was raised 6000 → 7000 to keep headroom above the new `tD`.
+
+      | ms | beat |
+      |---|---|
+      | 200 → 1100 | mark clip-wipes up |
+      | 950 → 1770 | BRAHMAS rises behind its mask |
+      | 1750 → 2670 | subtitle words stagger in, 100ms apart |
+      | 2400 → 4150 | the rule draws — once, slowly. **This is the progress bar.** |
+      | 4150 → 5000 | curtain lifts, curved edge flattens |
+
+      ⚠️ **ONE line event only.** A first pass drew the rule as a hairline and
+      then ran a solid fill along the same path to fill the extra time. On
+      screen that read as *the line loading twice* and was rejected. If the
+      middle needs more life, add motion that is **not another horizontal
+      line** — the subtitle stagger exists for exactly that reason.
+
+      At 5s the escape hatches are load-bearing, and all three are verified
+      intact: session-once via `sessionStorage`, full skip on
+      `prefers-reduced-motion`, and any pointerdown/keydown cutting to a 450ms
+      exit. `<html>` still ships `data-intro="skip"` server-side, so crawlers
+      and no-JS visitors never see the curtain at all.
 - [ ] **F2** Page transitions from `../otis-valen-next/app/template.tsx`.
 - [ ] **F3** Full mobile audit — 375/768/1024/1440.
 - [ ] **F4** Brand sweep — no "BRAHMA" without the "S"; full legal name in

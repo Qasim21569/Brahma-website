@@ -58,8 +58,21 @@ export default function Intro() {
           <span className="intro-word-mask">
             <span className="intro-word">BRAHMAS</span>
           </span>
+          {/* One line, drawn once, slowly — it IS the progress indicator.
+              It previously drew as a hairline and then had a solid fill travel
+              the same path, which read as the same line loading twice. */}
           <span className="intro-rule" aria-hidden="true" />
-          <span className="intro-sub">Management and Investment Group</span>
+
+          {/* Split into words so the subtitle staggers in rather than fading as
+              one block. That texture is what carries the middle of the 5s;
+              justification still works because these are inline-level boxes
+              separated by real spaces. */}
+          <span className="intro-sub">
+            <span className="intro-sub-word">Management</span>{" "}
+            <span className="intro-sub-word">and</span>{" "}
+            <span className="intro-sub-word">Investment</span>{" "}
+            <span className="intro-sub-word">Group</span>
+          </span>
         </div>
       </div>
     </div>

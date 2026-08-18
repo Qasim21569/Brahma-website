@@ -116,7 +116,7 @@ export default function Process() {
 
           {/* Full rail — desktop only */}
           <div className="hidden md:block">
-            <SectionTitle className="text-cream/60">Process</SectionTitle>
+            <SectionTitle tone="light">Process</SectionTitle>
 
             <div className="mt-14 flex items-baseline gap-4">
               <span className="font-display-hero text-display-hero leading-none text-cream">

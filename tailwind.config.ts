@@ -91,6 +91,7 @@ const config: Config = {
         sans: ["var(--font-manrope)", "system-ui", "sans-serif"],
         "stat-display": ["var(--font-newsreader)", "Georgia", "serif"],
         "label-caps": ["var(--font-manrope)", "system-ui", "sans-serif"],
+        "section-title": ["var(--font-manrope)", "system-ui", "sans-serif"],
         "headline-lg-mobile": ["var(--font-newsreader)", "Georgia", "serif"],
         "body-md": ["var(--font-manrope)", "system-ui", "sans-serif"],
         "display-hero": ["var(--font-newsreader)", "Georgia", "serif"],
@@ -114,6 +115,23 @@ const config: Config = {
         "label-caps": [
           "var(--t-label-caps)",
           { lineHeight: "1.2", letterSpacing: "0.15em", fontWeight: "500" },
+        ],
+        // Section labels.
+        //
+        // Tracking was 0.18em, on the reasoning that looser than label-caps
+        // would read as authority. That holds at 11px; it does not at 22px.
+        // Wide positive tracking is a SMALL-caps device — it buys legibility
+        // when letterforms are tiny, and costs it once they are not, because
+        // the eye stops reading words and starts reading letters. Both primary
+        // references agree: Elementis' section label uses no tracking at all
+        // (16/20px, sentence case), and the-line runs its uppercase labels at
+        // NEGATIVE tracking (-0.01em) as they scale up.
+        //
+        // 0.08em keeps the label voice — clearly not body copy — without
+        // shredding word cohesion at the v6 size.
+        "section-title": [
+          "var(--t-section-title)",
+          { lineHeight: "1.1", letterSpacing: "0.08em", fontWeight: "500" },
         ],
       },
     },

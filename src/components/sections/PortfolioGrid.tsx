@@ -149,8 +149,12 @@ function PropertyCard({
           </h2>
         </div>
 
+        {/* Desktop: city/state swaps to "View property" on hover. Hidden on
+            mobile — touch has no hover state, so this would otherwise be the
+            ONLY on-page cue that the card leads anywhere, and it would never
+            fire. The explicit button below replaces it there. */}
         <HoverReveal
-          className="mt-2 min-h-[1.6em]"
+          className="mt-2 hidden min-h-[1.6em] md:block"
           defaultText={
             <span className="font-label-caps text-label-caps text-on-surface-variant">
               {property.city}, {property.state}
@@ -163,9 +167,33 @@ function PropertyCard({
           }
         />
 
+        {/* Mobile-only: city/state as a plain label, since it has nowhere to
+            swap to without hover. */}
+        <span className="font-label-caps text-label-caps text-on-surface-variant mt-2 block md:hidden">
+          {property.city}, {property.state}
+        </span>
+
         <p className="font-body-md text-body-md text-on-surface-variant mt-4 max-w-md leading-snug">
           {property.summary}
         </p>
+
+        {/* Mobile-only explicit CTA. A real button visually, but a <span> —
+            not a nested <Link>/<button> — because the whole card above is
+            already the interactive <Link>; nesting a second interactive
+            element inside it is invalid HTML and breaks hydration. min-h-11
+            keeps it at the §2.6 44px touch-target floor. */}
+        <span className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-mortar-grey px-5 font-label-caps text-label-caps text-primary md:hidden">
+          View property
+          <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
+            <path
+              d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
       </Link>
     </motion.article>
   );

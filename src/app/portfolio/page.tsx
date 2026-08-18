@@ -30,7 +30,7 @@ export default function PortfolioPage() {
         <section className="bg-ink-deep px-margin-edge pt-16 pb-section-gap text-cream">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
             <div>
-              <SectionTitle className="text-cream-dim">Portfolio</SectionTitle>
+              <SectionTitle tone="light">Portfolio</SectionTitle>
               {/* Stats sit in the narrow column on desktop — same editorial
                   grammar as About, and keeps the hero readable at rest without
                   clipping the figures below the fold. */}
@@ -118,25 +118,28 @@ export default function PortfolioPage() {
           </div>
         </section>
 
-        {/* ─── The assets — LIGHT ─── */}
+        {/* ─── The assets — LIGHT ───
+            Deliberately NOT the [1fr_1.9fr] text-content grid every other
+            section uses. That grammar reserves the left third of the row for
+            the label column, which is fine when the right column is a
+            paragraph but leaves a full-height empty gutter beside a 2-column
+            card grid — the whole grid gets squeezed into 66% of the section
+            width for no reason. Label sits full-width on its own row instead,
+            and the card grid gets the full section width below it. */}
         <section className="px-margin-edge py-section-gap">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
-              The Assets
-            </SectionTitle>
-            <div>
-              {/* All 12 via enrichedProperties. The grid renders a designed
-                  fallback for the 10 without photography, so this is not gated
-                  on featuredProperties the way the old page was. */}
-              <PortfolioGrid properties={enrichedProperties} />
-            </div>
+          <SectionTitle>The Assets</SectionTitle>
+          <div className="mt-12">
+            {/* All 12 via enrichedProperties. The grid renders a designed
+                fallback for the 10 without photography, so this is not gated
+                on featuredProperties the way the old page was. */}
+            <PortfolioGrid properties={enrichedProperties} />
           </div>
         </section>
 
         {/* ─── CTA — LIGHT (stone-white, hairline-bounded) ─── */}
         <section className="bg-stone-white border-y border-mortar-grey px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
-            <SectionTitle className="text-on-surface-variant">
+            <SectionTitle>
               Next Steps
             </SectionTitle>
             <div>
