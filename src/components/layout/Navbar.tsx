@@ -127,16 +127,16 @@ export function Navbar() {
               alt=""
               width={BMIG_LOGO_SIZE.width}
               height={BMIG_LOGO_SIZE.height}
-              className="h-12 w-auto md:h-14"
+              className="h-[55px] w-auto md:h-16"
               priority
               unoptimized
             />
             <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
-              <span className="font-serif font-normal text-primary text-[22px] md:text-[26px] tracking-[-0.01em] leading-none whitespace-nowrap">
+              <span className="font-serif font-normal text-primary text-[25px] md:text-[30px] tracking-[-0.01em] leading-none whitespace-nowrap">
                 BRAHMAS
               </span>
               <span
-                className="font-sans font-medium text-primary/70 uppercase text-[6px] md:text-[6.5px] w-full mt-0.5"
+                className="font-sans font-medium text-primary/70 uppercase text-[7px] md:text-[7.5px] w-full mt-0.5"
                 style={{ textAlign: "justify", textAlignLast: "justify" }}
               >
                 Management and Investment Group
@@ -200,7 +200,7 @@ export function Navbar() {
       >
         <div className="flex h-full flex-col">
           {/* Top bar — geometry mirrors the real navbar exactly (px-margin-edge,
-              10px pad, h-12 mark) so the lockup does not shift when opening. */}
+              10px pad, 55px mark) so the lockup does not shift when opening. */}
           <div
             className="flex items-center justify-between px-margin-edge"
             style={{ paddingTop: 10, paddingBottom: 10 }}
@@ -216,15 +216,15 @@ export function Navbar() {
                 alt=""
                 width={BMIG_LOGO_SIZE.width}
                 height={BMIG_LOGO_SIZE.height}
-                className="h-12 w-auto"
+                className="h-[55px] w-auto"
                 unoptimized
               />
               <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
-                <span className="font-serif font-normal text-primary text-[22px] tracking-[-0.01em] leading-none whitespace-nowrap">
+                <span className="font-serif font-normal text-primary text-[25px] tracking-[-0.01em] leading-none whitespace-nowrap">
                   BRAHMAS
                 </span>
                 <span
-                  className="font-sans font-medium text-primary/70 uppercase text-[6px] w-full mt-0.5"
+                  className="font-sans font-medium text-primary/70 uppercase text-[7px] w-full mt-0.5"
                   style={{ textAlign: "justify", textAlignLast: "justify" }}
                 >
                   Management and Investment Group

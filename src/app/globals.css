@@ -10,7 +10,7 @@
     --multiplier: calc(100vw / 375);
 
     /* Fixed navbar height — hero and page tops offset by this. */
-    --nav-h: 68px;
+    --nav-h: 75px;
 
     /* Type scale — mobile N */
     --t-display-hero: calc(34 * var(--multiplier));
@@ -38,7 +38,7 @@
   @media only screen and (min-width: 768px) {
     :root {
       --multiplier: calc(100vw / 1440);
-      --nav-h: 78px;
+      --nav-h: 84px;
 
       --t-display-hero: calc(60 * var(--multiplier));
       --t-headline-lg: calc(56 * var(--multiplier));
