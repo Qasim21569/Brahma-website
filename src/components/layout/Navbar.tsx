@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import { BMIG_LOGO_SRC, BMIG_LOGO_SIZE } from "@/data/company";
+import { contactRoutes, operatingRegion } from "@/data/contact";
 
 const links = [
   { href: "/about", label: "About Us" },
@@ -162,47 +163,68 @@ export function Navbar() {
             <ArrowIcon className="w-4 h-4" />
           </Link>
 
-          {/* Hamburger (mobile only) */}
+          {/* Hamburger (mobile only). Open-only: the drawer sits above this bar
+              at z-60 and carries its own close control, so the previous
+              drawerOpen branch drew a burger that was never visible. */}
           <button
-            className="md:hidden text-ink-navy p-1"
-            onClick={() => setDrawerOpen(!drawerOpen)}
-            aria-label={drawerOpen ? "Close menu" : "Open menu"}
+            className="-mr-1 grid h-11 w-11 place-items-center text-ink-navy md:hidden"
+            onClick={() => setDrawerOpen(true)}
+            aria-label="Open menu"
             aria-expanded={drawerOpen}
           >
-            <svg viewBox="0 0 22 14" fill="none" className="w-7 h-7" aria-hidden="true">
-              {drawerOpen ? (
-                <path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              ) : (
-                <path d="M1 13h20M1 7h20M1 1h20" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              )}
+            <svg viewBox="0 0 22 14" fill="none" className="h-7 w-7" aria-hidden="true">
+              <path d="M1 13h20M1 7h20M1 1h20" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           </button>
       </motion.div>
       </motion.nav>
 
-      {/* ── Mobile full-screen drawer ── */}
+      {/* ── Mobile full-screen drawer ──
+          LIGHT canvas, deliberately. The lockup's mark is drawn for a light
+          background — on the previous #0a1220 drawer it muddied while the
+          wordmark beside it stayed cream, so the two halves of one lockup
+          disagreed. Cream removes the conflict at the root: this is the same
+          logo treatment the desktop bar already uses, unmodified. Accent
+          colour is `muted-azure-dim` (4.77:1 on cream) — `muted-azure` is the
+          DARK-canvas variant and measures 2.48:1 here. See PLAYBOOK §2.5. */}
       <div
-        className={`fixed inset-0 z-[60] md:hidden ${
+        className={`fixed inset-0 z-[60] bg-stone-white md:hidden ${
           drawerOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
-        style={{
-          backgroundColor: "#0a1220",
-          transition: "opacity 280ms cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
+        style={{ transition: "opacity 280ms cubic-bezier(0.22, 1, 0.36, 1)" }}
+        aria-hidden={!drawerOpen}
+        // Closed, this stays mounted (so it never returns null and renders
+        // server-side) but must not be tab-reachable — aria-hidden alone with
+        // focusable children is an ARIA violation.
+        inert={!drawerOpen}
       >
         <div className="flex h-full flex-col">
-          {/* Top bar: logo + close button */}
-          <div className="flex items-center justify-between px-6 py-4">
+          {/* Top bar — geometry mirrors the real navbar exactly (px-margin-edge,
+              10px pad, h-12 mark) so the lockup does not shift when opening. */}
+          <div
+            className="flex items-center justify-between px-margin-edge"
+            style={{ paddingTop: 10, paddingBottom: 10 }}
+          >
             <Link
               href="/"
               onClick={() => setDrawerOpen(false)}
-              className="flex items-center gap-2.5"
+              className="flex items-center gap-2.5 shrink-0"
+              aria-label="Brahmas — home"
             >
-              <Image src={BMIG_LOGO_SRC} alt="" width={BMIG_LOGO_SIZE.width} height={BMIG_LOGO_SIZE.height} className="h-10 w-auto" unoptimized />
+              <Image
+                src={BMIG_LOGO_SRC}
+                alt=""
+                width={BMIG_LOGO_SIZE.width}
+                height={BMIG_LOGO_SIZE.height}
+                className="h-12 w-auto"
+                unoptimized
+              />
               <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
-                <span className="font-serif font-normal text-cream text-[20px] tracking-[-0.01em] leading-none whitespace-nowrap">BRAHMAS</span>
+                <span className="font-serif font-normal text-primary text-[22px] tracking-[-0.01em] leading-none whitespace-nowrap">
+                  BRAHMAS
+                </span>
                 <span
-                  className="font-sans font-medium text-cream/60 uppercase text-[5.5px] w-full mt-0.5"
+                  className="font-sans font-medium text-primary/70 uppercase text-[6px] w-full mt-0.5"
                   style={{ textAlign: "justify", textAlignLast: "justify" }}
                 >
                   Management and Investment Group
@@ -212,7 +234,7 @@ export function Navbar() {
             <button
               onClick={() => setDrawerOpen(false)}
               aria-label="Close menu"
-              className="grid h-9 w-9 place-items-center text-cream"
+              className="-mr-1 grid h-11 w-11 place-items-center text-ink-navy"
             >
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
                 <path d="M2 2l18 18M20 2L2 20" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -220,40 +242,105 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* Nav links — centered vertically */}
-          <nav className="flex flex-1 flex-col justify-center gap-6 px-8">
-            {links.map((link, i) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setDrawerOpen(false)}
-                className="inline-flex items-center gap-4 text-cream font-serif italic text-3xl tracking-[-0.005em] transition-opacity duration-200 hover:opacity-70"
-                style={{
-                  fontStyle: "italic",
-                  fontFamily: "var(--font-newsreader), Georgia, serif",
-                }}
-              >
-                <span
-                  aria-hidden
-                  className="inline-block h-2 w-2 rounded-full shrink-0"
-                  style={{ backgroundColor: "rgba(244, 241, 236, 0.35)" }}
-                />
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          {/* ── Editorial index ──
+              Left-aligned, each route carrying the NN counter already used on
+              the portfolio grid and detail pages. Lines rise under a clip mask
+              on the house easing — the MaskText vocabulary, not a new one. */}
+          <motion.nav
+            className="flex flex-1 flex-col justify-center px-margin-edge"
+            initial={false}
+            animate={drawerOpen ? "open" : "closed"}
+            variants={{
+              open: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } },
+              closed: { transition: { staggerChildren: 0.02, staggerDirection: -1 } },
+            }}
+          >
+            {links.map((link, i) => {
+              const active = pathname === link.href;
+              return (
+                <motion.div
+                  key={link.href}
+                  className="overflow-hidden border-t border-outline-variant/60 first:border-t-0"
+                  variants={{
+                    open: { opacity: 1 },
+                    closed: { opacity: 0 },
+                  }}
+                >
+                  <motion.div
+                    variants={{
+                      open: { y: "0%", opacity: 1, transition: { duration: 0.65, ease: EASE } },
+                      closed: { y: "60%", opacity: 0, transition: { duration: 0.3, ease: EASE } },
+                    }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setDrawerOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                      className="flex items-baseline gap-4 py-4"
+                    >
+                      <span
+                        aria-hidden
+                        className={`font-sans text-[11px] font-medium tabular-nums tracking-[0.08em] ${
+                          active ? "text-muted-azure-dim" : "text-mortar-grey/70"
+                        }`}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        className={`font-serif text-[34px] font-light leading-none tracking-[-0.01em] ${
+                          active ? "text-muted-azure-dim" : "text-ink-navy"
+                        }`}
+                      >
+                        {link.label}
+                      </span>
+                    </Link>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </motion.nav>
 
-          {/* Bottom CTA */}
-          <div className="px-8 pb-10 pt-4">
+          {/* ── In-menu footer ── confirmed data only: the operating region is
+              derived from the portfolio, the routes come from contact.ts. */}
+          <motion.div
+            className="px-margin-edge pb-10 pt-4"
+            initial={false}
+            animate={drawerOpen ? "open" : "closed"}
+            variants={{
+              open: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE, delay: 0.34 } },
+              closed: { opacity: 0, y: 12, transition: { duration: 0.25, ease: EASE } },
+            }}
+          >
             <Link
               href="/contact"
               onClick={() => setDrawerOpen(false)}
-              className="inline-flex items-center justify-between w-full border border-cream/30 text-cream px-6 py-4 rounded-full font-label-caps text-label-caps transition-colors duration-300 hover:bg-cream hover:text-ink-deep"
+              className="inline-flex min-h-11 w-full items-center justify-between rounded-full bg-ink-deep px-6 py-4 font-label-caps text-label-caps text-cream transition-opacity duration-300 hover:opacity-90"
             >
               Contact Us
-              <ArrowIcon className="w-4 h-4" />
+              <ArrowIcon className="h-4 w-4" />
             </Link>
-          </div>
+
+            <div className="mt-6 border-t border-outline-variant/60 pt-5">
+              <p className="font-sans text-[10px] font-medium uppercase tracking-[0.08em] text-muted-azure-dim">
+                {operatingRegion}
+              </p>
+              <ul className="mt-3 flex flex-col gap-2">
+                {contactRoutes.map((route) => (
+                  <li key={route.email} className="flex items-baseline justify-between gap-4">
+                    <span className="font-sans text-[11px] uppercase tracking-[0.08em] text-mortar-grey">
+                      {route.label}
+                    </span>
+                    <a
+                      href={`mailto:${route.email}`}
+                      className="font-body-md text-[13px] text-ink-navy/80 underline-offset-4 hover:underline"
+                    >
+                      {route.email}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
         </div>
       </div>
     </>
