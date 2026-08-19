@@ -117,21 +117,9 @@ export default function SelectedWork() {
           viewport={{ amount: 0.5, once: true }}
           className="relative z-10 flex h-full flex-col items-center justify-between pb-[6vh] pt-[calc(var(--nav-h)+4vh)] text-cream backdrop-brightness-[60%] md:flex-row md:px-margin-edge md:pb-[8vh] md:pt-[calc(var(--nav-h)+6vh)]"
         >
-          {/* This is the ONE section label that sits directly on photography.
-              Everywhere else `tone="light"` is safe because the canvas really
-              is `bg-ink-deep`; here the canvas is a photograph that changes
-              with every slide, so the label's contrast changed with it — over a
-              bright sky it all but disappeared. The container's
-              `backdrop-brightness-[60%]` dims the whole frame but cannot
-              guarantee a floor behind this specific text.
-
-              The scrim supplies the dark canvas `tone="light"` already assumes,
-              which is why the label needs no colour override — it just makes
-              the existing assumption true, and holds at 6.72:1 regardless of
-              the image behind it. Hairline-bounded to match the stats and card
-              treatments rather than introducing a new shape. */}
-          <span className="inline-flex border border-cream/20 bg-ink-deep/70 px-5 py-3 backdrop-blur-md">
-            <SectionTitle tone="light">Selected Work</SectionTitle>
+          {/* Solid stone-white plate so the label holds over any slide. */}
+          <span className="inline-flex border border-mortar-grey bg-stone-white px-5 py-3">
+            <SectionTitle>Selected Work</SectionTitle>
           </span>
 
           {/* Out of the justify-between row on desktop so the card sits on the
