@@ -136,7 +136,7 @@ export function Navbar() {
                 BRAHMAS
               </span>
               <span
-                className="font-sans font-medium text-primary/70 uppercase text-[7px] md:text-[7.5px] w-full mt-0.5"
+                className="font-sans font-bold text-primary/70 uppercase text-[7px] md:text-[7.5px] w-full mt-0.5"
                 style={{ textAlign: "justify", textAlignLast: "justify" }}
               >
                 Management and Investment Group
@@ -224,7 +224,7 @@ export function Navbar() {
                   BRAHMAS
                 </span>
                 <span
-                  className="font-sans font-medium text-primary/70 uppercase text-[7px] w-full mt-0.5"
+                  className="font-sans font-bold text-primary/70 uppercase text-[7px] w-full mt-0.5"
                   style={{ textAlign: "justify", textAlignLast: "justify" }}
                 >
                   Management and Investment Group
