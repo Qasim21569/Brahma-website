@@ -36,7 +36,7 @@ export type Pillar = {
 
 export const pillars: Pillar[] = [
   {
-    title: "Capital",
+    title: "Capital structuring",
     body: [
       "We source assets whose structural quality",
       "exceeds their operating performance, and",

@@ -104,7 +104,7 @@ export default function ServicesPage() {
         <section className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
             <SectionTitle>
-              Capabilities
+              Services
             </SectionTitle>
             <div className="flex flex-col gap-20 md:gap-32">
               {pillars.map((pillar, i) => (
