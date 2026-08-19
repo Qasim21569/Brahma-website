@@ -97,11 +97,11 @@ export default function CareersPage() {
           <ResponsiveImage parallaxAmount={20}>
             <div className="relative aspect-[16/10] w-full bg-stone-white md:aspect-[21/9]">
               <Image
-                src="/site-photos/Hampton-Inn-6.webp"
-                alt="A Brahmas-operated hospitality asset"
+                src="/properties/holiday-inn-express-orlando-seaworld/g-01.jpg"
+                alt="Pool and building at Holiday Inn Express Orlando South Park"
                 fill
                 sizes="100vw"
-                className="object-cover"
+                className="object-cover object-center"
                 loading="lazy"
               />
             </div>

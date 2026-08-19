@@ -72,9 +72,9 @@ export default function ServicesPage() {
             `Image` / `ResponsiveImage` imports.
 
             <ThresholdReveal
-              src="/site-photos/Clarion-Pointe-8.webp"
-              alt="Clarion Pointe Tampa, acquired and repositioned by Brahmas"
-              caption="Clarion Pointe Tampa — acquired and repositioned, 2024"
+              src="/properties/hampton-inn-suites-tampa-east-seffner/g-01.jpg"
+              alt="Hampton Inn & Suites Tampa East Seffner entrance"
+              caption="Hampton Inn & Suites Tampa East — operated by Brahmas"
               topLine="Underwritten,"
               bottomLine="rebuilt, run."
             />
@@ -86,8 +86,8 @@ export default function ServicesPage() {
           <ResponsiveImage parallaxAmount={20}>
             <div className="relative aspect-[16/10] w-full bg-stone-white md:aspect-[21/9]">
               <Image
-                src="/site-photos/Clarion-Pointe-8.webp"
-                alt="Clarion Pointe Tampa, acquired and repositioned by Brahmas"
+                src="/properties/hampton-inn-suites-tampa-east-seffner/g-01.jpg"
+                alt="Hampton Inn & Suites Tampa East Seffner entrance"
                 fill
                 sizes="100vw"
                 className="object-cover"

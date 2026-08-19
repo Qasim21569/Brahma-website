@@ -86,8 +86,8 @@ export default function AboutPage() {
           <ResponsiveImage parallaxAmount={20}>
             <div className="relative aspect-[16/10] w-full bg-stone-white md:aspect-[21/9]">
               <Image
-                src="/site-photos/Hampton-Inn-homepage.webp"
-                alt="Hampton Inn & Suites Tampa Airport Westshore, held and operated by Brahmas"
+                src="/properties/quality-inn-conference-center-tampa-brandon/g-01.jpg"
+                alt="Quality Inn Conference Center, Tampa, Florida"
                 fill
                 sizes="100vw"
                 className="object-cover"

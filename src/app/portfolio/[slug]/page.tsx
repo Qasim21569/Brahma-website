@@ -9,7 +9,6 @@ import { MaskText } from "@/components/ui/MaskText";
 import { Reveal } from "@/components/ui/Reveal";
 import { RevealImage } from "@/components/ui/RevealImage";
 import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
-import { PhotoAttribution } from "@/components/ui/PhotoAttribution";
 import { PropertyCardMedia } from "@/components/ui/PropertyCardMedia";
 import { StyledLink } from "@/components/ui/StyledLink";
 import { PropertyAmenities } from "@/components/sections/PropertyAmenities";
@@ -183,7 +182,6 @@ export default async function PropertyPage({
               sizes="100vw"
             />
           )}
-          {hero && <PhotoAttribution attribution={hero.attribution} />}
         </section>
 
         {/* ─── Facts — LIGHT ─── */}
@@ -261,7 +259,6 @@ export default async function PropertyPage({
                         loading="lazy"
                       />
                     </RevealImage>
-                    <PhotoAttribution attribution={photo.attribution} />
                   </div>
                 ))}
               </div>

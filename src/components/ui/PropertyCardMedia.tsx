@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { assetTypeLabels, type Property } from "@/data/properties";
-import { PhotoAttribution } from "@/components/ui/PhotoAttribution";
 
 /**
  * PropertyCardMedia — the image slot on a portfolio card, with a designed
@@ -54,20 +53,17 @@ export function PropertyCardMedia({
   }
 
   return (
-    <>
-      <div className={`relative w-full overflow-hidden bg-stone-white ${aspect}`}>
-        <Image
-          src={photo.src}
-          alt={photo.alt}
-          fill
-          sizes={sizes}
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[0.95]"
-          priority={priority}
-          loading={priority ? undefined : "lazy"}
-        />
-      </div>
-      <PhotoAttribution attribution={photo.attribution} />
-    </>
+    <div className={`relative w-full overflow-hidden bg-stone-white ${aspect}`}>
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        fill
+        sizes={sizes}
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[0.95]"
+        priority={priority}
+        loading={priority ? undefined : "lazy"}
+      />
+    </div>
   );
 }
 
