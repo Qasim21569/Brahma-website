@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Button } from "@/components/ui/Button";
 import { MaskText } from "@/components/ui/MaskText";
 import { Hero } from "@/components/ui/Hero";
 import { Reveal } from "@/components/ui/Reveal";
@@ -9,7 +8,7 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { StyledLink } from "@/components/ui/StyledLink";
 import { CountUp } from "@/components/ui/CountUp";
 import { BorderedButton } from "@/components/ui/BorderedButton";
-import { GhostWordmark } from "@/components/ui/GhostWordmark";
+import { CtaSection } from "@/components/sections/CtaSection";
 import {
   ownPhotographyProperties as properties,
   enrichedProperties,
@@ -254,35 +253,14 @@ export default function HomePage() {
         </section>
 
         {/* ─── CTA ─── dark band; sets bg AND text explicitly per §2.4. */}
-        <section className="relative overflow-hidden bg-primary py-section-gap text-cream md:py-24">
-          <GhostWordmark>BRAHMAS</GhostWordmark>
-          <div className="relative z-10 px-margin-edge text-center">
-            <h2>
-              <MaskText
-                className="font-headline-lg text-headline-lg text-cream"
-                lines={["Ready to discuss", "your portfolio?"]}
-              />
-            </h2>
-            <MaskText
-              delay={0.15}
-              className="font-body-lg text-body-lg mx-auto mt-6 max-w-xl text-cream/70"
-              lines={[
-                "We are always looking to evaluate operating",
-                "assets that match our investment thesis.",
-              ]}
-            />
-            <Reveal delay={0.4}>
-              <div className="mt-10 flex justify-center">
-                <Button href="/contact" variant="light">
-                  Get in touch
-                  <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
-                    <path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Button>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        <CtaSection
+          titleLines={["Ready to discuss", "your portfolio?"]}
+          bodyLines={[
+            "We are always looking to evaluate operating",
+            "assets that match our investment thesis.",
+          ]}
+          actions={[{ label: "Get in touch", href: "/contact", icon: true }]}
+        />
       </main>
       <Footer />
     </>

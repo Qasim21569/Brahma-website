@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -10,6 +9,7 @@ import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 import { StyledLink } from "@/components/ui/StyledLink";
 import { CountUp } from "@/components/ui/CountUp";
 import { TeamGrid } from "@/components/sections/TeamGrid";
+import { CtaSection } from "@/components/sections/CtaSection";
 import { founder, SOURCES } from "@/data/company";
 import { constructionPartner } from "@/data/services";
 import { enrichedProperties } from "@/data/properties";
@@ -330,32 +330,14 @@ export default function AboutPage() {
         </section>
 
         {/* ─── CTA — DARK ─── */}
-        <section className="bg-ink-deep py-section-gap text-cream">
-          <div className="px-margin-edge text-center">
-            <h2>
-              <MaskText
-                className="font-headline-lg text-headline-lg text-cream"
-                lines={["Discuss an asset", "with our team."]}
-              />
-            </h2>
-            <Reveal delay={0.3}>
-              <div className="mt-10 flex flex-wrap justify-center gap-4">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center bg-cream text-ink-deep px-8 py-3.5 rounded-full font-label-caps text-label-caps hover:opacity-90 transition-opacity"
-                >
-                  Contact Our Team
-                </Link>
-                <Link
-                  href="/portfolio"
-                  className="inline-flex items-center border border-cream/40 text-cream px-8 py-3.5 rounded-full font-label-caps text-label-caps hover:bg-cream/10 transition-colors"
-                >
-                  View Portfolio
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        <CtaSection
+          tone="ink-deep"
+          titleLines={["Discuss an asset", "with our team."]}
+          actions={[
+            { label: "Contact Our Team", href: "/contact" },
+            { label: "View Portfolio", href: "/portfolio", variant: "outline" },
+          ]}
+        />
       </main>
       <Footer />
     </>

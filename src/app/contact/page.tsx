@@ -6,8 +6,7 @@ import { MaskText } from "@/components/ui/MaskText";
 import { Reveal } from "@/components/ui/Reveal";
 import { DrawnRule } from "@/components/ui/DrawnRule";
 import { StyledLink } from "@/components/ui/StyledLink";
-import { GhostWordmark } from "@/components/ui/GhostWordmark";
-import { FlickerText } from "@/components/ui/FlickerText";
+import { CtaSection } from "@/components/sections/CtaSection";
 import {
   contactRoutes,
   primaryEmail,
@@ -276,24 +275,11 @@ export default function ContactPage() {
         </section>
 
         {/* ─── CTA — DARK ─── */}
-        <section className="relative overflow-hidden bg-primary py-section-gap text-cream md:py-24">
-          <GhostWordmark>BRAHMAS</GhostWordmark>
-          <div className="relative z-10 px-margin-edge text-center">
-            <h2 className="font-headline-lg text-headline-lg text-cream">
-              <FlickerText>Let&rsquo;s talk.</FlickerText>
-            </h2>
-            <Reveal delay={0.3}>
-              <div className="mt-10 flex justify-center">
-                <a
-                  href={`mailto:${primaryEmail}`}
-                  className="inline-flex min-h-11 items-center gap-3 rounded-full bg-cream px-8 py-3.5 font-label-caps text-label-caps text-ink-deep transition-opacity hover:opacity-90"
-                >
-                  {primaryEmail}
-                </a>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        <CtaSection
+          titleLines={["Let’s talk."]}
+          reveal="flicker"
+          actions={[{ label: primaryEmail, href: `mailto:${primaryEmail}` }]}
+        />
       </main>
       <Footer />
     </>

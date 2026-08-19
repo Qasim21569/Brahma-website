@@ -10,9 +10,8 @@ import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 // import { ThresholdReveal } from "@/components/sections/ThresholdReveal";
 import { InlineList } from "@/components/ui/InlineList";
 import { PillarCard } from "@/components/ui/PillarCard";
-import { FlickerText } from "@/components/ui/FlickerText";
 import { StyledLink } from "@/components/ui/StyledLink";
-import { GhostWordmark } from "@/components/ui/GhostWordmark";
+import { CtaSection } from "@/components/sections/CtaSection";
 import Accordion from "@/components/ui/Accordion";
 import { pillars, capabilityChips, constructionPartner } from "@/data/services";
 
@@ -222,41 +221,15 @@ export default function ServicesPage() {
         {/* ─── CTA — DARK ───
             GhostWordmark rather than the one-off .brand-overlay class the old
             page used, so there is a single ghost-wordmark implementation. */}
-        <section className="relative overflow-hidden bg-primary py-section-gap text-cream md:py-24">
-          <GhostWordmark>BRAHMAS</GhostWordmark>
-          <div className="relative z-10 px-margin-edge text-center">
-            <h2 className="font-headline-lg text-headline-lg text-cream">
-              <FlickerText>Start a conversation.</FlickerText>
-            </h2>
-            <MaskText
-              delay={0.15}
-              className="font-body-lg text-body-lg mx-auto mt-8 max-w-xl text-cream/70"
-              lines={[
-                "Whether you are selling an asset or financing",
-                "one, we would rather talk early than late.",
-              ]}
-            />
-            <Reveal delay={0.4}>
-              <div className="mt-10 flex justify-center">
-                <a
-                  href="/contact"
-                  className="inline-flex min-h-11 items-center gap-3 rounded-full bg-cream px-8 py-3.5 font-label-caps text-label-caps text-ink-deep transition-opacity hover:opacity-90"
-                >
-                  Reach out to us
-                  <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
-                    <path
-                      d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        <CtaSection
+            titleLines={["Start a conversation."]}
+            reveal="flicker"
+            bodyLines={[
+              "Whether you are selling an asset or financing",
+              "one, we would rather talk early than late.",
+            ]}
+            actions={[{ label: "Reach out to us", href: "/contact", icon: true }]}
+          />
       </main>
       <Footer />
     </>

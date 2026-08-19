@@ -7,8 +7,7 @@ import { MaskText } from "@/components/ui/MaskText";
 import { Reveal } from "@/components/ui/Reveal";
 import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 import { DrawnRule } from "@/components/ui/DrawnRule";
-import { GhostWordmark } from "@/components/ui/GhostWordmark";
-import { FlickerText } from "@/components/ui/FlickerText";
+import { CtaSection } from "@/components/sections/CtaSection";
 import Accordion from "@/components/ui/Accordion";
 import { founder, SOURCES } from "@/data/company";
 import { primaryEmail } from "@/data/contact";
@@ -254,22 +253,14 @@ export default function CareersPage() {
         </section>
 
         {/* ─── CTA — DARK ─── */}
-        <section className="relative overflow-hidden bg-primary py-section-gap text-cream md:py-24">
-          <GhostWordmark>BRAHMAS</GhostWordmark>
-          <div className="relative z-10 px-margin-edge text-center">
-            <h2 className="font-headline-lg text-headline-lg text-cream">
-              <FlickerText>Run it like you own it.</FlickerText>
-            </h2>
-            <MaskText
-              delay={0.15}
-              className="font-body-lg text-body-lg mx-auto mt-8 max-w-xl text-cream/70"
-              lines={[
-                "The strongest performers are offered equity",
-                "in new projects.",
-              ]}
-            />
-          </div>
-        </section>
+        <CtaSection
+          titleLines={["Run it like you own it."]}
+          reveal="flicker"
+          bodyLines={[
+            "The strongest performers are offered equity",
+            "in new projects.",
+          ]}
+        />
       </main>
       <Footer />
     </>
