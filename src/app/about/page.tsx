@@ -6,12 +6,11 @@ import { Footer } from "@/components/layout/Footer";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { MaskText } from "@/components/ui/MaskText";
 import { Reveal } from "@/components/ui/Reveal";
-import { RevealImage } from "@/components/ui/RevealImage";
 import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 import { StyledLink } from "@/components/ui/StyledLink";
-import { HoverReveal } from "@/components/ui/HoverReveal";
 import { CountUp } from "@/components/ui/CountUp";
-import { founder, team, initials, SOURCES } from "@/data/company";
+import { TeamGrid } from "@/components/sections/TeamGrid";
+import { founder, SOURCES } from "@/data/company";
 import { constructionPartner } from "@/data/services";
 import { enrichedProperties } from "@/data/properties";
 
@@ -132,7 +131,7 @@ export default function AboutPage() {
                       src="/founder-image.png"
                       alt={`${founder.name}, ${founder.role}`}
                       fill
-                      sizes="(max-width: 768px) 100vw, 30vw"
+                      unoptimized
                       className="object-cover"
                     />
                   </div>
@@ -284,55 +283,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="mt-16 grid grid-cols-2 gap-gutter md:grid-cols-3 lg:grid-cols-5">
-              {team.map((person, i) => (
-                <Reveal key={person.role} delay={(i % 5) * 0.08}>
-                  <article>
-                    {person.photo ? (
-                      <RevealImage className="relative aspect-[3/4] w-full overflow-hidden bg-surface-container">
-                        <Image
-                          src={person.photo}
-                          alt={`${person.name}, ${person.role}`}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 20vw"
-                          className="object-cover"
-                          loading="lazy"
-                        />
-                      </RevealImage>
-                    ) : (
-                      /* Monogram fallback — 4 of 5 roles have no headshot yet. */
-                      <div
-                        className="flex aspect-[3/4] w-full items-center justify-center bg-surface-container"
-                        aria-hidden="true"
-                      >
-                        <span className="font-display-hero text-[36px] leading-none text-primary/25">
-                          {initials(person.name)}
-                        </span>
-                      </div>
-                    )}
-                    <h3 className="font-body-lg text-body-lg text-primary mt-5 leading-tight">
-                      {person.name}
-                    </h3>
-                    {/* Role swaps to the person's focus on hover — keeps the card
-                        short while still carrying the detail. min-h reserves the
-                        taller of the two states so the grid does not reflow. */}
-                    <HoverReveal
-                      className="mt-2 min-h-[4em]"
-                      defaultText={
-                        <span className="font-label-caps text-label-caps text-muted-azure">
-                          {person.role}
-                        </span>
-                      }
-                      hoverText={
-                        <span className="font-body-md text-body-md text-on-surface-variant leading-snug">
-                          {person.focus}
-                        </span>
-                      }
-                    />
-                  </article>
-                </Reveal>
-              ))}
-            </div>
+            <TeamGrid />
           </div>
         </section>
 

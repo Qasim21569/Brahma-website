@@ -15,7 +15,11 @@ import {
   enrichedProperties,
   assetTypeLabels,
 } from "@/data/properties";
-import { founder, BMIG_LOGO_SRC } from "@/data/company";
+import {
+  founder,
+  BMIG_LOGO_FULL_SRC,
+  BMIG_LOGO_FULL_SIZE,
+} from "@/data/company";
 import { AutoSlideImageContainer } from "@/components/ui/AutoSlideImageContainer";
 import Process from "@/components/sections/Process";
 import SelectedWork from "@/components/sections/SelectedWork";
@@ -85,12 +89,15 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
             <div className="md:-mt-1.5">
               <SectionTitle>About Brahmas</SectionTitle>
+              {/* Full client-supplied file, by request — see the note on
+                  BMIG_LOGO_FULL_SRC for why this one usage keeps it while the
+                  rest of the site uses the lightweight vector. */}
               <Reveal delay={0.15} distance={14}>
                 <Image
-                  src={BMIG_LOGO_SRC}
+                  src={BMIG_LOGO_FULL_SRC}
                   alt="Brahmas Management and Investment Group"
-                  width={2160}
-                  height={2160}
+                  width={BMIG_LOGO_FULL_SIZE.width}
+                  height={BMIG_LOGO_FULL_SIZE.height}
                   className="mt-14 h-auto w-52 md:mt-20 md:w-[30vw] md:max-w-[520px]"
                   unoptimized
                 />

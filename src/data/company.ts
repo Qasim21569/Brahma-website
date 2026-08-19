@@ -18,7 +18,55 @@ export const SOURCES = {
 } as const;
 
 /** Client-supplied brand mark — intro, navbar, homepage About. */
-export const BMIG_LOGO_SRC = "/BMIG LOGO FINAL.svg";
+/**
+ * The BMIG mark, as a true vector — 2.7 KB.
+ *
+ * Was `/BMIG LOGO FINAL.svg` until 2026-08-17. Despite the extension that file
+ * is **5.47 MB** and contains ZERO vector paths: it is an SVG wrapper around
+ * two base64 PNGs — a 3.7 MB blurred shadow layer beneath a 330 KB sharp mark.
+ * It was loaded on every page (navbar twice, homepage, preloader) with
+ * `unoptimized`, so all 5.47 MB shipped raw, and the navbar's `priority` put a
+ * blocking `<link rel="preload">` for it in every document head.
+ *
+ * Both embedded PNGs were extracted and compared against this file: same
+ * artwork (circle, lotus petals, key), same palette. The only thing lost is the
+ * blurred shadow layer, which is imperceptible at the 40–56px the mark is
+ * actually displayed at — and cost 3.7 MB.
+ *
+ * ⚠️ The old file is still in `public/`, so it is still deployed. It is now
+ * referenced by nothing; delete it once the vector is signed off visually.
+ * Also note the space in its filename — the exact footgun that forced the
+ * `public/Site Photos/` → `site-photos/` rename (see HANDOFF landmines).
+ */
+export const BMIG_LOGO_SRC = "/bmig-logo.svg";
+
+/** Intrinsic ratio of the vector above (viewBox 0 0 150 147). */
+export const BMIG_LOGO_SIZE = { width: 150, height: 147 } as const;
+
+/**
+ * The original client-supplied file, restored by request for the homepage
+ * About/Story section ONLY — 2026-08-17.
+ *
+ * Still 5.47 MB, still zero vector paths (a wrapped PNG, not a drawing) — see
+ * the note above `BMIG_LOGO_SRC`, which is unchanged by this. The two differ
+ * visually: this file carries the soft shadow layer the extracted vector
+ * doesn't reproduce, which the client preferred at this section's large
+ * display size (up to `520px`/`30vw`).
+ *
+ * The performance objection that got this file replaced everywhere else does
+ * NOT apply the same way here: this usage has no `priority`, so Next never
+ * emits a blocking `<link rel="preload">` for it, and it lazy-loads only once
+ * scrolled near — unlike the navbar/preloader copies, which loaded on every
+ * page before the user could see anything.
+ *
+ * ⚠️ Do not reuse this constant elsewhere without re-checking that reasoning —
+ * chrome that appears on first paint (navbar, preloader) should keep using
+ * `BMIG_LOGO_SRC`.
+ */
+export const BMIG_LOGO_FULL_SRC = "/BMIG LOGO FINAL.svg";
+
+/** Intrinsic size of the file above (viewBox 0 0 2160 2160). */
+export const BMIG_LOGO_FULL_SIZE = { width: 2160, height: 2160 } as const;
 
 export const founder = {
   name: "Sanjay Patel",
@@ -79,44 +127,64 @@ export const founder = {
 } as const;
 
 export type TeamMember = {
+  id: string;
   name: string;
   role: string;
+  /** Shown when the role is opened — what they actually do day to day. */
   focus: string;
-  /** Local path once real headshots exist; null renders a monogram placeholder. */
+  /** Local path; null renders a monogram placeholder. */
   photo: string | null;
 };
 
-/** TODO: replace names and roles with the real leadership team. */
+/**
+ * Leadership grid on /about#team.
+ *
+ * Headshots are the client-supplied `public/team-member{n}.png` files.
+ * ⚠️ Names and titles below are working placeholders until the real roster
+ * is confirmed — Sanjay Patel remains the named founder in `founder` above.
+ */
 export const team: TeamMember[] = [
   {
-    name: "Sanjay Patel",
-    role: "Chief Executive Officer & President",
+    id: "rajiv-mehta",
+    name: "Rajiv Mehta",
+    role: "Chief Investment Officer",
     focus: "Strategy, capital, and lender relationships",
-    photo: null,
+    photo: "/team-member1.png",
   },
   {
-    name: "Team Member",
+    id: "vikram-shah",
+    name: "Vikram Shah",
     role: "Director of Acquisitions",
     focus: "Underwriting, diligence, and market selection",
-    photo: null,
+    photo: "/team-member2.png",
   },
   {
-    name: "Team Member",
-    role: "Head of Operations",
-    focus: "Brahmas Hospitality Management",
-    photo: null,
-  },
-  {
-    name: "Team Member",
+    id: "neil-kapoor",
+    name: "Neil Kapoor",
     role: "Director of Asset Management",
     focus: "Capital improvement and brand standards",
-    photo: null,
+    photo: "/team-member3.png",
   },
   {
-    name: "Team Member",
-    role: "Controller",
-    focus: "Reporting, treasury, and franchise compliance",
-    photo: null,
+    id: "ananya-rao",
+    name: "Ananya Rao",
+    role: "Head of Hospitality Operations",
+    focus: "Brahmas Hospitality Management",
+    photo: "/team-member4.png",
+  },
+  {
+    id: "meera-iyer",
+    name: "Meera Iyer",
+    role: "Admin",
+    focus: "Records, scheduling, and day-to-day office coordination",
+    photo: "/team-member5.png",
+  },
+  {
+    id: "priya-nair",
+    name: "Priya Nair",
+    role: "Head of Development",
+    focus: "Ground-up development and major repositioning",
+    photo: "/team-member6.png",
   },
 ];
 

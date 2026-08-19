@@ -162,7 +162,7 @@ export function ThresholdReveal({
         >
           <motion.div style={{ scale: markScale }}>
             <Image
-              src="/brahmas-vector-logo-preload.svg"
+              src="/bmig-logo.svg"
               alt=""
               width={150}
               height={147}

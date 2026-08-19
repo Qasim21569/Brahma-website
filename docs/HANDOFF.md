@@ -226,6 +226,54 @@ Two earlier attempts, both rejected, both instructive:
 
 ---
 
+**Team photos — greyscale → colour, zha.com/people style.** New
+`ui/TeamPhoto.tsx`. Hover is pure CSS (`group-hover:grayscale-0`) so it needs no
+hydration; **touch devices latch to colour on tap**, because `:hover` never
+fires there and a hover-only treatment would leave every phone visitor on a
+permanently grey grid — the same failure `HoverReveal` had on the portfolio
+cards (§2.6). Gated on `(hover: hover)`, not viewport width, so a narrow desktop
+window still hovers. ⚠️ **All five team rows now point at
+`/founder-image.png`** as a placeholder so the effect can be signed off — four
+of them are not the person named. Replace `photo` per row in `company.ts`.
+Note: Tailwind v4 already wraps hover variants in `@media (hover:hover)`;
+writing that query explicitly emits a nested duplicate.
+
+**🚨 The site logo was 5.47 MB, on every page.** `/BMIG LOGO FINAL.svg` has an
+SVG extension but **zero vector paths** — it wrapped two base64 PNGs, a 3.7 MB
+blurred shadow layer under a 330 KB sharp mark. Loaded `unoptimized` in the
+navbar (×2), homepage and preloader, with the navbar's `priority` emitting a
+**blocking `<link rel="preload">` in every document head**.
+
+That is also the cause of the "preloader logo sometimes doesn't load" report:
+the intro runs on a **fixed 5000 ms timer that never waits for any asset**, so
+on a cold load the curtain lifted before 5.47 MB had arrived. It looked
+intermittent because it always worked once cached.
+
+- `BMIG_LOGO_SRC` now points at **`/bmig-logo.svg` — 2.7 KB of real paths**
+  (renamed from `brahmas-vector-logo-preload.svg`; the old name also carried the
+  space-in-filename footgun that forced the `Site Photos/` rename).
+  Both embedded PNGs were extracted and compared: same artwork, same palette.
+  Only the blurred shadow is lost, imperceptible at the 40–56px it renders at.
+- **The intro mark is now INLINE SVG** in `Intro.tsx`. A preloader that depends
+  on a network fetch can always lose the race; inlining removes it entirely.
+  **Do not turn it back into an `<Image>`.**
+- 🔁 **Restored by client request in ONE place, 2026-08-17:** the homepage
+  About/Story section (`BMIG_LOGO_FULL_SRC` in `company.ts`) uses the original
+  5.47 MB file again — the client preferred its soft shadow layer at that
+  section's large display size (30vw/520px). This carries no `priority`, so
+  Next never emits a blocking preload for it and it lazy-loads only once
+  scrolled near — unlike the navbar/preloader copies this whole section is
+  about, which loaded before the page painted anything. Navbar and preloader
+  are untouched, still on the 2.7 KB `BMIG_LOGO_SRC` vector.
+  `public/BMIG LOGO FINAL.svg` is therefore back in active use — do not delete
+  it.
+
+**Selected Work label — scrimmed.** It is the one `SectionTitle` sitting
+directly on photography, so `tone="light"`'s assumption of a dark canvas was
+only sometimes true and the label vanished over bright images. It now sits in a
+hairline-bounded `bg-ink-deep/70` + `backdrop-blur` box, which makes that
+assumption true and holds 6.72:1 regardless of the slide behind it.
+
 **`SectionTitle` — now v6 (2026-08-17), a readability fix.** v5's fixed
 `text-muted-azure` measured **2.48:1** on the light canvas — a real WCAG AA
 failure, not a preference. Colour is now tone-aware (`muted-azure-dim` 4.77:1 on

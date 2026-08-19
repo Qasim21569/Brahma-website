@@ -117,12 +117,32 @@ export default function SelectedWork() {
           viewport={{ amount: 0.5, once: true }}
           className="relative z-10 flex h-full flex-col items-center justify-between pb-[6vh] pt-[calc(var(--nav-h)+4vh)] text-cream backdrop-brightness-[60%] md:flex-row md:px-margin-edge md:pb-[8vh] md:pt-[calc(var(--nav-h)+6vh)]"
         >
-          <SectionTitle tone="light">Selected Work</SectionTitle>
+          {/* This is the ONE section label that sits directly on photography.
+              Everywhere else `tone="light"` is safe because the canvas really
+              is `bg-ink-deep`; here the canvas is a photograph that changes
+              with every slide, so the label's contrast changed with it — over a
+              bright sky it all but disappeared. The container's
+              `backdrop-brightness-[60%]` dims the whole frame but cannot
+              guarantee a floor behind this specific text.
 
+              The scrim supplies the dark canvas `tone="light"` already assumes,
+              which is why the label needs no colour override — it just makes
+              the existing assumption true, and holds at 6.72:1 regardless of
+              the image behind it. Hairline-bounded to match the stats and card
+              treatments rather than introducing a new shape. */}
+          <span className="inline-flex border border-cream/20 bg-ink-deep/70 px-5 py-3 backdrop-blur-md">
+            <SectionTitle tone="light">Selected Work</SectionTitle>
+          </span>
+
+          {/* Out of the justify-between row on desktop so the card sits on the
+              viewport centre. The left label is wider than "( Keep Scrolling )",
+              which used to shove this block right. `contents` on mobile keeps
+              the existing stacked layout. */}
+          <div className="contents md:absolute md:inset-0 md:z-20 md:flex md:items-center md:justify-center md:pt-[calc(var(--nav-h)+4vh)] md:pb-[8vh]">
           <motion.div
             variants={{ initial: { y: "50%" }, inView: { y: "0%" } }}
             transition={{ ease: EASE, duration: 0.8 }}
-            className="relative z-20 my-[5vh] flex h-[70vh] min-h-fit w-[90%] flex-col items-center gap-6 bg-stone-white p-6 text-ink-deep md:h-full md:max-h-[calc(688*var(--multiplier))] md:w-full md:max-w-[calc(472*var(--multiplier))] md:gap-8 md:px-8 md:py-6"
+            className="relative z-20 my-[5vh] flex h-[70vh] min-h-fit w-[90%] flex-col items-center gap-6 bg-stone-white p-6 text-ink-deep md:my-0 md:h-auto md:max-h-[calc(688*var(--multiplier))] md:w-full md:max-w-[calc(472*var(--multiplier))] md:gap-8 md:px-8 md:py-6"
           >
             {/* Counter */}
             <div className="flex items-center gap-1 font-label-caps text-label-caps">
@@ -196,6 +216,7 @@ export default function SelectedWork() {
               </svg>
             </span>
           </motion.div>
+          </div>
 
           <span className="font-body-md text-body-md text-cream/80">
             ( Keep Scrolling )

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
-import { BMIG_LOGO_SRC } from "@/data/company";
+import { BMIG_LOGO_SRC, BMIG_LOGO_SIZE } from "@/data/company";
 
 const links = [
   { href: "/about", label: "About Us" },
@@ -124,8 +124,8 @@ export function Navbar() {
             <Image
               src={BMIG_LOGO_SRC}
               alt=""
-              width={2160}
-              height={2160}
+              width={BMIG_LOGO_SIZE.width}
+              height={BMIG_LOGO_SIZE.height}
               className="h-12 w-auto md:h-14"
               priority
               unoptimized
@@ -198,7 +198,7 @@ export function Navbar() {
               onClick={() => setDrawerOpen(false)}
               className="flex items-center gap-2.5"
             >
-              <Image src={BMIG_LOGO_SRC} alt="" width={2160} height={2160} className="h-10 w-auto" unoptimized />
+              <Image src={BMIG_LOGO_SRC} alt="" width={BMIG_LOGO_SIZE.width} height={BMIG_LOGO_SIZE.height} className="h-10 w-auto" unoptimized />
               <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
                 <span className="font-serif font-normal text-cream text-[20px] tracking-[-0.01em] leading-none whitespace-nowrap">BRAHMAS</span>
                 <span
