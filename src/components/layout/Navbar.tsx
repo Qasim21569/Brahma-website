@@ -17,6 +17,51 @@ const links = [
 
 const EASE = [0.24, 0.43, 0.15, 0.97] as const;
 
+const BRAHMAS_LETTERS = ["B", "R", "A", "H", "M", "A", "S"] as const;
+
+/** Wordmark + descriptor stacked to one width — BRAHMAS tracks the line below. */
+function LogoLockup({
+  markClassName,
+  wordmarkClassName,
+  taglineClassName,
+  priority = false,
+}: {
+  markClassName: string;
+  wordmarkClassName: string;
+  taglineClassName: string;
+  priority?: boolean;
+}) {
+  return (
+    <>
+      <Image
+        src={BMIG_LOGO_SRC}
+        alt=""
+        width={BMIG_LOGO_SIZE.width}
+        height={BMIG_LOGO_SIZE.height}
+        className={markClassName}
+        priority={priority}
+        unoptimized
+      />
+      <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
+        <span
+          className={`flex w-full justify-between font-serif font-normal text-primary leading-none ${wordmarkClassName}`}
+          aria-hidden="true"
+        >
+          {BRAHMAS_LETTERS.map((letter, i) => (
+            <span key={`${letter}-${i}`}>{letter}</span>
+          ))}
+        </span>
+        <span
+          className={`mt-0.5 w-full font-sans font-extrabold uppercase text-primary/70 ${taglineClassName}`}
+          style={{ textAlign: "justify", textAlignLast: "justify" }}
+        >
+          Management and Investment Group
+        </span>
+      </span>
+    </>
+  );
+}
+
 /** Inline arrow */
 function ArrowIcon({ className }: { className?: string }) {
   return (
@@ -122,26 +167,12 @@ export function Navbar() {
         >
           {/* Logo lockup */}
           <Link href="/" className="flex items-center gap-2.5 md:gap-3 shrink-0" aria-label="Brahmas — home">
-            <Image
-              src={BMIG_LOGO_SRC}
-              alt=""
-              width={BMIG_LOGO_SIZE.width}
-              height={BMIG_LOGO_SIZE.height}
-              className="h-[65px] w-auto md:h-[74px]"
+            <LogoLockup
               priority
-              unoptimized
+              markClassName="h-[65px] w-auto md:h-[74px]"
+              wordmarkClassName="text-[27px] md:text-[32px]"
+              taglineClassName="text-[8.5px] md:text-[9px]"
             />
-            <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
-              <span className="font-serif font-normal text-primary text-[28px] md:text-[34px] tracking-[-0.01em] leading-none whitespace-nowrap">
-                BRAHMAS
-              </span>
-              <span
-                className="font-sans font-extrabold text-primary/70 uppercase text-[8.5px] md:text-[9px] w-full mt-0.5"
-                style={{ textAlign: "justify", textAlignLast: "justify" }}
-              >
-                Management and Investment Group
-              </span>
-            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -211,25 +242,11 @@ export function Navbar() {
               className="flex items-center gap-2.5 shrink-0"
               aria-label="Brahmas — home"
             >
-              <Image
-                src={BMIG_LOGO_SRC}
-                alt=""
-                width={BMIG_LOGO_SIZE.width}
-                height={BMIG_LOGO_SIZE.height}
-                className="h-[65px] w-auto"
-                unoptimized
+              <LogoLockup
+                markClassName="h-[65px] w-auto"
+                wordmarkClassName="text-[27px]"
+                taglineClassName="text-[8.5px]"
               />
-              <span className="inline-flex flex-col leading-none" style={{ width: "max-content" }}>
-                <span className="font-serif font-normal text-primary text-[28px] tracking-[-0.01em] leading-none whitespace-nowrap">
-                  BRAHMAS
-                </span>
-                <span
-                  className="font-sans font-extrabold text-primary/70 uppercase text-[8.5px] w-full mt-0.5"
-                  style={{ textAlign: "justify", textAlignLast: "justify" }}
-                >
-                  Management and Investment Group
-                </span>
-              </span>
             </Link>
             <button
               onClick={() => setDrawerOpen(false)}
