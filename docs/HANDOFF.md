@@ -42,7 +42,7 @@ starting a session elsewhere.
 | Photography | ✅ **11 of 12 assets**, all API-sourced and credited except Clarion Pointe. Only the Weeki Wachee residence has none. |
 | Amenities | ✅ **Live on 11 of 12 detail pages**, sourced from Google. Replaced "Our Approach". |
 | Enrichment script | ✅ Written, self-tested, **key working**. Derives amenities as of 2026-08-17. |
-| Preloader | ✅ **Live at 5000ms** — Phase F1. Was never actually disabled, just shorter |
+| Preloader | ✅ **Live at 7500ms** — Phase F1. Mark draws itself shape by shape; see below |
 | Page transitions | 🔲 Built but disabled. Phase F2. |
 
 ### Done this session (2026-08-17)
@@ -120,6 +120,33 @@ assumed.
   Superseded by the Places set, but they were **hand-collected and cannot be
   re-fetched by the script**, so they are not deleted without a decision.
   `01-hero.webp` and `02-satellite.webp` in that folder are still live chrome.
+
+**Intro retimed to 7500ms, and the mark now DRAWS ITSELF.** Was 5000ms with a
+single 900ms clip-wipe of the whole logo — one beat, over before the eye
+settled.
+
+- **12 shapes, outline first, staggered 105ms apart.** Each shape strokes on
+  (`stroke-dashoffset` 1→0) and then floods its own fill 550ms behind its own
+  draw, so shapes complete as units instead of the whole mark drawing and then
+  the whole mark colouring. The centre dot is held an extra beat as the closing
+  accent. The whole mark settles 0.94 → 1 underneath.
+- **Draw order is `MARK_SHAPES` in `Intro.tsx`, not source-file order** — ring,
+  arcs, chevron, wings, sweeps, detail, key, dot. In file order the dot came
+  fourth, putting the punctuation mid-sentence.
+- `pathLength={1}` normalises every shape so **one** `stroke-dasharray: 1` rule
+  drives all twelve; without it each path needs its own measured length and any
+  artwork edit silently desynchronises the draw. The source `<polygon>` is now a
+  `<path>` — `pathLength` is patchier on `polygon`.
+- **Schedule (total 7500ms):** mark draws 300→2400, fills 850→2750, settle
+  0→2800, BRAHMAS 2750→3570, subtitle 3450→4370, rule 3800→6650, lift
+  6650→7500. `tR=6650` / `tD=7500` in layout.tsx, `FAILSAFE_MS=9500`.
+  **All four move together — they are one system.**
+- ⚠️ **Deliberately NOT GSAP**, despite it being on the table. GSAP is a JS
+  chunk, a JS chunk is a network fetch, and the intro runs on a fixed timer that
+  never waits for an asset — the exact race that made the logo "sometimes not
+  load" and forced the mark inline. Everything here is expressible in CSS, so
+  there was nothing to gain by taking that risk back on. `Intro.tsx` must stay
+  free of `"use client"`.
 
 ---
 
@@ -349,7 +376,7 @@ the phase ordering below** — work these first.
 | 3 | Add proper buttons in mobile views linking to property pages | ✅ **done** for portfolio cards. **Audit other surfaces** — anywhere `HoverReveal` is the only CTA has the same touch problem |
 | 4 | Add two missing property images | ⚠️ **half done** — Holiday Inn Express Orlando ✅ (6 owner photos). Beach House ❌ **not fetchable** — private residence, no Google listing. Needs client photography |
 | 5 | Portfolio page hero + desktop view images rework | ⬅ **next, unblocked** |
-| 6 | ~~Increase preload animation to 5 sec~~ | ✅ **done** — 5000ms, see Phase F1 |
+| 6 | ~~Increase preload animation~~ | ✅ **done** — now **7500ms** (was 5000ms), see the 2026-08-17 notes |
 | 7 | Bottom CTA and footer rework | ⬅ **unblocked** — overlaps Phase E5 |
 | 8 | ~~Remove company groups, replace with construction partners~~ | ✅ **done** — About §"Construction partners" |
 | 9 | Mobile navbar rework | ⬅ **unblocked** — `components/layout/Navbar.tsx`, mobile drawer at `md:hidden` |

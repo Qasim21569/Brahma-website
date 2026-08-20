@@ -247,30 +247,51 @@ body {
 }
 
 /* ══════════════════════════════════════════
-   INTRO / PRELOAD — BRAHMAS logo reveal · 5000ms
+   INTRO / PRELOAD — BRAHMAS logo reveal · 7500ms
    Motion is 100% CSS; the boot script in layout.tsx flips `data-intro`
    on <html>.
 
    ⚠️ THE TIMINGS BELOW AND THE BOOT TIMERS ARE ONE SYSTEM. If you change a
    delay here you MUST change layout.tsx to match, or the curtain will lift
    before or after the animation it is supposed to be ending:
-       tR (release) = 4150ms  — hero content unlocks as the lift starts
-       tD (done)    = 5000ms  — curtain fully off-screen
+       tR (release) = 6650ms  — hero content unlocks as the lift starts
+       tD (done)    = 7500ms  — curtain fully off-screen
        FAILSAFE_MS in lib/introGate.ts must stay comfortably above tD.
 
-   THE SCHEDULE (total 5000ms):
-      200 →  1100   mark clip-wipes up
-      950 →  1770   BRAHMAS rises behind its mask
-     1750 →  2670   subtitle words stagger in (4 words, 100ms apart)
-     2400 →  4150   the rule draws — once, slowly. This IS the progress bar.
-     4150 →  5000   curtain lifts, curved edge flattens
+   THE SCHEDULE (total 7500ms):
+      300 →  2400   the mark DRAWS ITSELF — 12 shapes, outline first,
+                    staggered 105ms apart (see `.intro-mark path`)
+      850 →  2750   each shape's fill floods in behind its own outline,
+                    550ms after that shape starts drawing
+        0 →  2800   the whole mark settles 0.94 → 1
+     2750 →  3570   BRAHMAS rises behind its mask
+     3450 →  4370   subtitle words stagger in (4 words, 100ms apart)
+     3800 →  6650   the rule draws — once, slowly. This IS the progress bar.
+     6650 →  7500   curtain lifts, curved edge flattens
+
+   ── Why the mark draws instead of wiping ────────────────────────────────────
+   It used to be one 900ms clip-wipe of the whole mark, which is a single beat
+   and was over before the eye had settled. Drawing it shape by shape gives the
+   first third of the sequence something to actually watch, and it suits a
+   crest: the ring encloses first, the arcs and wings fill it, the fine detail
+   lands, and the centre dot closes it. That ordering is set by MARK_SHAPES in
+   Intro.tsx, NOT by the order the shapes sat in the source file.
+
+   ── Why this is CSS and not GSAP ────────────────────────────────────────────
+   GSAP would be a JS chunk, and a JS chunk is a network fetch. The intro runs
+   on a FIXED timer that never waits for an asset, so anything it depends on can
+   lose the race — which is exactly the bug that made the logo "sometimes not
+   load" and forced the mark to be inlined in the first place. CSS keyframes on
+   inline SVG are the only version with nothing left to arrive: it is guaranteed
+   to be correct on the first frame. Everything below is achievable in CSS, so
+   there is nothing to gain by taking that risk back on.
 
    ⚠️ ONE LINE EVENT ONLY. An earlier pass drew the rule as a hairline and then
    ran a solid fill along the same path; on screen that read as the line
    loading twice. If the middle needs more life, add motion that is NOT another
    horizontal line — the subtitle stagger is there for exactly that reason.
 
-   The rule finishing at 4150ms is deliberate: it resolves into the lift rather
+   The rule finishing at 6650ms is deliberate: it resolves into the lift rather
    than stopping, so the wait is telegraphed instead of just ending.
    ══════════════════════════════════════════ */
 
@@ -327,10 +348,10 @@ html[data-intro="exit"] .intro-sheet {
    The edge flattens on the same timeline, synced 1:1, so the curve merges
    into the horizontal as the sheet rises off-screen. */
 html[data-intro="play"] .intro-sheet {
-  animation: intro-lift 850ms cubic-bezier(0.65, 0, 0.35, 1) 4150ms both;
+  animation: intro-lift 850ms cubic-bezier(0.65, 0, 0.35, 1) 6650ms both;
 }
 html[data-intro="play"] .intro-edge {
-  animation: intro-edge-flatten 850ms cubic-bezier(0.65, 0, 0.35, 1) 4150ms both;
+  animation: intro-edge-flatten 850ms cubic-bezier(0.65, 0, 0.35, 1) 6650ms both;
 }
 html[data-intro="exit"] .intro-sheet {
   animation: intro-lift 450ms cubic-bezier(0.65, 0, 0.35, 1) both;
@@ -357,23 +378,68 @@ html[data-intro="exit"] .intro-edge {
   gap: clamp(20px, 3vw, 30px);
 }
 
-/* ── Logo mark — real vector, revealed as one unit via an upward clip wipe ── */
+/* ── Logo mark — draws itself shape by shape, then floods with colour ──
+   The container only handles the settle; the reveal lives on the paths. */
 .intro-logo {
   width: clamp(220px, 42vw, 290px);
   aspect-ratio: 1 / 1;
-  clip-path: inset(100% 0 0 0);
-  animation: intro-logo-reveal 900ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+  animation: intro-logo-settle 2800ms cubic-bezier(0.24, 0.43, 0.15, 0.97) both;
 }
-.intro-logo img {
+.intro-logo svg {
   width: 100%;
   height: 100%;
   display: block;
+  overflow: visible;
 }
 
-@keyframes intro-logo-reveal {
-  from { clip-path: inset(100% 0 0 0); }
-  to   { clip-path: inset(0 0 0 0); }
+@keyframes intro-logo-settle {
+  from { transform: scale(0.94); }
+  to   { transform: scale(1); }
 }
+
+/* Every shape starts as an unfilled outline of length 1 (pathLength in
+   Intro.tsx normalises the geometry), hidden by a full-length dash offset.
+   `--d` is the per-shape delay, set by the nth-child block below; the fill
+   follows 550ms behind the same shape's own draw, so each shape completes as a
+   unit rather than the whole mark drawing and then the whole mark colouring. */
+.intro-mark path {
+  fill: transparent;
+  stroke: var(--mark);
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation:
+    intro-mark-draw 900ms cubic-bezier(0.4, 0, 0.25, 1) var(--d) both,
+    intro-mark-fill 700ms cubic-bezier(0.24, 0.43, 0.15, 0.97) calc(var(--d) + 550ms) both;
+}
+
+@keyframes intro-mark-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* The outline fades out as the fill arrives, so the drawn edge becomes the
+   shape instead of leaving a heavier rim around it. */
+@keyframes intro-mark-fill {
+  from { fill: transparent; stroke-opacity: 1; }
+  to   { fill: var(--mark); stroke-opacity: 0; }
+}
+
+/* 105ms apart. The last shape — the centre dot — gets an extra beat so it
+   reads as the closing accent rather than just the twelfth item. */
+.intro-mark path:nth-child(1)  { --d: 300ms; }
+.intro-mark path:nth-child(2)  { --d: 405ms; }
+.intro-mark path:nth-child(3)  { --d: 510ms; }
+.intro-mark path:nth-child(4)  { --d: 615ms; }
+.intro-mark path:nth-child(5)  { --d: 720ms; }
+.intro-mark path:nth-child(6)  { --d: 825ms; }
+.intro-mark path:nth-child(7)  { --d: 930ms; }
+.intro-mark path:nth-child(8)  { --d: 1035ms; }
+.intro-mark path:nth-child(9)  { --d: 1140ms; }
+.intro-mark path:nth-child(10) { --d: 1245ms; }
+.intro-mark path:nth-child(11) { --d: 1350ms; }
+.intro-mark path:nth-child(12) { --d: 1500ms; }
 
 /* ── Wordmark lockup — width defined by BRAHMAS, subtitle justified to match ── */
 .intro-lockup {
@@ -400,7 +466,7 @@ html[data-intro="exit"] .intro-edge {
   text-transform: uppercase;
   white-space: nowrap;
   transform: translateY(112%);
-  animation: intro-word-rise 820ms cubic-bezier(0.22, 1, 0.36, 1) 950ms both;
+  animation: intro-word-rise 820ms cubic-bezier(0.22, 1, 0.36, 1) 2750ms both;
   color: #0a1220;
 }
 
@@ -422,7 +488,7 @@ html[data-intro="exit"] .intro-edge {
   transform: scaleX(0);
   transform-origin: left center;
   /* Near-linear: easing it out makes a progress line look like it is stalling. */
-  animation: intro-rule-draw 1750ms cubic-bezier(0.4, 0, 0.25, 1) 2400ms both;
+  animation: intro-rule-draw 2850ms cubic-bezier(0.4, 0, 0.25, 1) 3800ms both;
 }
 
 @keyframes intro-rule-draw {
@@ -453,10 +519,10 @@ html[data-intro="exit"] .intro-edge {
   transform: translateY(8px);
   animation: intro-sub-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.intro-sub-word:nth-child(1) { animation-delay: 1750ms; }
-.intro-sub-word:nth-child(2) { animation-delay: 1850ms; }
-.intro-sub-word:nth-child(3) { animation-delay: 1950ms; }
-.intro-sub-word:nth-child(4) { animation-delay: 2050ms; }
+.intro-sub-word:nth-child(1) { animation-delay: 3450ms; }
+.intro-sub-word:nth-child(2) { animation-delay: 3550ms; }
+.intro-sub-word:nth-child(3) { animation-delay: 3650ms; }
+.intro-sub-word:nth-child(4) { animation-delay: 3750ms; }
 
 @keyframes intro-sub-in {
   from { opacity: 0; transform: translateY(8px); }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, MotionConfig } from "motion/react";
 import type { ReactNode } from "react";
+import { useScrollToHash } from "@/components/providers/SmoothScrollProvider";
 
 /**
  * StyledLink — Elementis signature list link.
@@ -27,6 +28,8 @@ export function StyledLink({
 }) {
   const color = tone === "light" ? "text-cream" : "text-primary";
   const rule = tone === "light" ? "bg-cream" : "bg-primary";
+  const scrollToHash = useScrollToHash();
+  const isHash = href.startsWith("#");
 
   const inner = (
     <motion.div
@@ -67,6 +70,24 @@ export function StyledLink({
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer">
+        {inner}
+      </a>
+    );
+  }
+
+  // In-page anchors are driven by the CLICK, not by a route change. Going
+  // through `next/link` made them fire once and then go dead, because the URL
+  // already carried the hash and clicking it again navigated nowhere. A plain
+  // <a> keeps the href real for middle-click, "copy link" and no-JS.
+  if (isHash) {
+    return (
+      <a
+        href={href}
+        onClick={(e) => {
+          e.preventDefault();
+          scrollToHash(href);
+        }}
+      >
         {inner}
       </a>
     );
