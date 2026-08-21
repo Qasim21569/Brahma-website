@@ -95,7 +95,7 @@ export default function PortfolioPage() {
                    The rewrite keeps the defensible substance — how the group
                    selects, invests and operates — and drops the pricing claim. */
                 lines={[
-                  "Each asset is bought for the performance it",
+                  "Each asset is acquired for the performance it",
                   "can be made to deliver, repositioned through",
                   "capital investment, and then operated",
                   "directly — never handed to a third party.",

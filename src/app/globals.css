@@ -395,8 +395,24 @@ html[data-intro="exit"] .intro-edge {
 
 /* ── Logo mark — draws itself shape by shape, then floods with colour ──
    The container only handles the settle; the reveal lives on the paths. */
+/* Sized to sit roughly as wide as the BRAHMAS wordmark beneath it — the mark
+   was previously about 60% of that and read as small above its own name.
+   ⚠️ The WORDMARK is unchanged; only the mark grew.
+
+   The clamp deliberately mirrors the wordmark's own `clamp(2.75rem, 9vw,
+   4.25rem)` so the two track together instead of drifting apart at some
+   in-between width:
+     · the wordmark stops growing at a 756px viewport (9vw hits its 68px cap),
+       so 61vw is tuned to hit the 460px ceiling at the same point;
+     · the wordmark stops shrinking at ~489px (9vw hits its 44px floor), so the
+       300px floor lands there too.
+
+   The `min(…, 52vh)` is a short-window guard. The full stage — mark, wordmark,
+   rule, subtitle — is ~600px tall at the ceiling, so on a landscape phone or a
+   half-height window the mark would push the subtitle off the sheet. Height
+   only ever wins on a genuinely short viewport. */
 .intro-logo {
-  width: clamp(220px, 42vw, 290px);
+  width: min(clamp(300px, 61vw, 460px), 52vh);
   aspect-ratio: 1 / 1;
   animation: intro-logo-settle 3400ms cubic-bezier(0.24, 0.43, 0.15, 0.97) both;
 }

@@ -118,7 +118,7 @@ export default function SelectedWork() {
           className="relative z-10 flex h-full flex-col items-center justify-between pb-[6vh] pt-[calc(var(--nav-h)+4vh)] text-cream backdrop-brightness-[60%] md:flex-row md:px-margin-edge md:pb-[8vh] md:pt-[calc(var(--nav-h)+6vh)]"
         >
           {/* Solid stone-white plate so the label holds over any slide. */}
-          <span className="inline-flex border border-mortar-grey bg-stone-white px-5 py-3">
+          <span className="inline-flex border border-mortar-grey/60 bg-stone-white/75 px-5 py-3 backdrop-blur-sm">
             <SectionTitle>Selected Work</SectionTitle>
           </span>
 
