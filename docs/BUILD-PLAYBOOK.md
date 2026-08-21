@@ -122,7 +122,7 @@ single most recognisable Elementis trait.
 | Capability pillar | `ui/PillarCard` | ghost **word** behind, hairline sub-rows, `DrawnRule` top edge. **No numerals** — see E1 |
 | Rule that draws on entry | `ui/DrawnRule` | replaced `RotatingMark` (deleted); moves once and settles rather than spinning ambiently |
 | Per-letter hover flicker | `ui/FlickerText` | **must** carry `aria-label` + `aria-hidden` letters |
-| Slash-separated inline list | `ui/InlineList` | `staggerChildren: 0.06` |
+| ~~Slash-separated inline list~~ | ~~`ui/InlineList`~~ | **DELETED 2026-08-17.** Its only call site — the services hero capabilities — became a proper `<ul>` at the client's request, leaving it orphaned. Git history has it if a slash list is ever wanted again. |
 
 **One easing everywhere:** `[0.24, 0.43, 0.15, 0.97]`. No bounce, no spring
 (except the Process progress rail). Durations 0.6–0.8s. Stagger 0.05–0.1s.
@@ -468,7 +468,7 @@ are their own three stated capabilities. Full constraints in `data/services.ts`.
 | `ui/PillarCard.tsx` | `../hetari-portfolio/src/components/ServicesCard.vue` — `( 01 )` numeral, title, numbered sub-rows with the middle row hairline-bounded |
 | ~~`ui/RotatingMark.tsx`~~ **deleted** | was hetari's `animate-[spin_10s_linear_infinite]`. Rejected as ambient noise and replaced by `ui/DrawnRule` — a hairline that draws once and settles, used as the card's top edge. Worth keeping the lesson: a CSS animation needs its own `motion-reduce:` variant, because the global `MotionConfig` only covers Motion |
 | `ui/FlickerText.tsx` | `../the-line-awwwards-SOTM/components/FlickerText.tsx` — simplified from its hand-built `times` array to per-letter delay; rule collapses right via `origin-right` |
-| `ui/InlineList.tsx` | `../the-line-awwwards-SOTM/components/List.tsx` — slash-separated, `staggerChildren: 0.06`; made to wrap |
+| ~~`ui/InlineList.tsx`~~ | `../the-line-awwwards-SOTM/components/List.tsx` — **deleted 2026-08-17**, sole call site replaced by a list. Port it again from the reference if needed. |
 
 `FlickerText` sets `aria-label` on the wrapper and `aria-hidden` on every letter
 span. Without that, splitting a heading per character makes assistive tech

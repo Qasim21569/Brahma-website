@@ -121,7 +121,7 @@
     },
     "photos": [
       {
-        "src": "/properties/quality-inn-suites-tampa-east/g-01.jpg",
+        "src": "/properties/quality-inn-suites-tampa-east/g-01.webp",
         "attribution": "Quality Inn & Suites Tampa near Fairgrounds and Casino"
       },
       {
@@ -191,7 +191,7 @@
     },
     "photos": [
       {
-        "src": "/properties/microtel-inn-suites-zephyrhills/g-01.jpg",
+        "src": "/properties/microtel-inn-suites-zephyrhills/g-01.webp",
         "attribution": "Microtel Inn & Suites by Wyndham Zephyrhills"
       },
       {
@@ -622,7 +622,7 @@
     "placeId": "ChIJwQIeTYt_54gRMrtud0Z1yV4",
     "verifiedAddress": "2776 Destination Pkwy, Orlando, FL 32819",
     "phone": "(407) 640-7500",
-    "bookingUrl": "https://www.ihg.com/holidayinnexpress/hotels/us/en/orlando/mcojy/hoteldetail?cm_mmc=GoogleMaps-_-EX-_-US-_-MCOJY",
+    "bookingUrl": "https://www.ihg.com/redirect?path=hd&localeCode=en&brandCode=EX&regionCode=US&hotelCode=MCOJY&cm_mmc=GoogleMaps-_-EX-_-US-_-MCOJY",
     "coordinates": {
       "lat": 28.437289800000002,
       "lng": -81.42831679999999

@@ -44,6 +44,22 @@ const amenityPaths: Record<string, string> = {
   // Accessible parking — the P with the same seated figure alongside.
   "accessible-parking":
     "M3 3h8v18H3zM6 17V8h2.6a2.7 2.7 0 0 1 0 5.4H6M17.5 5a1.2 1.2 0 1 0 0 .01M17.5 8v3.8h3.2M14.8 10.5a4.6 4.6 0 1 0 6.5 6M20.7 11.8l1.6 4.6",
+  // ── Residential / estate set. Added for Serenity Cove, the portfolio's only
+  //    non-operating asset — hotel vocabulary has nothing to say about a house.
+  // Waterfront — open water against a shoreline.
+  waterfront:
+    "M2 15.5c1.7 0 1.7 1.5 3.3 1.5s1.7-1.5 3.4-1.5 1.7 1.5 3.3 1.5 1.7-1.5 3.4-1.5 1.7 1.5 3.3 1.5M2 19.5c1.7 0 1.7 1.5 3.3 1.5s1.7-1.5 3.4-1.5 1.7 1.5 3.3 1.5 1.7-1.5 3.4-1.5 1.7 1.5 3.3 1.5M4 12h16M6 12V8.5M18 12V6",
+  // Acreage — a bounded parcel with a tree inside it.
+  acreage:
+    "M3 4h18v16H3zM12 16v-3.5M12 12.5a2.5 2.5 0 1 0-2-4 2.6 2.6 0 0 0-.5 3 2.5 2.5 0 0 0 2.5 1ZM12 12.5a2.5 2.5 0 1 1 2-4 2.6 2.6 0 0 1 .5 3 2.5 2.5 0 0 1-2.5 1Z",
+  // Dock — a pier on pilings running out over water.
+  dock: "M3 10h14M6 10v6M10 10v6M14 10v6M2 20.5c1.8 0 1.8 1.5 3.6 1.5s1.8-1.5 3.6-1.5 1.8 1.5 3.6 1.5 1.8-1.5 3.6-1.5M17 10l4-3.5",
+  // Residence — a pitched roof over a simple plan.
+  residence: "M3 11 12 4l9 7M5.5 9.5V20h13V9.5M10 20v-5h4v5",
+  // Porch — a covered deck edge with a rail.
+  porch: "M2 7h20M4 7v13M20 7v13M4 12h16M4 16h16M8 12v8M12 12v8M16 12v8",
+  // Pond — a still body of water enclosed by a bank.
+  pond: "M12 5.5c4.5 0 8.5 2.7 8.5 6s-4 6-8.5 6-8.5-2.7-8.5-6 4-6 8.5-6ZM8.5 11.5c1.2 0 1.2 1 2.3 1s1.2-1 2.3-1 1.2 1 2.4 1",
   // Fallback — a neutral dot, so an unknown key is still visibly a bullet.
   _fallback: "M12 12h.01",
 };

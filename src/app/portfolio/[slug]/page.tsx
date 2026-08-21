@@ -72,6 +72,9 @@ export default async function PropertyPage({
     ...(brand ? [{ label: "Brand", value: brand }] : []),
     { label: "Acquired", value: acquiredYear },
     { label: "Operated By", value: subunit },
+    // Per-asset facts the shared hotel-shaped rows above cannot carry — lot
+    // size, water frontage. Client-supplied only; empty for most properties.
+    ...(property.highlights ?? []),
   ];
 
   const hero = gallery[0];

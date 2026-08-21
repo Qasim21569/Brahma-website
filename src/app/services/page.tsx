@@ -8,7 +8,6 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ResponsiveImage } from "@/components/ui/ResponsiveImage";
 // PARKED — see the commented section below. Held back deliberately, not dead.
 // import { ThresholdReveal } from "@/components/sections/ThresholdReveal";
-import { InlineList } from "@/components/ui/InlineList";
 import { PillarCard } from "@/components/ui/PillarCard";
 import { StyledLink } from "@/components/ui/StyledLink";
 import { CtaSection } from "@/components/sections/CtaSection";
@@ -51,10 +50,33 @@ export default function ServicesPage() {
                   "rebuilds it, and then runs it.",
                 ]}
               />
-              <InlineList
-                className="font-label-caps text-label-caps text-on-surface-variant mt-10 max-w-2xl"
-                items={capabilityChips}
-              />
+              {/* Was <InlineList> — the six capabilities set slash-separated on
+                  one wrapping line. The client asked for a list, and they were
+                  right: as running text the items read as one long phrase and
+                  the wrap points landed arbitrarily, so "Capital structuring"
+                  could break across lines. As rows they are scannable and the
+                  count is legible at a glance.
+
+                  ⚠️ No numerals. Numbering has been rejected twice on this
+                  project — SectionTitle v4 and the PillarCard sub-rows — so
+                  the row marker is the same square used by SectionTitle. */}
+              <ul className="mt-10 grid max-w-2xl grid-cols-1 gap-x-gutter sm:grid-cols-2">
+                {capabilityChips.map((item, i) => (
+                  <li key={item}>
+                    <Reveal delay={(i % 2) * 0.08} distance={16}>
+                      <div className="flex items-center gap-3 border-t border-mortar-grey/40 py-3.5">
+                        <span
+                          aria-hidden="true"
+                          className="h-1.5 w-1.5 shrink-0 bg-muted-azure-dim"
+                        />
+                        <span className="font-body-md text-body-md text-on-surface-variant">
+                          {item}
+                        </span>
+                      </div>
+                    </Reveal>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
@@ -130,7 +152,14 @@ export default function ServicesPage() {
               <h2>
                 <MaskText
                   className="font-headline-lg text-headline-lg text-cream"
-                  lines={["Built with people who", "build for a living."]}
+                  /* Retitled 2026-08-17 on client feedback. Was "Built with
+                     people who build for a living." — circular, and "built
+                     with" edged toward implying a delivered joint project,
+                     which this section must NOT claim (see the warning above
+                     and data/services.ts). This version describes the group's
+                     own selection discipline instead, so it says nothing about
+                     what Heal Construct has or hasn't built for us. */
+                  lines={["We choose our builders", "the way we choose assets."]}
                 />
               </h2>
               <MaskText

@@ -78,26 +78,32 @@ export function PropertyAmenities({ property }: { property: Property }) {
             ))}
           </ul>
 
-          {/* Provenance is stated on the page, not just in the source. The list
-              is what Google publishes for the property, which is narrower than
-              the brand site's own grid — so we say where it came from and send
-              anyone who needs the complete list to the operator's page. */}
-          <MaskText
-            delay={0.2}
-            className="font-body-md text-body-md text-cream-dim/70 mt-12"
-            lines={[
-              "Amenity information as published by the",
-              "property on Google. Confirm details at",
-              "time of booking.",
-            ]}
-          />
+          {/* Provenance is stated on the page, not just in the source — but
+              ONLY where it is true. The Google line and the operator link are
+              right for the ten franchised hotels, whose lists are derived from
+              a Places listing and are narrower than the brand site's own grid.
+              They would be a false citation on an asset the group owns outright
+              and wrote the list for, so a client-sourced list prints neither. */}
+          {property.amenitiesSource !== "client" && (
+            <>
+              <MaskText
+                delay={0.2}
+                className="font-body-md text-body-md text-cream-dim/70 mt-12"
+                lines={[
+                  "Amenity information as published by the",
+                  "property on Google. Confirm details at",
+                  "time of booking.",
+                ]}
+              />
 
-          {bookingUrl && (
-            <div className="mt-6 max-w-md">
-              <StyledLink href={bookingUrl} tone="light" external>
-                {brand ? `Full amenity list at ${brand}` : "View all amenities"}
-              </StyledLink>
-            </div>
+              {bookingUrl && (
+                <div className="mt-6 max-w-md">
+                  <StyledLink href={bookingUrl} tone="light" external>
+                    {brand ? `Full amenity list at ${brand}` : "View all amenities"}
+                  </StyledLink>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

@@ -79,11 +79,26 @@ export default function PortfolioPage() {
                 delay={0.15}
                 amount={0}
                 className="font-body-lg text-body-lg text-cream-dim mt-8 max-w-xl"
+                /* Rephrased 2026-08-17 on client feedback. Was "Every asset is
+                   acquired below replacement cost, …".
+                   TWO problems, and the second is the serious one:
+                     1. "Replacement cost" is lender/investor jargon — what it
+                        would cost to rebuild the asset from scratch today.
+                        Meaningless to most visitors.
+                     2. **It was an absolute financial claim about all twelve
+                        assets that no data supports.** Only 2 of 12 properties
+                        say anything like it in properties.ts, and that prose is
+                        itself draft. Publishing "every asset" is the exact class
+                        of unsourced claim this project has repeatedly retracted
+                        (see the Contact/Careers fabrications). Playbook rule:
+                        no financial figures or claims not derived from data.
+                   The rewrite keeps the defensible substance — how the group
+                   selects, invests and operates — and drops the pricing claim. */
                 lines={[
-                  "Every asset is acquired below replacement cost,",
-                  "repositioned through capital investment, and",
-                  "operated directly — never handed to a",
-                  "third-party manager.",
+                  "Each asset is bought for the performance it",
+                  "can be made to deliver, repositioned through",
+                  "capital investment, and then operated",
+                  "directly — never handed to a third party.",
                 ]}
               />
 
@@ -146,7 +161,13 @@ export default function PortfolioPage() {
               <h2>
                 <MaskText
                   className="font-headline-lg text-headline-lg text-primary"
-                  lines={["Have an asset that fits", "the thesis?"]}
+                  /* "thesis" → "portfolio" 2026-08-17 on client feedback.
+                     ⚠️ The hero headline on this page still reads "One thesis:
+                     structural quality earns long-term performance." That one
+                     was left alone deliberately — the feedback scoped this to
+                     the CTA — but if the word is out, that is the other place
+                     it appears on this page. */
+                  lines={["Have an asset that fits", "the portfolio?"]}
                 />
               </h2>
               <MaskText

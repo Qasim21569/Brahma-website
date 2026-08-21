@@ -128,12 +128,18 @@ export default function HomePage() {
               <MaskText
                 delay={0.2}
                 className="font-body-lg text-body-lg text-on-surface-variant mt-10 max-w-xl"
+                /* Rephrased 2026-08-17 on client feedback. The previous opening
+                   — "Our story begins on the floor of a hotel" — was the only
+                   line on the page written as storytelling rather than as a
+                   statement of fact, and read soft against the paragraph above
+                   it. Same substance, stated plainly. "Nearly three decades"
+                   tracks `founder.yearsInIndustry` (27+); update both together. */
                 lines={[
-                  "Our story begins on the floor of a hotel —",
-                  "with an operator who ran every asset as",
-                  "though he already owned it. That discipline,",
-                  "applied at scale, is what separates Brahmas",
-                  "from conventional hospitality investment.",
+                  "Brahmas was founded by an operator rather",
+                  "than an investor — nearly three decades of",
+                  "running hotels before financing them. That",
+                  "order, operator first and owner second, is",
+                  "what sets the group apart.",
                 ]}
               />
               <Reveal delay={0.5}>
@@ -210,12 +216,17 @@ export default function HomePage() {
               <MaskText
                 delay={0.2}
                 className="font-body-lg text-body-lg text-on-surface-variant mt-10 max-w-xl"
+                /* Rephrased 2026-08-17 on client feedback. The previous ending —
+                   "the thesis survives contact with the property" — leaned on
+                   a military idiom ("no plan survives contact with the enemy")
+                   that reads obliquely if you don't know it, and framed the
+                   claim defensively. Same point, stated as accountability. */
                 lines={[
-                  "No handoffs. No third-party management. The",
-                  "team that underwrites an asset is the same",
-                  "team accountable for how it performs — which",
-                  "is why the thesis survives contact with the",
-                  "property.",
+                  "No handoffs, and no third-party management.",
+                  "The people who underwrite an asset are the",
+                  "same people who go on to run it. A",
+                  "projection here is written by whoever",
+                  "will have to deliver it.",
                 ]}
               />
               <Reveal delay={0.45}>

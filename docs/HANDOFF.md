@@ -19,6 +19,10 @@ wins** — this ordering exists because they had already drifted apart once.
 `RESUME-PROMPT.md` is not a plan — it is the copy-paste prompt and file list for
 starting a session elsewhere.
 
+`PRELOADER-SPEC.md` is **outside this precedence chain** — a portable extract of
+the intro-curtain architecture, written to be lifted into other projects. It is
+not authoritative about what is shipped here.
+
 **`docs/archive/` is obsolete. Do not follow it.** Seven files, all superseded.
 
 ---
@@ -39,8 +43,8 @@ starting a session elsewhere.
 | Careers page | ✅ **Complete** — Phase E3. Built on the sourced LODGING narrative |
 | Legal pages + footer | ⚠️ **Built but pre-grammar.** Phase E4–E5. |
 | Property data (12 assets) | ✅ Built. Prose is placeholder for 10 of 12. |
-| Photography | ✅ **11 of 12 assets**, all API-sourced and credited except Clarion Pointe. Only the Weeki Wachee residence has none. |
-| Amenities | ✅ **Live on 11 of 12 detail pages**, sourced from Google. Replaced "Our Approach". |
+| Photography | ✅ **12 of 12 assets.** 10 Places-sourced (owner-credited), 2 hand-authored (Clarion Pointe, Serenity Cove). |
+| Amenities | ✅ **Live on 12 of 12 detail pages.** 11 Google-derived, 1 client-sourced (Serenity Cove). Replaced "Our Approach". |
 | Enrichment script | ✅ Written, self-tested, **key working**. Derives amenities as of 2026-08-17. |
 | Preloader | ✅ **Live at 7500ms** — Phase F1. Mark draws itself shape by shape; see below |
 | Page transitions | 🔲 Built but disabled. Phase F2. |
@@ -217,7 +221,7 @@ BUILD-PLAYBOOK §5 Phase E.
   an in-house contracting arm the group does not have, which also contradicted
   crediting an external partner. Rewritten.
 - Components ported from the references: `PillarCard` (hetari), `FlickerText`
-  and `InlineList` (the-line), `DrawnRule`.
+  and `InlineList` (the-line — since deleted, see below), `DrawnRule`.
 - **The pillar numbering and the spinning mark were rejected and removed.** The
   card had three competing numbering systems — `( 01 )`, a ghost numeral, and
   `01/02/03` sub-rows — plus a perpetually turning mark. Scale contrast now
@@ -300,6 +304,59 @@ directly on photography, so `tone="light"`'s assumption of a dark canvas was
 only sometimes true and the label vanished over bright images. It now sits in a
 hairline-bounded `bg-ink-deep/70` + `backdrop-blur` box, which makes that
 assumption true and holds 6.72:1 regardless of the slide behind it.
+
+**Heroes can now be pinned by URL, not just by index.** `HERO_PHOTO_URL` in
+`enrich-properties.mjs` takes an explicit `lh3.googleusercontent.com` link off
+the property's Google listing and downloads it into the `g-01` slot; the API
+photos fill from `g-02`. A dead link is non-fatal — it logs, falls back to API
+order, and leaves the existing file in place, so a broken hero is not possible.
+Used for `quality-inn-suites-tampa-east` (client-selected entrance shot).
+
+⚠️ **Check resolution before pinning.** A hand-picked CDN URL is frequently
+SMALLER than what the API returns for the same photograph: of three links
+supplied 2026-08-17, two (Microtel, Holiday Inn) were the *identical* images
+already live at 1360px against the API's 1600px, so they were deliberately not
+pinned. Only pin where the photo genuinely differs.
+
+**Hero photos — Google's photo order is engagement-ranked, not editorial.** For
+three properties `photos[0]` was the swimming pool, which then became the
+detail-page hero band *and* the portfolio card. `HERO_PHOTO_INDEX` in
+`enrich-properties.mjs` now records a human choice per slug and rotates that
+photo to `g-01` **before** the `PHOTO_LIMIT` slice, so a good exterior sitting
+8th survives. Every photo the API returned was reviewed by eye — there is no
+field describing what a photo depicts. ⚠️ **The indices assume Google's photo
+order is stable, and it is not guaranteed**: between two runs an hour apart,
+Quality Inn Tampa East's index 4 changed from a ground-level entrance shot to an
+aerial. If a hero looks wrong after a re-run, re-check the images rather than
+trusting the index.
+
+**Serenity Cove now has photography — the portfolio is at 12/12.** Nine
+client-supplied images from the property's Zillow listing (zpid 44796785),
+upgraded to 1024x682 by requesting the `uncropped_scaled_within_1536_1152`
+rendition off the same CDN hash rather than the `cc_ft_576`/`960` URLs pasted.
+Hand-authored in `properties.ts` with `attribution: null`, which also makes
+`hasOwnPhotos` true so enrichment will never spend Place Photo quota here.
+
+- ⚠️ **The images carry a visible StellarMLS watermark**, and one a
+  "© Chris Watkins" credit. The client states the group holds full rights;
+  that assertion is theirs. Unwatermarked originals from the listing
+  photographer would be the clean fix — worth asking for.
+- **`homeHeroSrc` is deliberately left null.** `enrich()` fills it from
+  `gallery[0]`, so the portfolio card and detail hero work — but staying null
+  keeps the property out of `ownPhotographyProperties`, so **watermarked
+  imagery cannot reach the homepage hero or image band**. One line to opt in
+  later if the client wants it there.
+- Zillow's listing HTML is behind bot protection (403 to both WebFetch and a
+  fully-headered curl). `photos.zillowstatic.com` itself is not — so the
+  workable path is: client pastes CDN URLs, we fetch those directly.
+
+**Serenity Cove (was "Beach House") — identified by the client 2026-08-17.**
+10492 Pine Island Dr is a **private waterfront estate: 5.1 acres, 600+ ft of
+Gulf frontage**. Renamed, prose rewritten from those facts, coordinates hand-set
+from the Places geocode. New optional `highlights` field on `Property` carries
+lot size / frontage / waterway into the Asset Detail table — the shared rows are
+hotel-shaped and had nothing to say about a house. **Still no photography**; see
+blocked item 1b.
 
 **`SectionTitle` — now v6 (2026-08-17), a readability fix.** v5's fixed
 `text-muted-azure` measured **2.48:1** on the light canvas — a real WCAG AA
@@ -412,6 +469,22 @@ fragile.
    correct in an editor, and parsed as `￾GOO…`. **Next.js cannot read a UTF-16
    `.env` either.** `loadEnvLocal()` decodes both as a safety net.
 
+1b. 🔑 **Maps Static API is BLOCKED on the key — 403 "not authorized".**
+   Same class of block Places had before it was enabled, and the last thing
+   standing between us and imagery for **all 12** assets.
+
+   Needed for the Weeki Wachee estate (Serenity Cove), which is a private
+   residence with **no Google business listing** — Places returns a bare
+   geocode and zero photos, so the agreed fallback is a satellite top-down.
+   Enable **"Maps Static API"** in the Cloud console and add it to the key's
+   API restrictions, then:
+   ```
+   https://maps.googleapis.com/maps/api/staticmap?center=28.5759429,-82.6530071
+     &zoom=18&size=640x640&scale=2&maptype=satellite&key=…
+   ```
+   ⚠️ Google's terms restrict retaining Static Maps imagery — same caveat as
+   Place photos. Operator's call, as recorded in the enrichment script header.
+
 1a. ✅ **Fort Myers is a La Quinta — confirmed by the client 2026-08-17.**
    `name` and `brand` corrected to **"La Quinta Inn and Suites Fort Myers
    I-75" / Wyndham**; 6 owner photos fetched. **The slug stays
@@ -430,12 +503,17 @@ fragile.
    unconfirmed address.
 3. **A form backend.** The contact form posts via `mailto:` because none exists.
    Works, but it is not a real submission pipeline.
-4. **Photography for the Weeki Wachee residence only.** The other 11 are done.
-   A private house has no Google business listing, so the pipeline cannot help;
-   this one has to come from the client. Higher-resolution originals for the
-   other 11 are still worth requesting — franchise media kits, PHOTO-PIPELINE.md
-   §4.1 — since the Places copies are capped at 1600px and carry a mandatory
-   credit that client-owned originals would not.
+4. ✅ **Photography — all 12 assets now covered.** Serenity Cove closed the gap
+   with client-supplied Zillow imagery (2026-08-17). Higher-resolution
+   originals for the 10 Places-sourced hotels are still worth requesting —
+   franchise media kits, PHOTO-PIPELINE.md §4.1 — since Places copies are
+   capped at 1600px and carry a mandatory credit that client-owned originals
+   would not.
+
+   ⚠️ **Serenity Cove's images carry a visible StellarMLS watermark**, and one
+   a "© Chris Watkins" photographer credit. The client states the group holds
+   full rights. Unwatermarked originals from the listing photographer would be
+   the clean fix, and are worth asking for.
 5. **Property counts.** The LODGING article says 11 hotels / 7 Choice; our data
    has 10 hospitality / 5 Choice, +1 education, +1 residential. Reconcile before
    publishing.

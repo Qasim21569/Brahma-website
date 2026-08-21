@@ -86,7 +86,10 @@ export const founder = {
   story: [
     {
       heading: "Arrival",
-      body: "Sanjay Patel arrived in the United States from India in 1996 with ten dollars and no capital behind him. What he had instead was a willingness to learn the business from its floor — and a conviction that the way to understand a hotel is to run one.",
+      // Closing clause rephrased 2026-08-17 on client feedback. Was "a
+      // conviction that the way to understand a hotel is to run one" — the
+      // subject/object inversion made it read as a riddle on first pass.
+      body: "Sanjay Patel arrived in the United States from India in 1996 with ten dollars and no capital behind him. What he had instead was a willingness to learn the business from its floor, on the conviction that a hotel is only ever understood by the people who run it.",
     },
     {
       heading: "The floor",
@@ -94,11 +97,24 @@ export const founder = {
     },
     {
       heading: "The owner's mindset",
-      body: "Long before he held equity, he ran the business as though he did. Every unsold room registered as a personal loss; every dollar of revenue was treated as his own. That discipline is the origin of the company's operating philosophy — that ownership is a way of thinking about an asset, not merely a line on a title.",
+      // Opening sentence REPHRASED 2026-08-17, not cut. Was "Long before he
+      // held equity, he ran the business as though he did." — the
+      // equity/as-though-he-did construction took a second read to parse.
+      body: "He ran the business like an owner years before he became one. Every unsold room registered as a personal loss; every dollar of revenue was treated as his own. That discipline is the origin of the company's operating philosophy — that ownership is a way of thinking about an asset, not merely a line on a title.",
     },
     {
       heading: "First ownership",
-      body: "In 2001 a physician connected to his employer needed an experienced operator for a property in Pinellas Park, Florida. Patel had no money to contribute, so he contributed expertise instead, negotiating a partnership stake in place of capital. In the first year, revenue rose from $250,000 to $650,000, occupancy reached roughly 95 percent, and he repaid his share of the loan. The property was run by family members and two housekeeping employees.",
+      // Closing sentence added 2026-08-17: the client asked for the one or two
+      // qualities behind the result, at the END of this block rather than as a
+      // section of its own.
+      //
+      // ⚠️ Introduces NO new biographical facts. Both qualities restate things
+      // already established above — learning every function in the building
+      // ("The floor") and treating revenue as his own ("The owner's mindset") —
+      // applied here to the Pinellas Park result. Inventing a third trait to
+      // round the sentence out would be the class of unsourced claim this
+      // project has had to retract before.
+      body: "In 2001 a physician connected to his employer needed an experienced operator for a property in Pinellas Park, Florida. Patel had no money to contribute, so he contributed expertise instead, negotiating a partnership stake in place of capital. In the first year, revenue rose from $250,000 to $650,000, occupancy reached roughly 95 percent, and he repaid his share of the loan. The property was run by family members and two housekeeping employees. Two things made that possible: he knew every function in the building well enough to run the operation from the inside, and he had spent years treating revenue as his own before any of it was — which is what let a property run that lean without a guest noticing.",
     },
     {
       heading: "The group",

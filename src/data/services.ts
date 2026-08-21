@@ -36,7 +36,7 @@ export type Pillar = {
 
 export const pillars: Pillar[] = [
   {
-    title: "Capital structuring",
+    title: "Capital Structuring",
     body: [
       "We source assets whose structural quality",
       "exceeds their operating performance, and",
@@ -44,7 +44,7 @@ export const pillars: Pillar[] = [
     ],
     capabilities: [
       "Sourcing and underwriting",
-      "Capital structuring",
+      "Capital Structuring",
       "Lender relationships",
     ],
   },
@@ -78,14 +78,22 @@ export const pillars: Pillar[] = [
   },
 ];
 
-/** Short capability chips for the hero list. */
+/**
+ * Short capability chips for the hero list.
+ *
+ * Title Case throughout, set 2026-08-17. The client asked for the "S" in
+ * "Capital structuring"; the other two multi-word entries were capitalised with
+ * it, because a list mixing "Capital Structuring" with "Brand alignment" reads
+ * as a typo rather than a style. Revert the other two if sentence case was
+ * actually wanted.
+ */
 export const capabilityChips = [
   "Sourcing",
   "Underwriting",
-  "Capital structuring",
+  "Capital Structuring",
   "Repositioning",
-  "Brand alignment",
-  "Direct operation",
+  "Brand Alignment",
+  "Direct Operation",
 ];
 
 export type Partner = {

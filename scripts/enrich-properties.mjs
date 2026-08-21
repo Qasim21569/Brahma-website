@@ -84,6 +84,75 @@ const PHOTO_MAX_WIDTH = 1600;
 /** Ceiling on photos kept per property, so a busy listing can't flood a gallery. */
 const PHOTO_LIMIT = 6;
 
+/**
+ * Which photo should lead the gallery, by index into the OWNER-FILTERED list.
+ *
+ * ── Why this exists ──────────────────────────────────────────────────────────
+ * `photos[0]` becomes the property's hero: the full-bleed band on its detail
+ * page and the card image on /portfolio. Google returns photos in its own
+ * order, which is driven by engagement, not composition — so for several
+ * properties the first photo is the swimming pool or a bathroom. A portfolio
+ * page for an investment group needs the BUILDING.
+ *
+ * There is no field in the Places response describing what a photo depicts, and
+ * no reliable way to infer it. So the choice is human: each index below was set
+ * by looking at every photo the API returned for that property and picking the
+ * exterior. Recorded here rather than by shuffling files on disk, because a
+ * re-run re-downloads in API order and would silently undo a manual shuffle.
+ *
+ * ⚠️ The index is into the owner-filtered list, BEFORE the PHOTO_LIMIT slice —
+ * so a good exterior sitting 8th still survives. It is NOT the g-NN filename;
+ * after the rotation the chosen photo becomes g-01.
+ *
+ * ⚠️ These indices assume Google's photo order is stable. It usually is, but it
+ * is not guaranteed. If a hero looks wrong after a re-run, re-check the images
+ * rather than assuming the index is still right.
+ */
+const HERO_PHOTO_INDEX = {
+  // Was the pool; 5 is the dusk exterior with the branded signage.
+  "holiday-inn-express-orlando-seaworld": 5,
+};
+
+/**
+ * Hero pinned by EXPLICIT URL rather than by position. Takes precedence over
+ * `HERO_PHOTO_INDEX`.
+ *
+ * ── Why this exists alongside the index map ──────────────────────────────────
+ * An index is a bet that Google's photo ordering is stable, and it is not: on
+ * 2026-08-17, `quality-inn-suites-tampa-east` index 4 was a ground-level
+ * entrance shot in the morning and an aerial by the afternoon. A URL names one
+ * specific photograph and cannot drift.
+ *
+ * These are `lh3.googleusercontent.com` links, taken straight off the
+ * property's Google listing — the same photo library the Places API serves,
+ * just addressed directly. Attribution is therefore identical to an API photo
+ * and is set from the place's own display name.
+ *
+ * ⚠️ These URLs are long-lived but not permanent. If one 404s on a re-run the
+ * script logs it and falls back to the index/API order rather than failing —
+ * the already-downloaded file stays put, so the site does not regress.
+ *
+ * ⚠️ Check the resolution before pinning one. A hand-picked URL is often
+ * SMALLER than what the API returns for the same photo: the Microtel and
+ * Holiday Inn links supplied with this one were the identical images at
+ * 1360px against the API's 1600px, so they were deliberately NOT pinned.
+ */
+const HERO_PHOTO_URL = {
+  // Client-selected 2026-08-17: ground-level entrance with brand signage and
+  // the 4955 street number, replacing an aerial. 711x400 — the source is only
+  // that big, and it is still larger than the 600x400 aerial it replaces.
+  "quality-inn-suites-tampa-east":
+    "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnFa0tyNvQVzAHq1DuZwXaWoHEG3roou8keguic29wOF65t-NMsutptAPxHLpeYp6GiYn3m6nKfHBm5xqvGmcP6eyllDB4SG0g7Zwd1QzYQQGhxHJlue6cY45Clv0jLcw2QaayHwf09fmLY=s1360-w1360-h1020-rw",
+  // Client-selected 2026-08-17: dusk exterior with the facade accent lighting
+  // and the roadside sign, replacing a flat daytime facade. 1360x907 against
+  // the API photo's 1600x1067 — a deliberate trade, because it is a genuinely
+  // better photograph and it matches the Holiday Inn dusk hero. (An earlier
+  // link for this property was the SAME daytime shot at lower resolution and
+  // was rejected on those grounds; this one is a different frame.)
+  "microtel-inn-suites-zephyrhills":
+    "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl4p9GzyGRR2pSTm7oq1OYx-He8OevkBCHFSfxFbfJlXYJHO2NGRNWUw2RqheSTCW6pNGQtP7x1_IPpWPa1HaU_e8eZNReyi7OrHL4IEUVa346Jb-GKqzIJXPy5a2T42B1u56jw-ApyJc8=s1360-w1360-h1020-rw",
+};
+
 /** Properties we expect to find in properties.ts. Guards against a silent regex break. */
 const EXPECTED_COUNT = 12;
 
@@ -583,6 +652,32 @@ const EXT_BY_MIME = {
  * on the source. We do not re-encode to .webp: that would need `sharp`, and
  * next/image already optimises local files at build time.
  */
+/**
+ * Downloads an arbitrary image URL into the same `g-NN` slot scheme.
+ *
+ * Used for `HERO_PHOTO_URL` pins, which address a photo on Google's user-content
+ * CDN directly rather than through the Places media endpoint. Same naming and
+ * same content-type-driven extension, so a pinned hero is indistinguishable
+ * from an API-fetched one once on disk — except that `.webp` is a possible
+ * extension here, which `EXT_BY_MIME` already covers.
+ */
+async function downloadDirect(url, slug, index) {
+  const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+  if (!res.ok) throw new Error(`direct download ${res.status} ${res.statusText}`);
+
+  const mime = (res.headers.get("content-type") ?? "").split(";")[0].trim();
+  const ext = EXT_BY_MIME[mime];
+  if (!ext) throw new Error(`unexpected content-type "${mime}"`);
+
+  const dir = resolve(ROOT, "public/properties", slug);
+  mkdirSync(dir, { recursive: true });
+
+  const filename = `g-${String(index + 1).padStart(2, "0")}.${ext}`;
+  writeFileSync(resolve(dir, filename), Buffer.from(await res.arrayBuffer()));
+
+  return `/properties/${slug}/${filename}`;
+}
+
 async function downloadPhoto(photo, slug, index, apiKey, maxWidthPx) {
   const url = `https://places.googleapis.com/v1/${photo.name}/media?maxWidthPx=${maxWidthPx}&key=${apiKey}`;
   const res = await fetch(url);
@@ -757,6 +852,22 @@ async function main() {
           (owned.length > PHOTO_LIMIT ? `, keeping ${PHOTO_LIMIT}` : "")
       );
 
+      // Rotate the chosen exterior to the front BEFORE the limit slice, so a
+      // good building shot sitting past PHOTO_LIMIT is not discarded.
+      const heroIndex = HERO_PHOTO_INDEX[property.slug];
+      if (heroIndex != null) {
+        if (heroIndex < owned.length) {
+          const [hero] = owned.splice(heroIndex, 1);
+          owned.unshift(hero);
+          console.log(`    hero: photo [${heroIndex + 1}] promoted to g-01`);
+        } else {
+          console.log(
+            `    hero: WARNING index ${heroIndex} is past the ${owned.length} owner photos — ` +
+              "Google's photo order may have changed. Re-check HERO_PHOTO_INDEX."
+          );
+        }
+      }
+
       const keep = owned.slice(0, PHOTO_LIMIT);
       if (DRY_RUN) {
         for (const [i, entry] of keep.entries()) {
@@ -764,13 +875,36 @@ async function main() {
         }
       } else {
         const saved = [];
-        for (const [i, entry] of keep.entries()) {
+        let slot = 0;
+
+        // A URL pin wins over the index rotation and takes the g-01 slot; the
+        // API photos then fill from g-02 down. Credit is the business's own
+        // display name, because these CDN links are that listing's photos.
+        const heroUrl = HERO_PHOTO_URL[property.slug];
+        if (heroUrl) {
+          const credit = place.displayName?.text ?? null;
           try {
-            const src = await downloadPhoto(entry.photo, property.slug, i, apiKey, PHOTO_MAX_WIDTH);
-            saved.push({ src, attribution: entry.credit });
-            console.log(`      [${i + 1}] ${src}${entry.credit ? ` — credit: ${entry.credit}` : ""}`);
+            const src = await downloadDirect(heroUrl, property.slug, slot);
+            saved.push({ src, attribution: credit });
+            console.log(`      [1] ${src} — PINNED by URL${credit ? ` — credit: ${credit}` : ""}`);
+            slot++;
           } catch (error) {
-            console.log(`      [${i + 1}] FAILED — ${error.message}`);
+            // Non-fatal on purpose: the existing g-01 on disk stays valid, so a
+            // dead CDN link degrades to "no change" rather than a broken hero.
+            console.log(`      [1] PINNED URL FAILED — ${error.message}`);
+            console.log("          falling back to API order; existing g-01 left in place");
+          }
+        }
+
+        for (const entry of keep) {
+          if (slot >= PHOTO_LIMIT) break;
+          try {
+            const src = await downloadPhoto(entry.photo, property.slug, slot, apiKey, PHOTO_MAX_WIDTH);
+            saved.push({ src, attribution: entry.credit });
+            console.log(`      [${slot + 1}] ${src}${entry.credit ? ` — credit: ${entry.credit}` : ""}`);
+            slot++;
+          } catch (error) {
+            console.log(`      [${slot + 1}] FAILED — ${error.message}`);
           }
         }
         if (saved.length > 0) record.photos = saved;

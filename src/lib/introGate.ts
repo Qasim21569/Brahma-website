@@ -2,6 +2,19 @@
  * Preload curtain coordination.
  *
  * Pure DOM — no React dependency. Safe to import from any component.
+ *
+ * ⚠️ **CURRENTLY UNCONSUMED — verified 2026-08-17.** Nothing in `src/` imports
+ * this module, so the `brahma:intro-release` / `brahma:intro-done` events the
+ * boot script dispatches have no listeners, and `FAILSAFE_MS` below guards a
+ * promise nobody awaits. It is kept rather than deleted because the boot script
+ * still emits the events and the intended consumer is obvious: below-the-fold
+ * hero content that should hold its entrance until the curtain starts lifting —
+ *
+ *     useEffect(() => { heroReady().then(() => setCanAnimate(true)); }, []);
+ *
+ * **Either wire that up or delete this file.** Leaving a dormant coordination
+ * API around is how the project has previously ended up maintaining timings for
+ * code paths that no longer run. See docs/PRELOADER-SPEC.md §10.
  */
 
 const INTRO_SESSION_KEY = "brahma:intro-played";

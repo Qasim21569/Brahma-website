@@ -86,6 +86,25 @@ export type Property = {
    * set it on a literal only to override what Google returned.
    */
   amenities?: Amenity[];
+  /**
+   * Where `amenities` came from. Drives the provenance line under the grid.
+   *
+   * "google" (the default, set by `enrich()`) prints "as published by the
+   * property on Google" and links to the operator's page. "client" prints
+   * nothing — the claim would be false, and a property we own outright needs
+   * no third-party citation. Set this whenever you hand-author `amenities`.
+   */
+  amenitiesSource?: "google" | "client";
+  /**
+   * Extra hand-authored facts for the Asset Detail table, rendered after the
+   * shared rows (Location, Asset Type, Brand, …).
+   *
+   * Exists because the shared rows are hotel-shaped, and the group's
+   * non-hospitality assets have the facts that actually matter to a reader
+   * sitting outside them — lot size, water frontage. Always CLIENT-SUPPLIED;
+   * never derived, never inferred from a listing site.
+   */
+  highlights?: { label: string; value: string }[];
   /** "final" = client-approved copy. "placeholder" = scaffolding, must be replaced. */
   contentStatus: "final" | "placeholder";
 };
@@ -122,7 +141,7 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Acquired below replacement cost. Renovation complete. Held and operated under Brahmas Hospitality Management since handover.",
+      "Acquired underperforming and repositioned in full. Held and operated under Brahmas Hospitality Management since handover.",
     longform:
       "Located near the Florida State Fairgrounds and the Seminole Hard Rock event corridor, the property benefits from year-round demand drivers. Brahmas acquired the asset and initiated a full operational and physical repositioning on closing.",
     acquisition:
@@ -312,9 +331,9 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Acquired below replacement cost. Renovation complete. Held and operated under Brahmas Hospitality Management since handover.",
+      "Acquired underperforming and repositioned in full. Held and operated under Brahmas Hospitality Management since handover.",
     longform:
-      "Acquired below replacement cost from a regional operator seeking liquidity. The asset had strong bones and a stable Florida hospitality position, but its operational performance lagged its location grade. Brahmas acquired with the intent to reposition the property under our hospitality thesis.",
+      "Acquired from a regional operator seeking liquidity. The asset had strong bones and a stable Florida hospitality position, but its operational performance lagged its location grade. Brahmas acquired with the intent to reposition the property under its hospitality model.",
     acquisition:
       "Identify underperforming hotels in prime markets where structural quality exceeds current operating performance.",
     renovation:
@@ -474,7 +493,13 @@ export const properties: Property[] = [
 
   // ── 11 ─────────────────────────────────────────────────────────────────────
   {
+    // Slug retained — it is the live /portfolio/ URL. The asset was listed to us
+    // only as "Beach House" until the client identified it 2026-08-17.
     slug: "beach-house-weeki-wachee",
+    // NAME from the client: listed as "Beach House". Same parcel as the
+    // Zillow listing 10492 Pine Island Dr, Weeki Wachee, FL 34607
+    // (zpid 44796785) — 5.1-acre lot confirmed. Previously displayed as
+    // Serenity Cove.
     name: "Beach House",
     shortName: "Beach House",
     address: "10492 Pine Island Dr, Weeki Wachee, FL 34607",
@@ -488,20 +513,145 @@ export const properties: Property[] = [
     subunit: "Brahmas Management and Investment Group",
     bookingUrl: null,
     placeId: null,
-    coordinates: null,
+    // Geocode for the exact address, from the Places API 2026-08-17. Hand-set
+    // because enrichment cannot reach this property — see the note on
+    // `gallery` below.
+    coordinates: { lat: 28.5759429, lng: -82.6530071 },
     summary:
-      "Coastal residential asset on Pine Island, Weeki Wachee, held directly by the group.",
+      "Private Gulf-front estate on Pine Island — 5.1 acres with more than 600 feet of water frontage, held directly by the group.",
     longform:
-      "A coastal residential asset on Pine Island in Weeki Wachee, held directly by Brahmas Management and Investment Group. The property sits on Florida's Nature Coast with direct Gulf access.",
+      "The Beach House occupies 5.1 acres on Pine Island in Weeki Wachee, with more than 600 feet of frontage on the Gulf of Mexico. The estate sits on Florida's Nature Coast and is held directly by Brahmas Management and Investment Group rather than under the hospitality management arm — the group's only residential holding, and the only asset in the portfolio it does not operate for guests.",
+    highlights: [
+      { label: "Lot Size", value: "5.1 acres" },
+      { label: "Water Frontage", value: "600+ feet" },
+      { label: "Waterway", value: "Gulf of Mexico" },
+    ],
+    /**
+     * HAND-AUTHORED — the only property in the file with a client-sourced list.
+     *
+     * Google Places has no listing for a private residence, so `deriveAmenities()`
+     * has nothing to work from. These come from two places, both legitimate,
+     * and NEITHER is franchise-brand inference:
+     *
+     *   · CLIENT-STATED — Gulf frontage, acreage. Supplied 2026-08-17.
+     *   · VISIBLE IN THE CLIENT'S OWN PHOTOGRAPHS — the two residences, the
+     *     dock, the pond and the covered parking are all plainly in the aerial
+     *     (01) and the elevation (04). The wraparound porch is the subject of
+     *     (06).
+     *
+     * ⚠️ "Two Residences" is the one worth confirming: the aerial shows a second
+     * house on the same driveway loop, which reads as a guest house on the same
+     * parcel — but a neighbouring property on a shared drive would look
+     * identical from above. Ask before treating it as a selling point.
+     *
+     * `amenitiesSource: "client"` suppresses the "as published on Google"
+     * provenance line, which would be false here.
+     */
+    amenitiesSource: "client",
+    amenities: [
+      { label: "600+ ft Gulf Frontage", icon: "waterfront" },
+      { label: "5.1-Acre Grounds", icon: "acreage" },
+      { label: "Private Dock", icon: "dock" },
+      { label: "Two Residences", icon: "residence" },
+      { label: "Wraparound Porch", icon: "porch" },
+      { label: "Freshwater Pond", icon: "pond" },
+      { label: "Covered Parking", icon: "parking" },
+    ],
     acquisition:
       "Selective acquisition of residential assets in coastal Florida markets with constrained supply.",
     renovation:
       "Capital improvement to the physical asset consistent with the group's standards.",
     operations: "Held directly by Brahmas Management and Investment Group.",
     outcomesNote: THESIS.outcomesNote,
+    /**
+     * Deliberately null, even though a gallery now exists below.
+     *
+     * `enrich()` falls back to `gallery[0].src`, so the portfolio card and the
+     * detail-page hero band both still work. What staying null does is keep
+     * this property OUT of `ownPhotographyProperties`, which selects on a
+     * HAND-AUTHORED `homeHeroSrc` — so these images cannot reach the homepage
+     * hero or image band.
+     *
+     * That is intentional: the photographs carry a visible **StellarMLS**
+     * watermark and one carries a **"© Chris Watkins"** photographer credit.
+     * Fine on a portfolio detail page the client has signed off; a different
+     * decision to put on the homepage. To opt in later, set this to
+     * "/properties/beach-house-weeki-wachee/01-hero-aerial.webp".
+     */
     homeHeroSrc: null,
     homeSatelliteSrc: null,
-    gallery: [],
+    /**
+     * Client-supplied from the property's Zillow listing (zpid 44796785),
+     * 2026-08-17. **The client states the group holds full rights to these
+     * images.** That assertion is theirs to make — see the note above about
+     * the MLS watermark and photographer credit still burned into the files.
+     *
+     * ⚠️ HAND-AUTHORED ON PURPOSE, and it must stay that way:
+     *   · `enrich()` keeps a non-empty `gallery`, so these can never be
+     *     overwritten by a `--photos` run.
+     *   · `readProperties()` in the enrichment script now sees a non-empty
+     *     `gallery: [{`, so `hasOwnPhotos` is true and the script will not
+     *     burn Place Photo quota on this slug.
+     *   · `attribution: null` means <PhotoAttribution> renders nothing —
+     *     correct for imagery we hold rights to, unlike the Places-sourced
+     *     galleries elsewhere in this file which all carry an owner credit.
+     *
+     * Google Places cannot help here regardless: a private residence has no
+     * business listing, the address returns a bare geocode with zero photos,
+     * and "Serenity Cove" matches no place at all. The nearest named results
+     * are a public county park and an unrelated vacation rental — **never
+     * force a match to either.**
+     *
+     * Order is deliberate: aerial establishing shot, approach, the two
+     * structures, elevations, then porches and interior.
+     */
+    gallery: [
+      {
+        src: "/properties/beach-house-weeki-wachee/01-hero-aerial.webp",
+        alt: "Aerial view of the Beach House — the estate on its Pine Island peninsula, Gulf of Mexico on three sides",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/02-approach.webp",
+        alt: "The approach to the main residence beneath a canopy of live oaks and palms",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/03-estate.webp",
+        alt: "Main residence and guest house across the estate's central lawn",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/04-elevation.webp",
+        alt: "Front elevation of the main residence, raised over covered parking",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/05-aerial-oblique.webp",
+        alt: "Elevated three-quarter view of the main residence and surrounding grounds",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/06-porch.webp",
+        alt: "Wraparound porch running the length of the residence, overlooking the Gulf",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/07-deck.webp",
+        alt: "Deck seating with an open view across the Gulf of Mexico",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/08-porch-gulf.webp",
+        alt: "Covered porch looking out over the water frontage",
+        attribution: null,
+      },
+      {
+        src: "/properties/beach-house-weeki-wachee/09-interior.webp",
+        alt: "Open kitchen and dining area with hardwood floors",
+        attribution: null,
+      },
+    ],
     contentStatus: "placeholder",
   },
 
@@ -588,6 +738,9 @@ function enrich(p: Property): Property {
     // merging — a curated set would otherwise be silently padded with whatever
     // Google happened to say.
     amenities: p.amenities ?? g.amenities ?? [],
+    // Anything hand-authored is client-sourced unless it says otherwise; the
+    // generated path is Google by definition.
+    amenitiesSource: p.amenities ? (p.amenitiesSource ?? "client") : "google",
     homeHeroSrc: p.homeHeroSrc ?? gallery[0]?.src ?? null,
   };
 }
