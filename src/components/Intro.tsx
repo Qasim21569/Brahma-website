@@ -42,14 +42,14 @@ import type { CSSProperties } from "react";
 const EDGE_SAG = "M0 0 H100 Q50 40 0 0 Z";
 
 /**
- * The mark's 12 shapes, in DRAW ORDER — which is not the order they sat in the
- * source file.
+ * The LOTUS — the mark's 9 enclosing shapes, in DRAW ORDER, which is not the
+ * order they sat in the source file. The key is separate; see `KEY_SHAPES`.
  *
  * The reveal draws each shape's outline and then floods its fill, staggered
- * down this list, so the sequence has to build the emblem the way someone would
+ * down this list, so the sequence builds the emblem the way someone would
  * actually draw it: the enclosing ring first, then the arcs inside it, then the
- * fine detail, and the centre dot last as the closing accent. In file order the
- * dot came fourth, which landed the punctuation in the middle of the sentence.
+ * wings and the fine detail — finishing with an empty centre for the key to
+ * drop into.
  *
  * `pathLength={1}` normalises every shape to a length of 1 regardless of its
  * real geometry, so one `stroke-dasharray: 1` rule drives all twelve. Without
@@ -103,13 +103,38 @@ const MARK_SHAPES: { d: string; fill: string }[] = [
     fill: "#19263A",
     d: "m90.6 58.1-2.6 1.8c1.6 6.1 1.6 11.5-0.8 18 1.2-0.7 3.8-2.5 4.3-2.9 1.4-6.1 0.7-12.9-0.9-16.9z",
   },
-  // 10–11 — the key glyph and its bar.
+];
+
+/**
+ * The key, as a separate actor — and the reason the sequence works.
+ *
+ * ── Why these three are not in MARK_SHAPES ───────────────────────────────────
+ * The mark is a lotus enclosed by a ring with a key at its centre, and the two
+ * halves mean different things: the petals are the group's identity, the key is
+ * what it unlocks. Drawing all twelve shapes on one uniform stagger said
+ * neither — the key was just shapes ten, eleven and twelve.
+ *
+ * So the lotus DRAWS itself (constructed, stroke by stroke) and then the key
+ * ARRIVES already whole, descending into the seat the petals have made for it
+ * and settling with a turn. Two different verbs for two different ideas.
+ *
+ * The three pieces are one object stacked vertically — the bow and shaft
+ * (78.5→94), the bit (99→104.5) and the light-blue terminus (107.9→117.9) —
+ * so they move together inside `.intro-key` rather than animating separately.
+ *
+ * ⚠️ These paths deliberately DO NOT get the `--mark` draw/fill treatment.
+ * They are filled from the start and the group is what animates; see the
+ * `.intro-key path` rule in globals.css, which overrides the shared one.
+ */
+const KEY_SHAPES: { d: string; fill: string }[] = [
+  // Bow and shaft.
   {
     fill: "#19263A",
     d: "m75.1 78.5c-1.9 0-3.9 1.5-3.8 3.6s1.4 3.1 2.5 3.5v8.1c0 1.2 2.1 1.8 2.1-0.2h1.6c0.4 0 0.4-0.7 0.4-1.3l-1.9-0.2c-0.2-0.3-0.1-1.4 0.4-1.4h1.5c0-0.4 0.1-1.2-0.2-1.3h-1.7v-3.8c1.7-0.7 2.6-1.9 2.4-4-0.4-1.6-1.5-3-3.3-3zm-0.1 5.1c-0.8 0-1.5-0.7-1.5-1.5s0.7-1.6 1.5-1.6 1.4 0.8 1.4 1.6-0.6 1.4-1.4 1.5z",
   },
+  // The bit.
   { fill: "#19263A", d: "M74.2 99 L74.2 104.5 L75.6 104.5 L75.6 99 Z" },
-  // 12 — the centre dot. Last, and held back an extra beat.
+  // Terminus — the one light-blue element in the mark. Gets the settle pulse.
   {
     fill: "#688BB1",
     d: "m75 107.9c-2.8 0-5 2.3-5 5.1s2.2 4.7 5 4.8c2.7 0 5-2 5-4.6 0-2.7-2.1-5.3-5-5.3z",
@@ -156,6 +181,21 @@ export default function Intro() {
                 style={{ "--mark": shape.fill } as CSSProperties}
               />
             ))}
+
+            {/* The key descends as one object once the lotus has formed. It is
+                a <g> so the drop, the turn and the seat are a single transform
+                rather than three synchronised ones — and so the CSS above,
+                which targets `.intro-mark > path`, cannot reach inside it. */}
+            <g className="intro-key">
+              {KEY_SHAPES.map((shape, i) => (
+                <path
+                  key={i}
+                  d={shape.d}
+                  fill={shape.fill}
+                  className={i === KEY_SHAPES.length - 1 ? "intro-key-tip" : undefined}
+                />
+              ))}
+            </g>
           </svg>
         </div>
 

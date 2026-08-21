@@ -5,14 +5,15 @@
 > chain. Nothing here is authoritative about what is currently shipped in
 > brahma-web; HANDOFF.md is. This exists to be lifted into another project.
 >
-> Written 2026-08-17 against the 7500 ms implementation.
+> Written 2026-08-17 against the 8000 ms implementation.
 
 ---
 
 ## 0. What this thing is
 
-A full-screen curtain that covers the page on first visit, plays a ~7.5 s brand
-animation (a logo that draws itself, a wordmark, a progress rule), then lifts
+A full-screen curtain that covers the page on first visit, plays an ~8 s brand
+animation (a logo that draws itself, a key that drops into it, a wordmark, a
+progress rule), then lifts
 off the top of the screen with a curved trailing edge.
 
 Four properties define it, and they are the reason it is built the way it is:
@@ -108,8 +109,8 @@ port this version, then minify.
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     try { window.scrollTo(0, 0); } catch (e) {}
 
-    var tR = 6650;   // release: content may start, lift is beginning
-    var tD = 7500;   // done: curtain fully off-screen
+    var tR = 7150;   // release: content may start, lift is beginning
+    var tD = 8000;   // done: curtain fully off-screen
     var released = false, done = false, timerR, timerD;
 
     function fire(n) { try { document.dispatchEvent(new Event(n)); } catch (e) {} }
@@ -381,22 +382,39 @@ which is why they are separate inline-blocks separated by real spaces.
 This is the part that bites when you change the duration.
 
 ```
-   0 → 2800   mark settles 0.94 → 1
- 300 → 2400   12 shapes draw, staggered 105ms
- 850 → 2750   each shape's fill floods, 550ms behind its own draw
-2750 → 3570   wordmark rises
-3450 → 4370   subtitle words stagger in
-3800 → 6650   the rule draws  ← ends EXACTLY at the lift
-6650 → 7500   curtain lifts + edge flattens
+   0 → 3400   mark settles 0.94 → 1
+ 300 → 2040   9 lotus shapes draw, staggered 105ms
+ 850 → 2390   each shape's fill floods, 550ms behind its own draw
+2250 → 3350   the KEY descends into the centre and turns as it seats
+3150 → 3570   its terminus pulses once — the click
+3400 → 4220   wordmark rises
+4100 → 5020   subtitle words stagger in
+4350 → 7150   the rule draws  ← ends EXACTLY at the lift
+7150 → 8000   curtain lifts + edge flattens
 ```
+
+**Split the mark by MEANING, not by geometry.** Ours is a lotus enclosing a
+key, and those halves say different things — identity, and what an investment
+unlocks. Animating all twelve paths on one uniform stagger said neither. So the
+lotus is DRAWN (constructed, stroke by stroke) and the key ARRIVES: it descends
+into the centre the petals just closed around, turns as it seats, and its tip
+pulses on contact. Two verbs for two ideas. If your mark has a similar internal
+split, this is the single highest-leverage change in the whole sequence.
+
+Mechanically the key is a `<g>` so the drop, the turn and the seat are one
+transform. It needs `transform-box: fill-box` with a percentage
+`transform-origin`, or the origin resolves against the SVG viewport and the
+group swings in from off-centre like a hinge. And scope the shared draw rule to
+`.intro-mark > path` so it cannot reach inside the group — the key is filled
+from the start, not drawn.
 
 **Four places encode this, and they are one system:**
 
 | Where | Value |
 |---|---|
 | `globals.css` | every `animation-delay` |
-| `layout.tsx` | `tR = 6650` — must equal the lift's delay |
-| `layout.tsx` | `tD = 7500` — must equal lift delay + lift duration |
+| `layout.tsx` | `tR = 7150` — must equal the lift's delay |
+| `layout.tsx` | `tD = 8000` — must equal lift delay + lift duration |
 | `introGate.ts` | `FAILSAFE_MS` — must be comfortably **above** `tD` |
 
 Change one, change all four. A mismatch means the curtain lifts before its
@@ -407,9 +425,11 @@ Two deliberate joins:
 - **The rule ends at exactly the moment the lift starts.** It resolves *into*
   the exit rather than stopping and leaving a pause. The wait feels telegraphed
   instead of merely over.
-- **The wordmark starts at 2750 while the mark finishes at 2800** — a 50 ms
-  overlap. A hard gap between the two reads as two separate animations; the
-  overlap makes it a handoff.
+- **Beats overlap on purpose.** The key starts descending at 2250 while the
+  lotus fills are still resolving at 2390; its tip pulses at 3150 while the drop
+  is still landing at 3350; the wordmark starts at 3400 as the key settles. A
+  hard gap between two beats reads as two separate animations — the overlap is
+  what makes each one a handoff into the next.
 
 > **Verify it rather than eyeballing it.** We keep a small script that parses the
 > CSS delays out of `globals.css`, parses `tR`/`tD` out of `layout.tsx` and

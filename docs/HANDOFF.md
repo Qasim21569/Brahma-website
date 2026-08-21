@@ -46,7 +46,7 @@ not authoritative about what is shipped here.
 | Photography | ✅ **12 of 12 assets.** 10 Places-sourced (owner-credited), 2 hand-authored (Clarion Pointe, Serenity Cove). |
 | Amenities | ✅ **Live on 12 of 12 detail pages.** 11 Google-derived, 1 client-sourced (Serenity Cove). Replaced "Our Approach". |
 | Enrichment script | ✅ Written, self-tested, **key working**. Derives amenities as of 2026-08-17. |
-| Preloader | ✅ **Live at 7500ms** — Phase F1. Mark draws itself shape by shape; see below |
+| Preloader | ✅ **Live at 8000ms** — Phase F1. Lotus draws itself, then the key drops in; see below |
 | Page transitions | 🔲 Built but disabled. Phase F2. |
 
 ### Done this session (2026-08-17)
@@ -125,7 +125,7 @@ assumed.
   re-fetched by the script**, so they are not deleted without a decision.
   `01-hero.webp` and `02-satellite.webp` in that folder are still live chrome.
 
-**Intro retimed to 7500ms, and the mark now DRAWS ITSELF.** Was 5000ms with a
+**Intro at 8000ms: the lotus DRAWS ITSELF, then the KEY DROPS IN.** Was 5000ms with a
 single 900ms clip-wipe of the whole logo — one beat, over before the eye
 settled.
 
@@ -141,10 +141,26 @@ settled.
   drives all twelve; without it each path needs its own measured length and any
   artwork edit silently desynchronises the draw. The source `<polygon>` is now a
   `<path>` — `pathLength` is patchier on `polygon`.
-- **Schedule (total 7500ms):** mark draws 300→2400, fills 850→2750, settle
-  0→2800, BRAHMAS 2750→3570, subtitle 3450→4370, rule 3800→6650, lift
-  6650→7500. `tR=6650` / `tD=7500` in layout.tsx, `FAILSAFE_MS=9500`.
-  **All four move together — they are one system.**
+- 🔑 **The key is a separate act, and it is the point of the sequence.** The
+  mark is a lotus enclosing a key; the client's reading is that the petals are
+  the group's identity and the key is what an investment unlocks. One uniform
+  stagger over all twelve paths said neither. Now the lotus is DRAWN and the
+  key ARRIVES — descends into the centre the petals just closed around, turns
+  as it seats, and its light-blue terminus pulses once on contact. `KEY_SHAPES`
+  in `Intro.tsx`, `.intro-key` in globals.css. It is filled from the start, NOT
+  stroke-drawn: two shapes constructing themselves differently at the same
+  moment reads as one busy animation.
+- **Schedule (total 8000ms):** lotus draws 300→2040, fills 850→2390, key drop
+  2250→3350, click 3150→3570, settle 0→3400, BRAHMAS 3400→4220, subtitle
+  4100→5020, rule 4350→7150, lift 7150→8000. `tR=7150` / `tD=8000` in
+  layout.tsx, `FAILSAFE_MS=10000`. **All four move together — one system.**
+  The extra 500ms over the old 7500 is the key's; 50ms came back off the rule.
+- ⚠️ Two selector traps if you edit this: the shared draw rule is
+  `.intro-mark > path` (direct children only) so it cannot reach into the key's
+  `<g>`, and the stagger ladder uses `nth-of-type` not `nth-child` because that
+  `<g>` would otherwise occupy a slot and shift every delay. The key group also
+  needs `transform-box: fill-box` or its rotation pivots on the SVG viewport
+  and swings in like a hinge.
 - ⚠️ **Deliberately NOT GSAP**, despite it being on the table. GSAP is a JS
   chunk, a JS chunk is a network fetch, and the intro runs on a fixed timer that
   never waits for an asset — the exact race that made the logo "sometimes not
