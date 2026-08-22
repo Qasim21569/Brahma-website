@@ -204,7 +204,7 @@ export default function ServicesPage() {
         <section className="px-margin-edge py-section-gap">
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.9fr] gap-gutter">
             <SectionTitle>
-              Methodology
+              Frequently Asked Questions
             </SectionTitle>
             <div>
               <h2>
