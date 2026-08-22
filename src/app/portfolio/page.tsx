@@ -10,7 +10,7 @@ import PortfolioGrid from "@/components/sections/PortfolioGrid";
 import { enrichedProperties, assetTypeLabels } from "@/data/properties";
 
 export const metadata: Metadata = {
-  title: "Portfolio | Brahmas Management and Investment Group",
+  title: "Portfolio",
   description:
     "Twelve operating assets across hospitality, education, and residential real estate in Florida — acquired, repositioned, and operated directly by Brahmas.",
 };

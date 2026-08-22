@@ -16,7 +16,7 @@ import {
 import { enrichedProperties } from "@/data/properties";
 
 export const metadata: Metadata = {
-  title: "Contact | Brahmas Management and Investment Group",
+  title: "Contact",
   description:
     "Talk to Brahmas Management and Investment Group about an asset, a joint venture, or the group's operations in Florida.",
 };

@@ -30,11 +30,30 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const property = getProperty(slug);
-  if (!property) return { title: "Property Not Found | BMIG" };
+  if (!property) return { title: "Property Not Found" };
 
   return {
-    title: `${property.name} | Brahmas Management and Investment Group`,
+    title: property.shortName,
     description: property.summary,
+    openGraph: {
+      title: `${property.name} | ${property.city}, ${property.state}`,
+      description: property.summary,
+      type: "article",
+      images: property.gallery[0]
+        ? [
+            {
+              url: property.gallery[0].src,
+              alt: property.gallery[0].alt,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: property.gallery[0] ? "summary_large_image" : "summary",
+      title: property.shortName,
+      description: property.summary,
+      images: property.gallery[0] ? [property.gallery[0].src] : undefined,
+    },
   };
 }
 

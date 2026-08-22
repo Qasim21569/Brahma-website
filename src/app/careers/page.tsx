@@ -14,7 +14,7 @@ import { primaryEmail } from "@/data/contact";
 import { enrichedProperties, assetTypeLabels } from "@/data/properties";
 
 export const metadata: Metadata = {
-  title: "Careers | Brahmas Management and Investment Group",
+  title: "Careers",
   description:
     "Brahmas hires for disposition rather than credentials, and offers equity in new projects to those who prove it.",
 };

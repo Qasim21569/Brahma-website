@@ -15,7 +15,7 @@ import { constructionPartner } from "@/data/services";
 import { enrichedProperties } from "@/data/properties";
 
 export const metadata: Metadata = {
-  title: "About | Brahmas Management and Investment Group",
+  title: "About",
   description:
     "Brahmas Management and Investment Group acquires, repositions, and directly operates hospitality, education, and residential assets across Florida.",
 };

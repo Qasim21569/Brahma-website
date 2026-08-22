@@ -15,7 +15,7 @@ import Accordion from "@/components/ui/Accordion";
 import { pillars, capabilityChips, constructionPartner } from "@/data/services";
 
 export const metadata: Metadata = {
-  title: "What We Do | Brahmas Management and Investment Group",
+  title: "What We Do",
   description:
     "Brahmas acquires, repositions, and directly operates its own assets — capital, repositioning, and operations under one roof.",
 };
