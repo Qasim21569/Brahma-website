@@ -121,19 +121,25 @@ const THESIS = {
 } as const;
 
 export const properties: Property[] = [
+
   // ── 01 ─────────────────────────────────────────────────────────────────────
-  // NOTE: slug retained from the original dataset because photography already
-  // lives at /properties/clarion-pointe-tampa-brandon/. Do not rename.
   {
-    slug: "clarion-pointe-tampa-brandon",
-    name: "Clarion Pointe Tampa-Brandon Near Fairgrounds and Casino",
-    shortName: "Clarion Pointe Tampa",
-    address: "10007 Princess Palm Ave, Tampa, FL 33619",
-    city: "Tampa",
+    slug: "holiday-inn-express-orlando-seaworld",
+    // NAME CORRECTED 2026-08-17. Was "Holiday Inn Express & Suites Orlando at
+    // SeaWorld" — that is a DIFFERENT hotel, at 10771 International Dr, phone
+    // (407) 996-4100. Our address (2776 Destination Pkwy) and phone
+    // ((407) 640-7500) both match "Holiday Inn Express Orlando - South Park"
+    // exactly, per Google Places. Two confirmed fields outvoted the third.
+    // The wrong name is why enrichment skipped this asset on every prior run.
+    // Slug retained: renaming it would break the /portfolio/… URL.
+    name: "Holiday Inn Express Orlando South Park",
+    shortName: "Holiday Inn Express Orlando",
+    address: "2776 Destination Pkwy, Orlando, FL 32819",
+    city: "Orlando",
     state: "Florida",
-    phone: "(813) 622-8557",
+    phone: "(407) 640-7500",
     assetType: "hospitality",
-    brand: "Choice Hotels",
+    brand: "IHG",
     category: "Acquisition",
     acquiredYear: "2024",
     subunit: "Brahmas Hospitality Management",
@@ -141,57 +147,30 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Acquired underperforming and repositioned in full. Held and operated under Brahmas Hospitality Management since handover.",
+      "Orlando tourism-corridor asset adjacent to the Orange County Convention Center and SeaWorld.",
     longform:
-      "Located near the Florida State Fairgrounds and the Seminole Hard Rock event corridor, the property benefits from year-round demand drivers. Brahmas acquired the asset and initiated a full operational and physical repositioning on closing.",
-    acquisition:
-      "Identify underperforming hotels near secular demand drivers whose structure supports long-term performance.",
-    renovation:
-      "Interior refurbishment, building envelope improvements, operating model reset, and brand repositioning.",
+      "Positioned in the Orlando International Drive tourism corridor, adjacent to the Orange County Convention Center and within reach of SeaWorld. The location captures both leisure and convention-driven demand across the calendar.",
+    acquisition: THESIS.acquisition,
+    renovation: THESIS.renovation,
     operations: THESIS.operations,
     outcomesNote: THESIS.outcomesNote,
-    homeHeroSrc: "/properties/clarion-pointe-tampa-brandon/01-hero.webp",
-    homeSatelliteSrc: "/properties/clarion-pointe-tampa-brandon/02-satellite.webp",
-    gallery: [
-      {
-        src: "/properties/clarion-pointe-tampa-brandon/01-hero.webp",
-        alt: "Clarion Pointe Tampa Brandon exterior anchor shot",
-      },
-      {
-        src: "/properties/clarion-pointe-tampa-brandon/02-satellite.webp",
-        alt: "Clarion Pointe Tampa Brandon public space",
-      },
-      {
-        src: "/properties/clarion-pointe-tampa-brandon/03-gallery-1.webp",
-        alt: "Clarion Pointe Tampa Brandon interior detail",
-      },
-      {
-        src: "/properties/clarion-pointe-tampa-brandon/04-gallery-2.webp",
-        alt: "Clarion Pointe Tampa Brandon building exterior",
-      },
-      {
-        src: "/properties/clarion-pointe-tampa-brandon/05-gallery-3.webp",
-        alt: "Clarion Pointe Tampa Brandon room interior",
-      },
-    ],
-    contentStatus: "final",
+    homeHeroSrc: null,
+    homeSatelliteSrc: null,
+    gallery: [],
+    contentStatus: "placeholder",
   },
 
   // ── 02 ─────────────────────────────────────────────────────────────────────
   {
-    slug: "quality-inn-conference-center-tampa-brandon",
-    // Wording aligned to the Google Business Profile 2026-08-17 ("and", hyphen
-    // rather than slash). Same hotel — address and phone both match — but the
-    // owner-photo heuristic compares author name to this string, and the
-    // missing "and" was enough to reject all 7 of the hotel's own photos.
-    name: "Quality Inn and Conference Center Tampa-Brandon",
-    shortName: "Quality Inn Conference Center",
-    address: "9331 E Adamo Dr, Tampa, FL 33619",
-    city: "Tampa",
+    slug: "hampton-inn-suites-tampa-east-seffner",
+    name: "Hampton Inn & Suites Tampa East (Casino Area)",
+    shortName: "Hampton Inn & Suites Tampa East",
+    address: "11740 Tampa Gateway Blvd, Seffner, FL 33584",
+    city: "Seffner",
     state: "Florida",
-    phone: "(813) 621-5555",
+    phone: "(813) 630-4321",
     assetType: "hospitality",
-    brand: "Choice Hotels",
+    brand: "Hilton",
     category: "Acquisition",
     acquiredYear: "2024",
     subunit: "Brahmas Hospitality Management",
@@ -199,9 +178,9 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Conference-oriented asset on the Adamo Drive corridor, held and operated under Brahmas Hospitality Management.",
+      "Interstate-adjacent asset serving the Seminole Hard Rock and east Hillsborough corridor.",
     longform:
-      "A conference and group-demand asset positioned on the Adamo Drive corridor east of downtown Tampa. Meeting space and access to the Selmon Expressway support a mixed base of corporate, group, and transient demand.",
+      "An I-4 adjacent asset in Seffner serving the Seminole Hard Rock casino corridor and east Hillsborough County. Interstate visibility and event-driven demand underpin a resilient occupancy base.",
     acquisition: THESIS.acquisition,
     renovation: THESIS.renovation,
     operations: THESIS.operations,
@@ -214,13 +193,13 @@ export const properties: Property[] = [
 
   // ── 03 ─────────────────────────────────────────────────────────────────────
   {
-    slug: "quality-inn-suites-tampa-east",
-    name: "Quality Inn & Suites",
-    shortName: "Quality Inn & Suites Tampa",
-    address: "4955 E 18th Ave, Tampa, FL 33605",
-    city: "Tampa",
+    slug: "clarion-pointe-lakeland-i4",
+    name: "Clarion Pointe Lakeland I-4",
+    shortName: "Clarion Pointe Lakeland",
+    address: "4321 Lakeland Park Dr, Lakeland, FL 33809",
+    city: "Lakeland",
     state: "Florida",
-    phone: "(813) 623-6000",
+    phone: "(863) 577-1170",
     assetType: "hospitality",
     brand: "Choice Hotels",
     category: "Acquisition",
@@ -230,9 +209,9 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "East Tampa select-service asset with direct interstate access, operated under Brahmas Hospitality Management.",
+      "I-4 corridor asset positioned between the Tampa and Orlando markets.",
     longform:
-      "A select-service asset in east Tampa with direct access to I-4 and proximity to the Port of Tampa industrial corridor, supporting a durable base of extended-stay and contractor demand.",
+      "Positioned on the I-4 corridor between Tampa and Orlando, the asset captures logistics, corporate, and transient demand from one of Florida's most heavily trafficked interstate segments.",
     acquisition: THESIS.acquisition,
     renovation: THESIS.renovation,
     operations: THESIS.operations,
@@ -245,13 +224,21 @@ export const properties: Property[] = [
 
   // ── 04 ─────────────────────────────────────────────────────────────────────
   {
-    slug: "microtel-inn-suites-zephyrhills",
-    name: "Microtel Inn & Suites by Wyndham Zephyrhills",
-    shortName: "Microtel Inn & Suites Zephyrhills",
-    address: "7839 Gall Blvd, Zephyrhills, FL 33541",
-    city: "Zephyrhills",
+    // NOTE: slug retained deliberately. It reads "sleep-inn", which no longer
+    // matches the name below, but it is the live /portfolio/ URL and the photo
+    // directory path. Same reasoning as the two slugs noted at the top of this
+    // file — do not rename.
+    slug: "sleep-inn-suites-fort-myers-airport",
+    // BRAND CORRECTED 2026-08-17, confirmed by the client. Was "Sleep Inn &
+    // Suites Fort Myers Airport" / Choice Hotels. Google's listing for this
+    // address and phone is La Quinta (a Wyndham brand), and the client
+    // confirmed the asset flies the La Quinta flag.
+    name: "La Quinta Inn and Suites Fort Myers I-75",
+    shortName: "La Quinta Inn & Suites Fort Myers",
+    address: "9521 Market Place Rd, Fort Myers, FL 33912",
+    city: "Fort Myers",
     state: "Florida",
-    phone: "(813) 815-3007",
+    phone: "(941) 585-0973",
     assetType: "hospitality",
     brand: "Wyndham",
     category: "Acquisition",
@@ -261,9 +248,9 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Efficient-format asset serving the Zephyrhills and east Pasco County market.",
+      "Southwest Florida asset serving the Fort Myers airport and Gulf coast market.",
     longform:
-      "An efficient-format asset on the Gall Boulevard corridor serving east Pasco County. The market's healthcare, motorsport, and seasonal residential demand supports year-round occupancy at a low operating cost base.",
+      "A southwest Florida asset serving Southwest Florida International Airport and the surrounding Gulf coast market, with demand supported by seasonal leisure travel and regional business activity.",
     acquisition: THESIS.acquisition,
     renovation: THESIS.renovation,
     operations: THESIS.operations,
@@ -351,25 +338,19 @@ export const properties: Property[] = [
     gallery: [],
     contentStatus: "final",
   },
-
   // ── 07 ─────────────────────────────────────────────────────────────────────
+  // NOTE: slug retained from the original dataset because photography already
+  // lives at /properties/clarion-pointe-tampa-brandon/. Do not rename.
   {
-    slug: "holiday-inn-express-orlando-seaworld",
-    // NAME CORRECTED 2026-08-17. Was "Holiday Inn Express & Suites Orlando at
-    // SeaWorld" — that is a DIFFERENT hotel, at 10771 International Dr, phone
-    // (407) 996-4100. Our address (2776 Destination Pkwy) and phone
-    // ((407) 640-7500) both match "Holiday Inn Express Orlando - South Park"
-    // exactly, per Google Places. Two confirmed fields outvoted the third.
-    // The wrong name is why enrichment skipped this asset on every prior run.
-    // Slug retained: renaming it would break the /portfolio/… URL.
-    name: "Holiday Inn Express Orlando South Park",
-    shortName: "Holiday Inn Express Orlando",
-    address: "2776 Destination Pkwy, Orlando, FL 32819",
-    city: "Orlando",
+    slug: "clarion-pointe-tampa-brandon",
+    name: "Clarion Pointe Tampa-Brandon Near Fairgrounds and Casino",
+    shortName: "Clarion Pointe Tampa",
+    address: "10007 Princess Palm Ave, Tampa, FL 33619",
+    city: "Tampa",
     state: "Florida",
-    phone: "(407) 640-7500",
+    phone: "(813) 622-8557",
     assetType: "hospitality",
-    brand: "IHG",
+    brand: "Choice Hotels",
     category: "Acquisition",
     acquiredYear: "2024",
     subunit: "Brahmas Hospitality Management",
@@ -377,30 +358,57 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Orlando tourism-corridor asset adjacent to the Orange County Convention Center and SeaWorld.",
+      "Acquired underperforming and repositioned in full. Held and operated under Brahmas Hospitality Management since handover.",
     longform:
-      "Positioned in the Orlando International Drive tourism corridor, adjacent to the Orange County Convention Center and within reach of SeaWorld. The location captures both leisure and convention-driven demand across the calendar.",
-    acquisition: THESIS.acquisition,
-    renovation: THESIS.renovation,
+      "Located near the Florida State Fairgrounds and the Seminole Hard Rock event corridor, the property benefits from year-round demand drivers. Brahmas acquired the asset and initiated a full operational and physical repositioning on closing.",
+    acquisition:
+      "Identify underperforming hotels near secular demand drivers whose structure supports long-term performance.",
+    renovation:
+      "Interior refurbishment, building envelope improvements, operating model reset, and brand repositioning.",
     operations: THESIS.operations,
     outcomesNote: THESIS.outcomesNote,
-    homeHeroSrc: null,
-    homeSatelliteSrc: null,
-    gallery: [],
-    contentStatus: "placeholder",
+    homeHeroSrc: "/properties/clarion-pointe-tampa-brandon/01-hero.webp",
+    homeSatelliteSrc: "/properties/clarion-pointe-tampa-brandon/02-satellite.webp",
+    gallery: [
+      {
+        src: "/properties/clarion-pointe-tampa-brandon/01-hero.webp",
+        alt: "Clarion Pointe Tampa Brandon exterior anchor shot",
+      },
+      {
+        src: "/properties/clarion-pointe-tampa-brandon/02-satellite.webp",
+        alt: "Clarion Pointe Tampa Brandon public space",
+      },
+      {
+        src: "/properties/clarion-pointe-tampa-brandon/03-gallery-1.webp",
+        alt: "Clarion Pointe Tampa Brandon interior detail",
+      },
+      {
+        src: "/properties/clarion-pointe-tampa-brandon/04-gallery-2.webp",
+        alt: "Clarion Pointe Tampa Brandon building exterior",
+      },
+      {
+        src: "/properties/clarion-pointe-tampa-brandon/05-gallery-3.webp",
+        alt: "Clarion Pointe Tampa Brandon room interior",
+      },
+    ],
+    contentStatus: "final",
   },
 
   // ── 08 ─────────────────────────────────────────────────────────────────────
   {
-    slug: "hampton-inn-suites-tampa-east-seffner",
-    name: "Hampton Inn & Suites Tampa East (Casino Area)",
-    shortName: "Hampton Inn & Suites Tampa East",
-    address: "11740 Tampa Gateway Blvd, Seffner, FL 33584",
-    city: "Seffner",
+    slug: "quality-inn-conference-center-tampa-brandon",
+    // Wording aligned to the Google Business Profile 2026-08-17 ("and", hyphen
+    // rather than slash). Same hotel — address and phone both match — but the
+    // owner-photo heuristic compares author name to this string, and the
+    // missing "and" was enough to reject all 7 of the hotel's own photos.
+    name: "Quality Inn and Conference Center Tampa-Brandon",
+    shortName: "Quality Inn Conference Center",
+    address: "9331 E Adamo Dr, Tampa, FL 33619",
+    city: "Tampa",
     state: "Florida",
-    phone: "(813) 630-4321",
+    phone: "(813) 621-5555",
     assetType: "hospitality",
-    brand: "Hilton",
+    brand: "Choice Hotels",
     category: "Acquisition",
     acquiredYear: "2024",
     subunit: "Brahmas Hospitality Management",
@@ -408,9 +416,9 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Interstate-adjacent asset serving the Seminole Hard Rock and east Hillsborough corridor.",
+      "Conference-oriented asset on the Adamo Drive corridor, held and operated under Brahmas Hospitality Management.",
     longform:
-      "An I-4 adjacent asset in Seffner serving the Seminole Hard Rock casino corridor and east Hillsborough County. Interstate visibility and event-driven demand underpin a resilient occupancy base.",
+      "A conference and group-demand asset positioned on the Adamo Drive corridor east of downtown Tampa. Meeting space and access to the Selmon Expressway support a mixed base of corporate, group, and transient demand.",
     acquisition: THESIS.acquisition,
     renovation: THESIS.renovation,
     operations: THESIS.operations,
@@ -423,13 +431,13 @@ export const properties: Property[] = [
 
   // ── 09 ─────────────────────────────────────────────────────────────────────
   {
-    slug: "clarion-pointe-lakeland-i4",
-    name: "Clarion Pointe Lakeland I-4",
-    shortName: "Clarion Pointe Lakeland",
-    address: "4321 Lakeland Park Dr, Lakeland, FL 33809",
-    city: "Lakeland",
+    slug: "quality-inn-suites-tampa-east",
+    name: "Quality Inn & Suites",
+    shortName: "Quality Inn & Suites Tampa",
+    address: "4955 E 18th Ave, Tampa, FL 33605",
+    city: "Tampa",
     state: "Florida",
-    phone: "(863) 577-1170",
+    phone: "(813) 623-6000",
     assetType: "hospitality",
     brand: "Choice Hotels",
     category: "Acquisition",
@@ -439,9 +447,9 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "I-4 corridor asset positioned between the Tampa and Orlando markets.",
+      "East Tampa select-service asset with direct interstate access, operated under Brahmas Hospitality Management.",
     longform:
-      "Positioned on the I-4 corridor between Tampa and Orlando, the asset captures logistics, corporate, and transient demand from one of Florida's most heavily trafficked interstate segments.",
+      "A select-service asset in east Tampa with direct access to I-4 and proximity to the Port of Tampa industrial corridor, supporting a durable base of extended-stay and contractor demand.",
     acquisition: THESIS.acquisition,
     renovation: THESIS.renovation,
     operations: THESIS.operations,
@@ -454,21 +462,13 @@ export const properties: Property[] = [
 
   // ── 10 ─────────────────────────────────────────────────────────────────────
   {
-    // NOTE: slug retained deliberately. It reads "sleep-inn", which no longer
-    // matches the name below, but it is the live /portfolio/ URL and the photo
-    // directory path. Same reasoning as the two slugs noted at the top of this
-    // file — do not rename.
-    slug: "sleep-inn-suites-fort-myers-airport",
-    // BRAND CORRECTED 2026-08-17, confirmed by the client. Was "Sleep Inn &
-    // Suites Fort Myers Airport" / Choice Hotels. Google's listing for this
-    // address and phone is La Quinta (a Wyndham brand), and the client
-    // confirmed the asset flies the La Quinta flag.
-    name: "La Quinta Inn and Suites Fort Myers I-75",
-    shortName: "La Quinta Inn & Suites Fort Myers",
-    address: "9521 Market Place Rd, Fort Myers, FL 33912",
-    city: "Fort Myers",
+    slug: "microtel-inn-suites-zephyrhills",
+    name: "Microtel Inn & Suites by Wyndham Zephyrhills",
+    shortName: "Microtel Inn & Suites Zephyrhills",
+    address: "7839 Gall Blvd, Zephyrhills, FL 33541",
+    city: "Zephyrhills",
     state: "Florida",
-    phone: "(941) 585-0973",
+    phone: "(813) 815-3007",
     assetType: "hospitality",
     brand: "Wyndham",
     category: "Acquisition",
@@ -478,9 +478,9 @@ export const properties: Property[] = [
     placeId: null,
     coordinates: null,
     summary:
-      "Southwest Florida asset serving the Fort Myers airport and Gulf coast market.",
+      "Efficient-format asset serving the Zephyrhills and east Pasco County market.",
     longform:
-      "A southwest Florida asset serving Southwest Florida International Airport and the surrounding Gulf coast market, with demand supported by seasonal leisure travel and regional business activity.",
+      "An efficient-format asset on the Gall Boulevard corridor serving east Pasco County. The market's healthcare, motorsport, and seasonal residential demand supports year-round occupancy at a low operating cost base.",
     acquisition: THESIS.acquisition,
     renovation: THESIS.renovation,
     operations: THESIS.operations,
@@ -687,8 +687,7 @@ export const properties: Property[] = [
     homeSatelliteSrc: null,
     gallery: [],
     contentStatus: "placeholder",
-  },
-];
+  },];
 
 /* ────────────────────────────────────────────────────────────────────────────
    Google Places enrichment overlay
@@ -793,6 +792,29 @@ const handHeldChromeSlugs = new Set(
 
 export const ownPhotographyProperties: FeaturedProperty[] =
   featuredProperties.filter((p) => handHeldChromeSlugs.has(p.slug));
+
+/**
+ * The single asset on the homepage hero — named, not positional.
+ *
+ * ⚠️ This exists because the homepage used to read `ownPhotographyProperties[0]`,
+ * which made the most prominent image on the site a side effect of where a
+ * property happened to sit in the portfolio array. Reordering the portfolio for
+ * presentation on 2026-08-17 moved Clarion Pointe from 1st to 7th and would
+ * have silently swapped the homepage hero to Hampton Inn — a change nobody
+ * asked for, in the one place it would be most noticed.
+ *
+ * Portfolio display order and hero selection are unrelated decisions. Keep them
+ * unrelated: reorder `properties` freely, and change the hero by editing the
+ * slug below.
+ *
+ * Falls back to the first available asset so a mistyped slug degrades to a
+ * working hero rather than a crash on `undefined.homeHeroSrc`.
+ */
+const HOME_HERO_SLUG = "clarion-pointe-tampa-brandon";
+
+export const homeHeroProperty: FeaturedProperty =
+  ownPhotographyProperties.find((p) => p.slug === HOME_HERO_SLUG) ??
+  ownPhotographyProperties[0];
 
 export const propertiesByType = (type: AssetType) =>
   enrichedProperties.filter((p) => p.assetType === type);

@@ -11,6 +11,7 @@ import { BorderedButton } from "@/components/ui/BorderedButton";
 import { CtaSection } from "@/components/sections/CtaSection";
 import {
   ownPhotographyProperties as properties,
+  homeHeroProperty,
   enrichedProperties,
   assetTypeLabels,
 } from "@/data/properties";
@@ -56,10 +57,12 @@ export default function HomePage() {
     <>
       <Navbar />
       <main>
-        {/* ─── Hero ─── */}
+        {/* ─── Hero ─── the asset is chosen by NAME, not by portfolio position.
+             Reordering `properties` must not change the homepage hero; see
+             `homeHeroProperty` in data/properties.ts. */}
         <Hero
-          imageSrc={properties[0].homeHeroSrc}
-          imageAlt={properties[0].gallery[0].alt}
+          imageSrc={homeHeroProperty.homeHeroSrc}
+          imageAlt={homeHeroProperty.gallery[0].alt}
           headline={[
             "Capital with conviction.",
             "Operation with precision.",

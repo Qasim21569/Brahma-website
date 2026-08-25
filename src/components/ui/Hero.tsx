@@ -63,9 +63,15 @@ export function Hero({
     >
       {/* ── Media ── */}
       <div ref={mediaRef} className="absolute inset-0 overflow-clip">
+        {/* `relative` is required, not cosmetic: the <Image fill> below
+            positions against its NEAREST POSITIONED ANCESTOR. Without it that
+            was the grandparent, and the image only looked correct because the
+            parallax `y` transform happens to create a containing block of its
+            own — so it silently changed reference frame depending on whether
+            the transform was active. Next warns about this. */}
         <motion.div
           style={{ y, maskImage }}
-          className="h-full w-full"
+          className="relative h-full w-full"
         >
         {videoSrc ? (
           <video

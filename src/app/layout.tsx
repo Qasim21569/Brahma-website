@@ -98,6 +98,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${newsreader.variable} ${manrope.variable} dark`}
+      /* globals.css sets `scroll-behavior: smooth` on <html>. Without this
+         attribute Next cannot tell an intentional smooth scroll from one it
+         should suppress, so route changes animate the scroll instead of
+         jumping to the top of the new page. */
+      data-scroll-behavior="smooth"
       data-intro="skip"
       suppressHydrationWarning
     >
