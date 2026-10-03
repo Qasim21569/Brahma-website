@@ -24,7 +24,12 @@ Verified from outside with the publishable key: anonymous reads of content
 work; anonymous writes, uploads, `editors`, `content_revisions` and
 `rpc/is_editor` are all refused.
 
-For a fresh project, run the three files in filename order.
+`revoke_anon_content_writes` (2026-10-03, later the same day) removes the
+default anon INSERT/UPDATE/DELETE/TRUNCATE grants on `site_content` and
+`properties` — RLS already refused them, and TRUNCATE is not covered by RLS.
+Probed afterwards as anon: reads work, update and truncate are refused.
+
+For a fresh project, run the files in filename order.
 
 ### 1.2 Lock down sign-up
 
@@ -66,6 +71,14 @@ self-service reset is wanted.
 Template: `.env.example`. **Never** add the service-role key — the app does not
 use one, by design. Write `.env` files as UTF-8 (HANDOFF: the UTF-16 trap).
 
+### 1.4b Password rules
+
+Dashboard → **Authentication → Providers → Email** (or *Auth → Policies*):
+set **minimum password length to 10**. The admin's change-password form
+already asks for 10, but Supabase itself accepts 6 unless told otherwise.
+*Leaked password protection* (HaveIBeenPwned) needs Supabase Pro — the only
+remaining security-advisor warning on the free plan.
+
 ### 1.5 Deploy, then import the portfolio
 
 Deploy. Sign in at **`/admin`**. The dashboard shows a one-time banner:
@@ -84,6 +97,18 @@ stops the free Supabase project pausing after a quiet week (§4.2).
 
 ---
 
+## 1.7 Before handing over — checklist
+
+- [ ] Only real people in `editors` (`node scripts/editors.mjs list`). Remove
+      test or placeholder accounts with `remove <email> --delete-account`.
+- [ ] Public sign-up off (§1.2); minimum password length 10 (§1.4b).
+- [ ] One image uploaded, placed in a section, visible on the live site.
+- [ ] One property edited, one hidden then re-published, order changed.
+- [ ] One change restored from History.
+- [ ] Vercel → Cron Jobs shows `/api/keepalive` returning 200.
+- [ ] Vercel and Supabase accounts owned by (or transferred to) the client.
+- [ ] Backup plan agreed (§4.4).
+
 ## 2. What the client can edit
 
 | Area | Where in the admin | Notes |
@@ -96,6 +121,9 @@ stops the free Supabase project pausing after a quiet week (§4.2).
 | Contact emails, region, form topics, footer tagline, site description | Shared → Site settings | Feeds navbar drawer, footer, Contact, Careers, legal pages. |
 | Properties | Properties | Add, edit, reorder, hide/publish, delete. Gallery, cover, amenities, extra facts. |
 | Undo | History | Every save and delete keeps the previous version; one click restores it. |
+
+**Guard:** the last visible property cannot be hidden or deleted — an empty
+public portfolio would otherwise fall back to the twelve shipped properties.
 
 **Not editable, by decision ("content slots only"):** layout, section order,
 animation, colours, the logo, navigation links, stats *figures* (derived — only
@@ -198,6 +226,13 @@ first paint) and now skips itself on `/admin`.
 Symptoms: admin login fails; a deploy fails at "Generating static pages" with
 *Could not load site content from Supabase*. The live site keeps working (it is
 static). Fix: Supabase dashboard → project → **Restore**. Then check the cron.
+
+### 4.4 Backups
+
+The free plan takes **no backups**. History covers bad edits, not a lost
+project. Either move to Supabase Pro (daily backups, 7 days), or export now
+and then: Dashboard → Table Editor → `site_content` / `properties` → *Export
+to CSV*, and download the `media` bucket from Storage.
 
 ### 4.3 Enrichment script
 

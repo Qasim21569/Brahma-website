@@ -86,6 +86,23 @@ export async function resetSection(key: string): Promise<ActionResult> {
 
 // ── Properties ──────────────────────────────────────────────────────────────
 
+/**
+ * At least one property must stay published. The public read path treats an
+ * empty result as "not imported yet" and serves the repo portfolio — so
+ * hiding or deleting the last visible property would bring all twelve
+ * originals back onto the live site.
+ */
+async function isLastPublished(
+  supabase: Awaited<ReturnType<typeof createServerSupabase>>,
+  slug: string,
+): Promise<boolean> {
+  const { data } = await supabase.from("properties").select("slug").eq("published", true).limit(2);
+  return (data ?? []).length === 1 && data![0].slug === slug;
+}
+
+const LAST_PUBLISHED_MESSAGE =
+  "At least one property must stay visible on the site. Publish another one first.";
+
 function validateProperty(submitted: unknown) {
   const { values, issues } = validateValues(propertyFields, submitted);
   if (values.amenitiesMode === "custom" && values.amenities.length === 0) {
@@ -168,6 +185,10 @@ export async function setPropertyPublished(slug: string, published: boolean): Pr
   const auth = await editorOrError();
   if ("error" in auth) return auth.error!;
 
+  if (!published && (await isLastPublished(auth.supabase, slug))) {
+    return { ok: false, message: LAST_PUBLISHED_MESSAGE };
+  }
+
   const { error } = await auth.supabase.from("properties").update({ published }).eq("slug", slug);
   if (error) return dbError("update", error.message);
 
@@ -224,6 +245,7 @@ export async function deleteProperty(slug: string, confirmName: string): Promise
   if (!row || confirmName.trim() !== name) {
     return { ok: false, message: `Type the property's short name exactly ("${name}") to confirm.` };
   }
+  if (await isLastPublished(auth.supabase, slug)) return { ok: false, message: LAST_PUBLISHED_MESSAGE };
 
   const { error } = await auth.supabase.from("properties").delete().eq("slug", slug);
   if (error) return dbError("delete", error.message);

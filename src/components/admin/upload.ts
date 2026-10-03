@@ -55,6 +55,13 @@ function safeName(name: string) {
 export async function uploadImage(file: File): Promise<string> {
   if (!file.type.startsWith("image/")) throw new Error("That file is not an image.");
   if (file.type === "image/svg+xml") throw new Error("SVG files cannot be uploaded here.");
+  if (/heic|heif/i.test(file.type) || /\.(heic|heif)$/i.test(file.name)) {
+    // Only Safari can read iPhone HEIC photos; elsewhere the resize step
+    // cannot open them and the bucket would reject the raw file.
+    throw new Error(
+      "iPhone HEIC photos cannot be uploaded. Export it as JPEG first (or set the iPhone camera to “Most Compatible”).",
+    );
+  }
 
   const { blob, ext, type } = await prepare(file);
   const path = `${FOLDER}/${Date.now()}-${safeName(file.name)}.${ext}`;
