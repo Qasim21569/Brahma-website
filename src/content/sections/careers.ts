@@ -1,11 +1,12 @@
 import { defineSection, image, lines, list, text, textarea } from "../fields";
-import { metaDescription } from "./shared";
+import { metaDescription, metaTitle } from "./shared";
 
 export const careersHero = defineSection({
   key: "careers.hero",
   page: "careers",
   title: "Opening",
   fields: {
+    metaTitle: metaTitle("Careers"),
     metaDescription: metaDescription(
       "Brahmas hires for disposition rather than credentials, and offers equity in new projects to those who prove it.",
     ),

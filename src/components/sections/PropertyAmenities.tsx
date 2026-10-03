@@ -33,6 +33,9 @@ export type PropertyAmenitiesCopy = {
   headingHotel: string[];
   headingOther: string[];
   googleNote: string[];
+  /** May contain {brand}. */
+  brandLink: string;
+  link: string;
 };
 
 /** Copy comes from Admin → Property page labels; the amenities from the property. */
@@ -106,7 +109,7 @@ export function PropertyAmenities({
               {bookingUrl && (
                 <div className="mt-6 max-w-md">
                   <StyledLink href={bookingUrl} tone="light" external>
-                    {brand ? `Full amenity list at ${brand}` : "View all amenities"}
+                    {brand ? copy.brandLink.replaceAll("{brand}", brand) : copy.link}
                   </StyledLink>
                 </div>
               )}

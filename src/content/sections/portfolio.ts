@@ -1,5 +1,5 @@
 import { defineSection, lines, text, url } from "../fields";
-import { metaDescription } from "./shared";
+import { metaDescription, metaTitle } from "./shared";
 
 export const portfolioHero = defineSection({
   key: "portfolio.hero",
@@ -7,6 +7,7 @@ export const portfolioHero = defineSection({
   title: "Opening",
   description: "Use {assetCountWord} or {assetCount} for the number of properties — it updates itself.",
   fields: {
+    metaTitle: metaTitle("Portfolio"),
     metaDescription: metaDescription(
       "{assetCountWord} operating assets across hospitality, education, and residential real estate in Florida — acquired, repositioned, and operated directly by Brahmas.",
     ),
@@ -91,6 +92,11 @@ export const propertyTemplate = defineSection({
       "property on Google. Confirm details at",
       "time of booking.",
     ]),
+    amenitiesBrandLink: text("Amenities link — branded property", "Full amenity list at {brand}", {
+      max: 50,
+      help: "{brand} is replaced with the property's brand, e.g. Hampton Inn.",
+    }),
+    amenitiesLink: text("Amenities link — no brand", "View all amenities", { max: 40 }),
     galleryLabel: text("Gallery label", "Gallery", { max: 30 }),
     moreLabel: text("Other properties label", "More Assets", { max: 30 }),
     previousLabel: text("“Previous” label", "Previous", { max: 20 }),

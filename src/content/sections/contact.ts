@@ -1,5 +1,5 @@
 import { defineSection, lines, list, text, url } from "../fields";
-import { metaDescription } from "./shared";
+import { metaDescription, metaTitle } from "./shared";
 
 export const contactHero = defineSection({
   key: "contact.hero",
@@ -7,6 +7,7 @@ export const contactHero = defineSection({
   title: "Opening",
   description: "Email addresses and enquiry topics are edited under Site settings → Contact details.",
   fields: {
+    metaTitle: metaTitle("Contact"),
     metaDescription: metaDescription(
       "Talk to Brahmas Management and Investment Group about an asset, a joint venture, or the group's operations in Florida.",
     ),

@@ -265,6 +265,8 @@ export default async function PropertyPage({
             headingHotel: t.amenitiesHeadingHotel,
             headingOther: t.amenitiesHeadingOther,
             googleNote: t.amenitiesGoogleNote,
+            brandLink: t.amenitiesBrandLink,
+            link: t.amenitiesLink,
           }}
         />
 

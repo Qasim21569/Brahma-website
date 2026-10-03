@@ -610,7 +610,10 @@ function ListInput({ field, value, onChange, path, issues, context }: InputProps
                   className={buttonClass}
                   disabled={field.min !== undefined && items.length <= field.min}
                   onClick={() => {
-                    if (confirm(`Remove “${titleOf(item, i)}”?`)) set(items.filter((_, n) => n !== i));
+                    if (!confirm(`Remove “${titleOf(item, i)}”?`)) return;
+                    set(items.filter((_, n) => n !== i));
+                    // Keep the same entry expanded — indexes after i shift down.
+                    if (open !== null && open !== -1) setOpen(open === i ? null : open > i ? open - 1 : open);
                   }}
                 >
                   Remove

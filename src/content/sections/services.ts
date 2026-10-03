@@ -1,11 +1,12 @@
 import { defineSection, image, lines, list, text, textarea, url } from "../fields";
-import { metaDescription } from "./shared";
+import { metaDescription, metaTitle } from "./shared";
 
 export const servicesHero = defineSection({
   key: "services.hero",
   page: "services",
   title: "Opening",
   fields: {
+    metaTitle: metaTitle("What We Do"),
     metaDescription: metaDescription(
       "Brahmas acquires, repositions, and directly operates its own assets — capital, repositioning, and operations under one roof.",
     ),

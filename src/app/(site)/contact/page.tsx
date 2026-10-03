@@ -10,8 +10,8 @@ import { CtaSection } from "@/components/sections/CtaSection";
 import { getSection, getSections } from "@/content/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { metaDescription } = await getSection("contact.hero");
-  return { title: "Contact", description: metaDescription };
+  const { metaTitle, metaDescription } = await getSection("contact.hero");
+  return { title: metaTitle, description: metaDescription };
 }
 
 /** Topic values are derived from their labels, so editors only write labels. */

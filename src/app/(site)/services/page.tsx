@@ -15,8 +15,8 @@ import Accordion from "@/components/ui/Accordion";
 import { getSection, getSections } from "@/content/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { metaDescription } = await getSection("services.hero");
-  return { title: "What We Do", description: metaDescription };
+  const { metaTitle, metaDescription } = await getSection("services.hero");
+  return { title: metaTitle, description: metaDescription };
 }
 
 export default async function ServicesPage() {

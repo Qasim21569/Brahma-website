@@ -97,12 +97,12 @@ export function PillarCard({
 
         <div>
           {pillar.capabilities.map((capability, i) => (
-            <Reveal key={capability} delay={delay + 0.15 + i * 0.06} distance={12}>
-              {/* Hairline-separated rows. The middle row is bounded top and
-                  bottom so the group reads as one set — the numbering that used
-                  to do that job has gone. */}
+            <Reveal key={`${i}-${capability}`} delay={delay + 0.15 + i * 0.06} distance={12}>
+              {/* Hairline-separated rows: a rule between each pair, none
+                  outside, so the group reads as one set. Works for any count —
+                  the client can add or remove capabilities in the admin. */}
               <p
-                className={`py-2.5 ${i === 1 ? `border-y ${rule}` : ""}`}
+                className={`py-2.5 ${i > 0 ? `border-t ${rule}` : ""}`}
               >
                 <span className={`font-body-md text-body-md ${heading}`}>
                   {capability}

@@ -13,8 +13,8 @@ import { CtaSection } from "@/components/sections/CtaSection";
 import { getPortfolio, getSection, getSections } from "@/content/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { metaDescription } = await getSection("about.hero");
-  return { title: "About", description: metaDescription };
+  const { metaTitle, metaDescription } = await getSection("about.hero");
+  return { title: metaTitle, description: metaDescription };
 }
 
 export default async function AboutPage() {

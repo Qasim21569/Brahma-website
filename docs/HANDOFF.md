@@ -55,6 +55,28 @@ not authoritative about what is shipped here.
 | Page transitions | 🔲 Built but disabled. Phase F2. |
 | **Admin panel** | ✅ **Built** on `feature/admin-panel`. ⚠️ **Not switched on** — needs the migration applied + env vars + editors. Runbook: ADMIN-PANEL.md §1 |
 
+### Follow-up (2026-10-03, cloud session) — completeness audit
+
+Branch `feature/admin-panel` was pushed as `e06a2bd` and continued on
+`claude/laughing-cori-pcnzpv`. Audit of the public pages for copy that was still
+hard-coded, and of how repeatable cards behave at counts other than the default:
+
+- **Browser-tab titles are now editable** — a `metaTitle` field on each page's
+  hero section (About, What We Do, Portfolio, Careers, Contact); Privacy/Terms
+  use their existing editable page title. Home stays brand (`layout.tsx`).
+- **Amenities link text** on property pages is editable (Property page labels),
+  with a `{brand}` placeholder resolved per property.
+- **Pillar capability rows** used a rule only around row 2 — correct for 3 rows,
+  broken for any other count. Now a rule between every pair; identical at 3.
+- List editor: removing an entry no longer leaves a different entry expanded.
+- **Verified:** tsc clean, `content:check` 61/61, build green (public routes
+  ○/●), and the rendered text + `<title>` of all 23 HTML pages is
+  byte-identical to before these changes.
+- **What remains hard-coded, by decision:** logo/wordmark and intro words,
+  `SITE_NAME`/legal name, SEO keywords, aria-labels, fallback alt text.
+
+---
+
 ### Done this session (2026-10-03) — the admin panel
 
 **The site is now client-editable** at `/admin`, backed by the Supabase project

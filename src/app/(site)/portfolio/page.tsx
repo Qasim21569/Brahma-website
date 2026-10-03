@@ -11,8 +11,8 @@ import { assetTypeLabels } from "@/data/properties";
 import { getPortfolio, getSection, getSections } from "@/content/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { metaDescription } = await getSection("portfolio.hero");
-  return { title: "Portfolio", description: metaDescription };
+  const { metaTitle, metaDescription } = await getSection("portfolio.hero");
+  return { title: metaTitle, description: metaDescription };
 }
 
 export default async function PortfolioPage() {

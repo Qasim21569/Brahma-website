@@ -89,6 +89,8 @@ stops the free Supabase project pausing after a quiet week (§4.2).
 | Area | Where in the admin | Notes |
 |---|---|---|
 | Every page's copy | Pages → Home / About / … | One card per section. Headings and paragraphs are edited **line by line** — each line in the box is one animated line on the page. |
+| Browser-tab titles + search descriptions | each page's *Opening* card (Privacy/Terms: their *Page title*) | The site name is appended automatically. The home page title is brand, not content. |
+| Repeatable cards | the list inside a card (FAQ, pillars, team, process stages, links…) | Add, remove, reorder (↑ ↓). Lists whose layout has a fixed shape carry a min/max, enforced in the editor. |
 | Section images | the same cards | Upload (auto-resized), pick a previous upload, alt text, optional credit. |
 | Founder, team, construction partner | Shared → Company | Used across About, Careers, Services. |
 | Contact emails, region, form topics, footer tagline, site description | Shared → Site settings | Feeds navbar drawer, footer, Contact, Careers, legal pages. |

@@ -2,9 +2,13 @@ import { Fragment } from "react";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { getSections } from "@/content/server";
+import { getSection, getSections } from "@/content/server";
 
-export const metadata: Metadata = { title: "Terms of Service" };
+/* The tab title follows the editable page heading. */
+export async function generateMetadata(): Promise<Metadata> {
+  const { title } = await getSection("legal.terms");
+  return { title };
+}
 
 /** Text is editable in Admin → Legal pages. Have changes reviewed before publishing. */
 export default async function TermsPage() {
