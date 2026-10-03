@@ -227,13 +227,6 @@ Symptoms: admin login fails; a deploy fails at "Generating static pages" with
 *Could not load site content from Supabase*. The live site keeps working (it is
 static). Fix: Supabase dashboard → project → **Restore**. Then check the cron.
 
-### 4.4 Backups
-
-The free plan takes **no backups**. History covers bad edits, not a lost
-project. Either move to Supabase Pro (daily backups, 7 days), or export now
-and then: Dashboard → Table Editor → `site_content` / `properties` → *Export
-to CSV*, and download the `media` bucket from Storage.
-
 ### 4.3 Enrichment script
 
 `scripts/enrich-properties.mjs` still reads slugs and addresses from
@@ -241,6 +234,13 @@ to CSV*, and download the `media` bucket from Storage.
 still overlays. **Open decision** (ADMIN-PANEL-OPTIONS §6): keep running it, or
 treat the Places data as frozen. Note a property added in the admin is unknown
 to the script until it is also added to `properties.ts`.
+
+### 4.4 Backups
+
+The free plan takes **no backups**. History covers bad edits, not a lost
+project. Either move to Supabase Pro (daily backups, 7 days), or export now
+and then: Dashboard → Table Editor → `site_content` / `properties` → *Export
+to CSV*, and download the `media` bucket from Storage.
 
 ---
 
