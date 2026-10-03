@@ -28,7 +28,21 @@ import type { Property } from "@/data/properties";
  * Gallery, holding the alternation the removed Approach block used to provide.
  * Sets both `bg-*` and `text-*` explicitly — nothing here inherits colour.
  */
-export function PropertyAmenities({ property }: { property: Property }) {
+export type PropertyAmenitiesCopy = {
+  label: string;
+  headingHotel: string[];
+  headingOther: string[];
+  googleNote: string[];
+};
+
+/** Copy comes from Admin → Property page labels; the amenities from the property. */
+export function PropertyAmenities({
+  property,
+  copy,
+}: {
+  property: Property;
+  copy: PropertyAmenitiesCopy;
+}) {
   const amenities = property.amenities ?? [];
   if (amenities.length === 0) return null;
 
@@ -37,15 +51,12 @@ export function PropertyAmenities({ property }: { property: Property }) {
   // Hand-set line arrays, both well under the ~45-character wrap threshold.
   // "Guests" is wrong for the school and the residence, so the non-hospitality
   // assets get their own phrasing rather than a single awkward compromise.
-  const headline =
-    assetType === "hospitality"
-      ? ["What guests find", "on arrival."]
-      : ["What the property", "provides."];
+  const headline = assetType === "hospitality" ? copy.headingHotel : copy.headingOther;
 
   return (
     <section className="bg-ink-deep px-margin-edge py-section-gap text-cream">
       <div className="grid grid-cols-1 gap-gutter md:grid-cols-[1fr_1.9fr]">
-        <SectionTitle tone="light">Amenities</SectionTitle>
+        <SectionTitle tone="light">{copy.label}</SectionTitle>
 
         <div>
           <h2>
@@ -57,7 +68,7 @@ export function PropertyAmenities({ property }: { property: Property }) {
 
           <ul className="mt-12 grid grid-cols-1 gap-x-gutter gap-y-4 sm:grid-cols-2">
             {amenities.map((amenity, i) => (
-              <li key={amenity.icon}>
+              <li key={`${i}-${amenity.icon}`}>
                 {/* Stagger runs across the row pairs rather than the whole
                     list, so a 5-item and an 8-item grid finish at the
                     same moment instead of the longer one trailing. */}
@@ -89,11 +100,7 @@ export function PropertyAmenities({ property }: { property: Property }) {
               <MaskText
                 delay={0.2}
                 className="font-body-md text-body-md text-cream-dim/70 mt-12"
-                lines={[
-                  "Amenity information as published by the",
-                  "property on Google. Confirm details at",
-                  "time of booking.",
-                ]}
+                lines={copy.googleNote}
               />
 
               {bookingUrl && (

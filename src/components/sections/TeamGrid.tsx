@@ -1,29 +1,36 @@
 "use client";
 
 import { useState } from "react";
-import { team, type TeamMember } from "@/data/company";
 import { Reveal } from "@/components/ui/Reveal";
 import { TeamPhoto } from "@/components/ui/TeamPhoto";
+import type { ImageValue } from "@/content/fields";
+
+export type TeamGridMember = {
+  name: string;
+  role: string;
+  /** Shown under the role — what they actually do day to day. */
+  focus: string;
+  /** Empty `src` renders a monogram placeholder. */
+  photo: ImageValue;
+};
 
 /**
- * About-page leadership grid.
+ * About-page leadership grid. Members come from Admin → Company → Team.
  *
  * On touch, only one portrait is in colour at a time — selecting another
  * returns the rest to greyscale. Desktop still colourises on hover.
  */
-export function TeamGrid() {
-  const [activeId, setActiveId] = useState<string | null>(null);
+export function TeamGrid({ members }: { members: TeamGridMember[] }) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
     <div className="mt-16 grid grid-cols-2 items-start gap-x-gutter gap-y-12 md:grid-cols-3">
-      {team.map((person, i) => (
-        <Reveal key={person.id} delay={(i % 3) * 0.08}>
+      {members.map((person, i) => (
+        <Reveal key={`${i}-${person.name}`} delay={(i % 3) * 0.08}>
           <TeamCard
             person={person}
-            revealed={activeId === person.id}
-            onSelect={() =>
-              setActiveId((current) => (current === person.id ? null : person.id))
-            }
+            revealed={activeIndex === i}
+            onSelect={() => setActiveIndex((current) => (current === i ? null : i))}
           />
         </Reveal>
       ))}
@@ -36,14 +43,14 @@ function TeamCard({
   revealed,
   onSelect,
 }: {
-  person: TeamMember;
+  person: TeamGridMember;
   revealed: boolean;
   onSelect: () => void;
 }) {
   return (
     <article>
       <TeamPhoto
-        src={person.photo}
+        src={person.photo.src || null}
         name={person.name}
         role={person.role}
         revealed={revealed}

@@ -246,20 +246,40 @@ an `.svg` extension means it is small or drawable.)*
 
 ### 5.2 Shapes are declared in DRAW ORDER, not file order
 
+The 12 paths are split into **two arrays with two different behaviours**, which
+is the single most important idea in the whole reveal:
+
 ```ts
+// 9 shapes. These DRAW themselves, staggered.
 const MARK_SHAPES: { d: string; fill: string }[] = [
   { fill: "#1B273C", d: "m75 21c-25.4…" },   // 1  enclosing ring
   { fill: "#6D8FB4", d: "m67.1 103.9…" },    // 2  inner arc (left)
   { fill: "#6D8FB4", d: "m82.9 103.9…" },    // 3  inner arc (right)
-  …
-  { fill: "#688BB1", d: "m75 107.9…" },      // 12 centre dot — LAST
+  …                                          // chevron, wings, sweeps, detail
+];
+
+// 3 shapes. These do NOT draw — they ARRIVE, together, as one object.
+const KEY_SHAPES: { d: string; fill: string }[] = [
+  { fill: "#19263A", d: "m75.1 78.5…" },     // bow and shaft
+  { fill: "#19263A", d: "M74.2 99 L74.2…" }, // the bit
+  { fill: "#688BB1", d: "m75 107.9…" },      // terminus — gets the click pulse
 ];
 ```
 
-Order the array the way a person would *draw* the emblem: enclosing shape first,
-then the large interior forms, then fine detail, then the single accent last. In
-our source file the centre dot was the 4th element — animating in file order put
-the visual full-stop in the middle of the sentence.
+Order each array the way a person would *draw* that part: enclosing shape first,
+then the large interior forms, then fine detail. In our source file the key's
+terminus was the 4th element overall — animating in file order put the visual
+full-stop in the middle of the sentence.
+
+**Why the split.** Our mark is a lotus enclosed by a ring with a key at its
+centre, and the two halves mean different things to the client: the petals are
+the group's identity, the key is what an investment unlocks. Drawing all twelve
+shapes on one uniform stagger said neither — the key was just shapes 10–12.
+
+So the lotus is **drawn** and the key **arrives**: the petals close around an
+empty centre, the key descends into it, turns as it seats, and the terminus
+pulses once. Two verbs for two ideas. If your logo has a similar "subject +
+object" structure, this is the beat worth stealing.
 
 ### 5.3 `pathLength={1}` is the trick that makes this maintainable
 
@@ -286,14 +306,21 @@ Two gotchas:
 - Use `<path>` for everything. `pathLength` support is reliable on `path` and
   patchier on `polygon`/`polyline`. Convert them:
   `points="74.2 99 74.2 104.5 …"` → `d="M74.2 99 L74.2 104.5 … Z"`.
-- Scope your selector (`.intro-mark path`). We had an unrelated button component
-  also using `pathLength="1"` for a hover border-draw.
+- Scope your selector, and use the **child** combinator: `.intro-mark > path`.
+  Two reasons — an unrelated button component in our app also uses
+  `pathLength="1"` for a hover border-draw, and the key's `<g>` must not inherit
+  the draw rule.
 
 ### 5.4 Per-shape colour via a CSS custom property
 
 Each shape has a different fill, but they share one keyframe. You cannot write
-twelve keyframes for twelve colours — so the colour is passed *in* as `--mark`,
-and the shared keyframe animates *to* `var(--mark)`.
+nine keyframes for nine colours — so the colour is passed *in* as `--mark`, and
+the shared keyframe animates *to* `var(--mark)`.
+
+⚠️ The key paths carry their colours as ordinary SVG `fill` presentation
+attributes instead, and there is **no CSS `fill` rule on them at all**. Any CSS
+`fill` outranks a presentation attribute and would flatten the three pieces to
+one colour.
 
 The same variable drives the stroke, so the drawn outline is the colour the
 shape is about to become. The line doesn't sit *on* the shape; it *becomes* it.
@@ -301,7 +328,7 @@ shape is about to become. The line doesn't sit *on* the shape; it *becomes* it.
 ### 5.5 Draw, then flood
 
 ```css
-.intro-mark path {
+.intro-mark > path {
   fill: transparent;
   stroke: var(--mark);
   stroke-width: 0.9;
@@ -331,17 +358,65 @@ Three things are happening:
 3. **`stroke-opacity: 1 → 0` as the fill arrives.** Without it the stroke stays
    and every shape carries a permanent heavier rim.
 
-The stagger is a plain `nth-child` ladder:
+The stagger is a plain ladder:
 
 ```css
-.intro-mark path:nth-child(1)  { --d: 300ms; }
-.intro-mark path:nth-child(2)  { --d: 405ms; }   /* +105ms each */
+.intro-mark > path:nth-of-type(1) { --d: 300ms; }
+.intro-mark > path:nth-of-type(2) { --d: 405ms; }   /* +105ms each */
 …
-.intro-mark path:nth-child(12) { --d: 1500ms; }  /* +150 — extra beat for the accent */
+.intro-mark > path:nth-of-type(9) { --d: 1140ms; }
 ```
 
-Twelve lines of CSS instead of a JS stagger. If your mark has a different shape
+Nine lines of CSS instead of a JS stagger. If your mark has a different shape
 count, regenerate this ladder — that is the one place the CSS knows the artwork.
+
+⚠️ **`nth-of-type`, not `nth-child`.** The key's `<g>` is also a child of
+`.intro-mark`, so with `nth-child` it would occupy a slot in the count and shift
+every delay after it.
+
+### 5.5b The key: drop, turn, click
+
+```css
+/* No `fill` rule here — see 5.4. */
+.intro-key {
+  transform-box: fill-box;
+  transform-origin: 50% 55%;
+  animation: intro-key-drop 1100ms cubic-bezier(0.24, 0.43, 0.15, 0.97) 2250ms both;
+}
+
+@keyframes intro-key-drop {
+  from { opacity: 0; transform: translateY(-14px) rotate(-9deg); }
+  to   { opacity: 1; transform: translateY(0)     rotate(0deg); }
+}
+
+/* Fires as the drop LANDS, not after it — the overlap is what makes it read as
+   contact rather than a second, separate event. */
+.intro-key-tip {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: intro-key-click 420ms cubic-bezier(0.24, 0.43, 0.15, 0.97) 3150ms both;
+}
+
+@keyframes intro-key-click {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+```
+
+Three details that matter:
+
+1. **`transform-box: fill-box`** — without it a percentage `transform-origin` on
+   an SVG element resolves against the whole SVG viewport, and the key swings in
+   from off-centre like a hinge instead of turning on itself. This is the single
+   easiest thing to get wrong here.
+2. **`translateY(-14px)` is in USER UNITS, not screen pixels.** CSS transforms on
+   SVG children operate in the local coordinate system, so on our `0 0 150 147`
+   viewBox that is ~9.5% of the height — and it scales with the mark
+   automatically, at any size.
+3. **The click overlaps the drop's tail** (3150 vs a drop ending at 3350). Land
+   it after the drop finishes and it reads as two events; overlap it and it reads
+   as impact.
 
 ### 5.6 The container settle
 
@@ -415,7 +490,7 @@ from the start, not drawn.
 | `globals.css` | every `animation-delay` |
 | `layout.tsx` | `tR = 7150` — must equal the lift's delay |
 | `layout.tsx` | `tD = 8000` — must equal lift delay + lift duration |
-| `introGate.ts` | `FAILSAFE_MS` — must be comfortably **above** `tD` |
+| `introGate.ts` | `FAILSAFE_MS` — must be comfortably **above** `tD`. Ours is **10000** against a `tD` of 8000: 2s of headroom. |
 
 Change one, change all four. A mismatch means the curtain lifts before its
 animation finishes, or hangs after it ends.
@@ -515,15 +590,22 @@ is the durable record.
 - [ ] Outer `try/catch` → `skip`
 - [ ] Inline boot script in `<head>`, never external
 - [ ] Inline SVG mark, never an `<img>`/`<Image>`
-- [ ] `pathLength="1"` + `stroke-dasharray: 1`
+- [ ] `pathLength="1"` + `stroke-dasharray: 1`, with the rule scoped to
+      `.intro-mark > path` (child combinator)
+- [ ] `transform-box: fill-box` on anything inside the SVG you rotate or scale
 - [ ] Scroll lock as a separate attribute from the state value
 - [ ] `sessionStorage` (not `localStorage`), reduced-motion check, click-to-skip
 - [ ] Idempotent `release()` / `finish()`
 
 **Change per project:**
 
-- [ ] `MARK_SHAPES` — your paths, reordered into draw order
-- [ ] The `nth-child` delay ladder — regenerate for your shape count
+- [ ] `MARK_SHAPES` / `KEY_SHAPES` — your paths, split by MEANING then ordered
+      the way you'd draw each part
+- [ ] The `nth-of-type` delay ladder — regenerate for your shape count
+- [ ] `.intro-key` drop distance, angle and `transform-origin` — or drop the key
+      act entirely if your mark has no "subject + object" structure
+- [ ] `.intro-logo` width — ours is `min(clamp(300px, 61vw, 460px), 52vh)`, tuned
+      to sit as wide as the wordmark below it; the `52vh` is a short-window guard
 - [ ] `tR` / `tD` / `FAILSAFE_MS` / every `animation-delay` — as one system
 - [ ] Colours: `.intro-fill` background, `--mark` per shape, text colours
 - [ ] `EDGE_SAG` curve depth (`Q50 40` — raise for a deeper sag)

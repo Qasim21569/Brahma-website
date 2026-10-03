@@ -1,21 +1,12 @@
 /**
- * Company narrative, leadership, and affiliated ventures.
+ * Brand assets and registered entities.
  *
- * STRUCTURE IS REAL. PROSE IS DRAFT.
- * The founder narrative is written from a Lodging Magazine interview with
- * Sanjay Patel (see SOURCES below). Facts are accurate to that interview;
- * the prose is original and awaits client sign-off.
+ * The founder narrative, quotes and team roster that used to live here moved to
+ * `src/content/sections/global.ts` on 2026-10-03 and are now edited in the
+ * admin (Company → Founder / Team). Their sourcing rules moved with them.
  *
  * Anything marked TODO needs client input before launch.
  */
-
-export const SOURCES = {
-  lodgingMagazine: {
-    title: "Starting Off in Hospitality With an Owner Mindset",
-    publication: "LODGING Magazine",
-    url: "https://lodgingmagazine.com/starting-off-in-hospitality-with-an-owner-mindset/",
-  },
-} as const;
 
 /** Client-supplied brand mark — intro, navbar, homepage About. */
 /**
@@ -67,142 +58,6 @@ export const BMIG_LOGO_FULL_SRC = "/BMIG LOGO FINAL.svg";
 
 /** Intrinsic size of the file above (viewBox 0 0 2160 2160). */
 export const BMIG_LOGO_FULL_SIZE = { width: 2160, height: 2160 } as const;
-
-export const founder = {
-  name: "Sanjay Patel",
-  role: "Chief Executive Officer & President",
-  company: "Brahmas Management and Investment Group",
-  yearsInIndustry: "27+",
-  /** Numeric form of `yearsInIndustry`, for CountUp. Keep the two in step. */
-  yearsInIndustryValue: 27,
-  /** First equity stake — the Pinellas Park partnership. See `story` below. */
-  firstOwnershipYear: 2001,
-
-  /** One-line positioning used in hero/intro contexts. */
-  standfirst:
-    "An operator before an owner — and an owner who never stopped operating.",
-
-  /** Narrative blocks, in reading order. Original prose; facts per SOURCES. */
-  story: [
-    {
-      heading: "Arrival",
-      // Closing clause rephrased 2026-08-17 on client feedback. Was "a
-      // conviction that the way to understand a hotel is to run one" — the
-      // subject/object inversion made it read as a riddle on first pass.
-      body: "Sanjay Patel arrived in the United States from India in 1996 with ten dollars and no capital behind him. What he had instead was a willingness to learn the business from its floor, on the conviction that a hotel is only ever understood by the people who run it.",
-    },
-    {
-      heading: "The floor",
-      body: "He began at a small Tampa hotel owned by an uncle, taking the controls whenever his uncle was away. From there he moved to an independent property as a night auditor, and made a point of learning every function in the building — housekeeping, front desk, maintenance, the ledger. Within three years he was general manager of a larger hotel in southwest Florida, working sixteen-hour days for three years without taking a day off.",
-    },
-    {
-      heading: "The owner's mindset",
-      // Opening sentence REPHRASED 2026-08-17, not cut. Was "Long before he
-      // held equity, he ran the business as though he did." — the
-      // equity/as-though-he-did construction took a second read to parse.
-      body: "He ran the business like an owner years before he became one. Every unsold room registered as a personal loss; every dollar of revenue was treated as his own. That discipline is the origin of the company's operating philosophy — that ownership is a way of thinking about an asset, not merely a line on a title.",
-    },
-    {
-      heading: "First ownership",
-      // Closing sentence added 2026-08-17: the client asked for the one or two
-      // qualities behind the result, at the END of this block rather than as a
-      // section of its own.
-      //
-      // ⚠️ Introduces NO new biographical facts. Both qualities restate things
-      // already established above — learning every function in the building
-      // ("The floor") and treating revenue as his own ("The owner's mindset") —
-      // applied here to the Pinellas Park result. Inventing a third trait to
-      // round the sentence out would be the class of unsourced claim this
-      // project has had to retract before.
-      body: "In 2001 a physician connected to his employer needed an experienced operator for a property in Pinellas Park, Florida. Patel had no money to contribute, so he contributed expertise instead, negotiating a partnership stake in place of capital. In the first year, revenue rose from $250,000 to $650,000, occupancy reached roughly 95 percent, and he repaid his share of the loan. The property was run by family members and two housekeeping employees. Two things made that possible: he knew every function in the building well enough to run the operation from the inside, and he had spent years treating revenue as his own before any of it was — which is what let a property run that lean without a guest noticing.",
-    },
-    {
-      heading: "The group",
-      body: "That first success became Brahmas Management and Investment Group. The portfolio has grown to a diversified set of operating assets across hospitality, education, and residential real estate — the majority midscale hotels operating under established franchise systems. As the group's record with lenders lengthened, banks began approaching it directly to take on distressed and bankrupt properties during downturns.",
-    },
-    {
-      heading: "How we hire",
-      body: "The company recruits for disposition rather than credentials. Employees who show genuine ownership instinct are trained against nearly three decades of operating knowledge, and the strongest performers are offered equity stakes in new projects — the same path that turned an operator into an owner.",
-    },
-  ],
-
-  /**
-   * Verbatim quotes from the LODGING Magazine interview.
-   * ⚠️ Confirm with the client before publishing; credit the publication.
-   */
-  quotes: [
-    {
-      text: "Every dollar that was coming in, I acted as if it was coming in for me as an owner.",
-      source: "LODGING Magazine",
-    },
-    {
-      text: "I don't look for a degree. I look at the passion the person has.",
-      source: "LODGING Magazine",
-    },
-  ],
-} as const;
-
-export type TeamMember = {
-  id: string;
-  name: string;
-  role: string;
-  /** Shown when the role is opened — what they actually do day to day. */
-  focus: string;
-  /** Local path; null renders a monogram placeholder. */
-  photo: string | null;
-};
-
-/**
- * Leadership grid on /about#team.
- *
- * Headshots are the client-supplied `public/team-member{n}.png` files.
- * ⚠️ Names and titles below are working placeholders until the real roster
- * is confirmed — Sanjay Patel remains the named founder in `founder` above.
- */
-export const team: TeamMember[] = [
-  {
-    id: "rajiv-mehta",
-    name: "Rajiv Mehta",
-    role: "Chief Investment Officer",
-    focus: "Strategy, capital, and lender relationships",
-    photo: "/team-member1.png",
-  },
-  {
-    id: "vikram-shah",
-    name: "Vikram Shah",
-    role: "Director of Acquisitions",
-    focus: "Underwriting, diligence, and market selection",
-    photo: "/team-member2.png",
-  },
-  {
-    id: "neil-kapoor",
-    name: "Neil Kapoor",
-    role: "Director of Asset Management",
-    focus: "Capital improvement and brand standards",
-    photo: "/team-member3.png",
-  },
-  {
-    id: "ananya-rao",
-    name: "Ananya Rao",
-    role: "Head of Hospitality Operations",
-    focus: "Brahmas Hospitality Management",
-    photo: "/team-member4.png",
-  },
-  {
-    id: "meera-iyer",
-    name: "Meera Iyer",
-    role: "Admin",
-    focus: "Records, scheduling, and day-to-day office coordination",
-    photo: "/team-member5.png",
-  },
-  {
-    id: "priya-nair",
-    name: "Priya Nair",
-    role: "Head of Development",
-    focus: "Ground-up development and major repositioning",
-    photo: "/team-member6.png",
-  },
-];
 
 export type AffiliatedCompany = {
   name: string;

@@ -21,7 +21,20 @@ type Filter = AssetType | "all";
  * an `NN — 12` counter, name at headline-md, city as a small label, the summary,
  * and a "View property" affordance.
  */
-export default function PortfolioGrid({ properties }: { properties: Property[] }) {
+export type PortfolioGridLabels = {
+  all: string;
+  view: string;
+  empty: string;
+  independent: string;
+};
+
+export default function PortfolioGrid({
+  properties,
+  labels,
+}: {
+  properties: Property[];
+  labels: PortfolioGridLabels;
+}) {
   const [filter, setFilter] = useState<Filter>("all");
 
   // Counts drive the pill labels, so a pill can never advertise a category that
@@ -55,7 +68,7 @@ export default function PortfolioGrid({ properties }: { properties: Property[] }
       <div className="flex flex-wrap gap-3" role="group" aria-label="Filter by asset type">
         {filters.map((f) => {
           const active = filter === f;
-          const label = f === "all" ? "All assets" : assetTypeLabels[f];
+          const label = f === "all" ? labels.all : assetTypeLabels[f];
           const count = f === "all" ? properties.length : counts.get(f) ?? 0;
           return (
             <button
@@ -82,6 +95,7 @@ export default function PortfolioGrid({ properties }: { properties: Property[] }
       <div className="mt-16 grid grid-cols-1 gap-x-gutter gap-y-16 md:grid-cols-2 md:gap-y-24">
         {visible.map((property, i) => (
           <PropertyCard
+            labels={labels}
             key={property.slug}
             property={property}
             index={properties.indexOf(property)}
@@ -94,7 +108,7 @@ export default function PortfolioGrid({ properties }: { properties: Property[] }
 
       {visible.length === 0 && (
         <p className="font-body-lg text-body-lg text-on-surface-variant mt-16">
-          No assets in this category.
+          {labels.empty}
         </p>
       )}
     </>
@@ -106,11 +120,13 @@ function PropertyCard({
   index,
   total,
   offset,
+  labels,
 }: {
   property: Property;
   index: number;
   total: number;
   offset: boolean;
+  labels: PortfolioGridLabels;
 }) {
   const ref = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
@@ -139,7 +155,11 @@ function PropertyCard({
           <span className="ml-auto">{assetTypeLabels[property.assetType]}</span>
         </div>
 
-        <PropertyCardMedia property={property} priority={index < 2} />
+        <PropertyCardMedia
+          property={property}
+          priority={index < 2}
+          independentLabel={labels.independent}
+        />
 
         {/* Title rise on hover, paired with the image scaling down inside its
             frame — the ochi.design pattern (§5 C4). */}
@@ -162,7 +182,7 @@ function PropertyCard({
           }
           hoverText={
             <span className="font-label-caps text-label-caps text-primary">
-              View property →
+              {labels.view} →
             </span>
           }
         />
@@ -183,7 +203,7 @@ function PropertyCard({
             element inside it is invalid HTML and breaks hydration. min-h-11
             keeps it at the §2.6 44px touch-target floor. */}
         <span className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-mortar-grey px-5 font-label-caps text-label-caps text-primary md:hidden">
-          View property
+          {labels.view}
           <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
             <path
               d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Manrope } from "next/font/google";
-import { MotionConfig } from "motion/react";
-import Intro from "@/components/Intro";
 import "./globals.css";
-import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { getSection } from "@/content/server";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -21,8 +19,6 @@ const manrope = Manrope({
 });
 
 const SITE_NAME = "Brahmas Management and Investment Group";
-const SITE_DESCRIPTION =
-  "Brahmas Management and Investment Group (BMIG) is a hospitality investment group handling acquisition, management, and operations across the full lifecycle of a hotel asset.";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -38,7 +34,11 @@ const SHARE_IMAGE = {
   alt: "BRAHMAS Management and Investment Group",
 } as const;
 
-export const metadata: Metadata = {
+/* The description is editable (Admin → Site settings → Search & sharing), so
+   metadata is generated rather than declared. Everything else is fixed. */
+export async function generateMetadata(): Promise<Metadata> {
+  const { description: SITE_DESCRIPTION } = await getSection("global.seo");
+  return {
   metadataBase: new URL(SITE_URL),
   applicationName: "BRAHMAS",
   title: {
@@ -89,7 +89,8 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [SHARE_IMAGE.url],
   },
-};
+  };
+}
 
 export default function RootLayout({
   children,
@@ -120,6 +121,8 @@ export default function RootLayout({
             · sessionStorage 'brahma:intro-played' — plays once per session
             · prefers-reduced-motion — skips entirely, never plays
             · any pointerdown/keydown skips to a 450ms exit
+            · /admin — never plays; the admin renders no curtain to lift, so
+              playing would only lock the editor's scroll for 8 seconds
         */}
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -128,16 +131,13 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var d=document.documentElement,KEY='brahma:intro-played',played=false,reduce=false;try{played=sessionStorage.getItem(KEY)==='1'}catch(e){}try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}if(played||reduce){d.setAttribute('data-intro','skip');return}d.setAttribute('data-intro','play');d.setAttribute('data-intro-lock','');if('scrollRestoration' in history)history.scrollRestoration='manual';try{window.scrollTo(0,0)}catch(e){}var tR=7150,tD=8000,released=false,done=false,timerR,timerD;function fire(n){try{document.dispatchEvent(new Event(n))}catch(e){}}function release(){if(released)return;released=true;d.setAttribute('data-intro-released','');fire('brahma:intro-release')}function cleanup(){document.removeEventListener('pointerdown',onSkip);document.removeEventListener('keydown',onSkip)}function finish(){if(done)return;done=true;release();d.setAttribute('data-intro','done');d.removeAttribute('data-intro-lock');try{sessionStorage.setItem(KEY,'1')}catch(e){}fire('brahma:intro-done');cleanup()}function onSkip(){if(done)return;d.setAttribute('data-intro','exit');clearTimeout(timerR);clearTimeout(timerD);release();setTimeout(finish,460)}timerR=setTimeout(release,tR);timerD=setTimeout(finish,tD);document.addEventListener('pointerdown',onSkip);document.addEventListener('keydown',onSkip)}catch(e){try{document.documentElement.setAttribute('data-intro','skip')}catch(_){}}})();`,
+            __html: `(function(){try{var d=document.documentElement,KEY='brahma:intro-played',played=false,reduce=false;try{played=sessionStorage.getItem(KEY)==='1'}catch(e){}try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}if(played||reduce||location.pathname.indexOf('/admin')===0){d.setAttribute('data-intro','skip');return}d.setAttribute('data-intro','play');d.setAttribute('data-intro-lock','');if('scrollRestoration' in history)history.scrollRestoration='manual';try{window.scrollTo(0,0)}catch(e){}var tR=7150,tD=8000,released=false,done=false,timerR,timerD;function fire(n){try{document.dispatchEvent(new Event(n))}catch(e){}}function release(){if(released)return;released=true;d.setAttribute('data-intro-released','');fire('brahma:intro-release')}function cleanup(){document.removeEventListener('pointerdown',onSkip);document.removeEventListener('keydown',onSkip)}function finish(){if(done)return;done=true;release();d.setAttribute('data-intro','done');d.removeAttribute('data-intro-lock');try{sessionStorage.setItem(KEY,'1')}catch(e){}fire('brahma:intro-done');cleanup()}function onSkip(){if(done)return;d.setAttribute('data-intro','exit');clearTimeout(timerR);clearTimeout(timerD);release();setTimeout(finish,460)}timerR=setTimeout(release,tR);timerD=setTimeout(finish,tD);document.addEventListener('pointerdown',onSkip);document.addEventListener('keydown',onSkip)}catch(e){try{document.documentElement.setAttribute('data-intro','skip')}catch(_){}}})();`,
           }}
         />
       </head>
-      <body className="font-body-md text-body-md antialiased">
-        <Intro />
-        <MotionConfig reducedMotion="user">
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
-        </MotionConfig>
-      </body>
+      {/* The intro curtain, Lenis and MotionConfig live in (site)/layout.tsx,
+          so the admin gets none of them. */}
+      <body className="font-body-md text-body-md antialiased">{children}</body>
     </html>
   );
 }

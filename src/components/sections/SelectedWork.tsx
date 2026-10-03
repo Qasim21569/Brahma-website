@@ -16,34 +16,21 @@ import { SwapMaskText } from "@/components/ui/SwapMaskText";
 import { ClipImageContainer } from "@/components/ui/ClipImageContainer";
 import useMaskImage from "@/hooks/useMaskImage";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { enrichedProperties } from "@/data/properties";
 
 const EASE = [0.24, 0.43, 0.15, 0.97] as const;
 
-/** Homepage Selected Work — client-curated trio (not the first N in portfolio order). */
-const SELECTED_WORK_SLUGS = [
-  "rodeway-inn-port-richey-north",
-  "hampton-inn-tampa-veterans-expwy",
-  "hampton-inn-suites-tampa-east-seffner",
-] as const;
-
-/** Photography exists for 2 assets; cycle it until the rest is shot. */
-const withPhotos = enrichedProperties.filter((p) => p.gallery.length > 0);
-
-const items = SELECTED_WORK_SLUGS.map((slug, i) => {
-  const p = enrichedProperties.find((property) => property.slug === slug);
-  if (!p) return null;
-  return {
-    slug: p.slug,
-    name: p.shortName,
-    city: `${p.city}, ${p.state}`,
-    summary: p.summary,
-    src:
-      p.homeHeroSrc ??
-      withPhotos[i % Math.max(withPhotos.length, 1)]?.homeHeroSrc ??
-      "",
-  };
-}).filter((item): item is NonNullable<typeof item> => item != null);
+/**
+ * One card in the sequence. Built server-side by the homepage from the
+ * editor's pick (Admin → Home → Selected Work), so this client component never
+ * imports portfolio data itself.
+ */
+export type SelectedWorkItem = {
+  slug: string;
+  name: string;
+  city: string;
+  summary: string;
+  src: string;
+};
 
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
@@ -61,7 +48,17 @@ const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
  * `step` is `1 / (n - 1)` — the reference's 0.5 for three items. It is NOT
  * `1 / n`; that mis-maps the final layer.
  */
-export default function SelectedWork() {
+export default function SelectedWork({
+  items,
+  label,
+  cardLink,
+  scrollHint,
+}: {
+  items: SelectedWorkItem[];
+  label: string;
+  cardLink: string;
+  scrollHint: string;
+}) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
@@ -119,7 +116,7 @@ export default function SelectedWork() {
         >
           {/* Solid stone-white plate so the label holds over any slide. */}
           <span className="inline-flex border border-mortar-grey/60 bg-stone-white/75 px-5 py-3 backdrop-blur-sm">
-            <SectionTitle>Selected Work</SectionTitle>
+            <SectionTitle>{label}</SectionTitle>
           </span>
 
           {/* Out of the justify-between row on desktop so the card sits on the
@@ -187,7 +184,7 @@ export default function SelectedWork() {
             />
 
             <span className="mt-auto inline-flex items-center gap-2 font-label-caps text-label-caps text-ink-deep/70">
-              Discover more
+              {cardLink}
               <svg
                 viewBox="0 0 16 16"
                 fill="none"
@@ -207,7 +204,7 @@ export default function SelectedWork() {
           </div>
 
           <span className="font-body-md text-body-md text-cream/80">
-            ( Keep Scrolling )
+            {scrollHint}
           </span>
         </motion.div>
 

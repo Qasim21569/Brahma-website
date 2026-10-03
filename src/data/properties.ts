@@ -120,6 +120,16 @@ const THESIS = {
   outcomesNote: "Outcomes reported at financial close of fiscal year one.",
 } as const;
 
+/**
+ * The portfolio as it was hand-authored in this repo.
+ *
+ * ⚠️ Since the admin panel (2026-10-03) this is the SEED and the OFFLINE
+ * FALLBACK, not the live source. The live portfolio is the Supabase
+ * `properties` table, read through `src/content/properties.ts`. Editing a
+ * value here changes nothing on a site connected to Supabase — edit it in the
+ * admin instead. `scripts/seed-content.ts` loads this into an empty table, and
+ * `scripts/enrich-properties.mjs` still reads the slugs and addresses from it.
+ */
 export const properties: Property[] = [
 
   // ── 01 ─────────────────────────────────────────────────────────────────────
@@ -710,7 +720,7 @@ type GeneratedPlace = {
 
 const placesData = generated as Record<string, GeneratedPlace>;
 
-function enrich(p: Property): Property {
+export function enrich(p: Property): Property {
   const g = placesData[p.slug];
   if (!g) return { ...p, amenities: p.amenities ?? [] };
 
@@ -744,83 +754,14 @@ function enrich(p: Property): Property {
   };
 }
 
-/** The portfolio, with Places data overlaid. Import this everywhere. */
-export const enrichedProperties: Property[] = properties.map(enrich);
-
-/**
- * A property guaranteed to have imagery — `homeHeroSrc` is non-null and the
- * gallery is non-empty, so consumers can render images without null checks.
- */
-export type FeaturedProperty = Property & { homeHeroSrc: string };
-
-/** Assets with photography ready — safe to feature on the homepage. */
-export const featuredProperties: FeaturedProperty[] = enrichedProperties.filter(
-  (p): p is FeaturedProperty => p.gallery.length > 0 && p.homeHeroSrc !== null
-);
-
-/**
- * Assets with a HAND-HELD chrome still, safe on surfaces that cannot show a
- * credit — the homepage hero, the image band, marquees, section backdrops.
- *
- * Use this, never `featuredProperties`, for those surfaces. `enrich()` falls
- * back to `gallery[0].src` for `homeHeroSrc`, so with Places photos in the data
- * that fallback can quietly promote an attributed photograph onto the hero,
- * where the composition has no room for a credit and we would be displaying it
- * in breach of the attribution requirement. Selecting by construction makes
- * that impossible rather than relying on everyone remembering.
- *
- * ── Why this reads the RAW literals, not the enriched list ───────────────────
- * It used to be `featuredProperties.filter(p => p.gallery.every(no attribution))`
- * — inferring "creditless" from the gallery. That broke on 2026-08-17 when
- * Hampton Inn's detail-page gallery moved to Places while it kept its
- * hand-held chrome stills: the gallery became attributed, so the inference
- * dropped a property whose hero still was perfectly usable, and the homepage
- * image band silently fell to a single image.
- *
- * A hand-authored `homeHeroSrc` on the raw `properties` array is the direct
- * statement of the thing we actually care about — a file we hold ourselves,
- * independent of whatever the gallery is sourced from. `enrich()` preserves it
- * (`p.homeHeroSrc ?? gallery[0]?.src`), so the enriched record still carries
- * the same path.
- *
- * ⚠️ Adding a property here means asserting we can display its hero still with
- * no credit. Do not add one whose image came from a Places download.
- */
-const handHeldChromeSlugs = new Set(
-  properties.filter((p) => p.homeHeroSrc !== null).map((p) => p.slug)
-);
-
-export const ownPhotographyProperties: FeaturedProperty[] =
-  featuredProperties.filter((p) => handHeldChromeSlugs.has(p.slug));
-
-/**
- * The single asset on the homepage hero — named, not positional.
- *
- * ⚠️ This exists because the homepage used to read `ownPhotographyProperties[0]`,
- * which made the most prominent image on the site a side effect of where a
- * property happened to sit in the portfolio array. Reordering the portfolio for
- * presentation on 2026-08-17 moved Clarion Pointe from 1st to 7th and would
- * have silently swapped the homepage hero to Hampton Inn — a change nobody
- * asked for, in the one place it would be most noticed.
- *
- * Portfolio display order and hero selection are unrelated decisions. Keep them
- * unrelated: reorder `properties` freely, and change the hero by editing the
- * slug below.
- *
- * Falls back to the first available asset so a mistyped slug degrades to a
- * working hero rather than a crash on `undefined.homeHeroSrc`.
- */
-const HOME_HERO_SLUG = "clarion-pointe-tampa-brandon";
-
-export const homeHeroProperty: FeaturedProperty =
-  ownPhotographyProperties.find((p) => p.slug === HOME_HERO_SLUG) ??
-  ownPhotographyProperties[0];
-
-export const propertiesByType = (type: AssetType) =>
-  enrichedProperties.filter((p) => p.assetType === type);
-
-export const getProperty = (slug: string) =>
-  enrichedProperties.find((p) => p.slug === slug);
+/* ────────────────────────────────────────────────────────────────────────────
+   Derived views
+   ────────────────────────────────────────────────────────────────────────────
+   Functions of a raw list rather than module constants, because the raw list
+   now comes from the database at render time. Load it through
+   `getPortfolio()` in `src/content/properties.ts`; do not build lists from the
+   `properties` literal above in page code.
+   ──────────────────────────────────────────────────────────────────────────── */
 
 /**
  * The assets either side of `slug` in portfolio order, for prev/next links.
@@ -828,19 +769,14 @@ export const getProperty = (slug: string) =>
  * Wraps at both ends, so the last asset's "next" is the first. A detail page is
  * a dead end otherwise — there is no other route out except the navbar.
  */
-export function getAdjacentProperties(slug: string): {
-  previous: Property | null;
-  next: Property | null;
-} {
-  const i = enrichedProperties.findIndex((p) => p.slug === slug);
-  if (i === -1 || enrichedProperties.length < 2) {
-    return { previous: null, next: null };
-  }
-  const n = enrichedProperties.length;
-  return {
-    previous: enrichedProperties[(i - 1 + n) % n],
-    next: enrichedProperties[(i + 1) % n],
-  };
+export function adjacentIn(
+  list: Property[],
+  slug: string,
+): { previous: Property | null; next: Property | null } {
+  const i = list.findIndex((p) => p.slug === slug);
+  if (i === -1 || list.length < 2) return { previous: null, next: null };
+  const n = list.length;
+  return { previous: list[(i - 1 + n) % n], next: list[(i + 1) % n] };
 }
 
 export const assetTypeLabels: Record<AssetType, string> = {
@@ -848,3 +784,73 @@ export const assetTypeLabels: Record<AssetType, string> = {
   education: "Education",
   residential: "Residential",
 };
+
+/**
+ * Every field a `Property` must carry, used to fill gaps in a database record —
+ * a row saved before a field existed, or a hand-edited row missing one, must
+ * still produce a complete object rather than `undefined` deep in a page.
+ */
+export function normalizeProperty(slug: string, data: Partial<Property>): Property {
+  const str = (v: unknown, fallback = "") => (typeof v === "string" ? v : fallback);
+  const strOrNull = (v: unknown) => (typeof v === "string" && v.trim() ? v : null);
+  const assetType: AssetType =
+    data.assetType === "education" || data.assetType === "residential"
+      ? data.assetType
+      : "hospitality";
+
+  return {
+    slug,
+    name: str(data.name, slug),
+    shortName: str(data.shortName) || str(data.name, slug),
+    address: str(data.address),
+    city: str(data.city),
+    state: str(data.state, "Florida"),
+    phone: strOrNull(data.phone),
+    assetType,
+    brand: strOrNull(data.brand),
+    category: str(data.category, "Acquisition"),
+    acquiredYear: str(data.acquiredYear),
+    subunit: str(data.subunit, "Brahmas Hospitality Management"),
+    bookingUrl: strOrNull(data.bookingUrl),
+    placeId: strOrNull(data.placeId),
+    coordinates:
+      data.coordinates &&
+      typeof data.coordinates.lat === "number" &&
+      typeof data.coordinates.lng === "number"
+        ? data.coordinates
+        : null,
+    summary: str(data.summary),
+    longform: str(data.longform),
+    acquisition: str(data.acquisition, THESIS.acquisition),
+    renovation: str(data.renovation, THESIS.renovation),
+    operations: str(data.operations, THESIS.operations),
+    outcomesNote: str(data.outcomesNote, THESIS.outcomesNote),
+    homeHeroSrc: strOrNull(data.homeHeroSrc),
+    homeSatelliteSrc: strOrNull(data.homeSatelliteSrc),
+    gallery: Array.isArray(data.gallery)
+      ? data.gallery
+          .filter((g) => g && typeof g.src === "string" && g.src)
+          .map((g) => ({
+            src: g.src,
+            alt: str(g.alt),
+            attribution: strOrNull(g.attribution),
+          }))
+      : [],
+    ...(Array.isArray(data.amenities)
+      ? {
+          amenities: data.amenities.filter(
+            (a) => a && typeof a.label === "string" && typeof a.icon === "string",
+          ),
+          amenitiesSource: data.amenitiesSource === "google" ? "google" : "client",
+        }
+      : {}),
+    ...(Array.isArray(data.highlights)
+      ? {
+          highlights: data.highlights.filter(
+            (h) => h && typeof h.label === "string" && typeof h.value === "string",
+          ),
+        }
+      : {}),
+    contentStatus: data.contentStatus === "final" ? "final" : "placeholder",
+  };
+}

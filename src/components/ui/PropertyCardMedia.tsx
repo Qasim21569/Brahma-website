@@ -18,8 +18,11 @@ export function PropertyCardMedia({
   aspect = "aspect-[4/3]",
   sizes = "(max-width: 768px) 100vw, 45vw",
   priority = false,
+  independentLabel = "Independent",
 }: {
   property: Property;
+  /** Shown in place of a brand on the no-photo card (Admin → Property page labels). */
+  independentLabel?: string;
   aspect?: string;
   sizes?: string;
   priority?: boolean;
@@ -36,7 +39,7 @@ export function PropertyCardMedia({
             {assetTypeLabels[property.assetType]}
           </span>
           <span className="font-label-caps text-label-caps text-on-surface-variant/70">
-            {property.brand ?? "Independent"}
+            {property.brand ?? independentLabel}
           </span>
         </div>
         {/* Monogram, same treatment as the team-grid fallback on /about. */}

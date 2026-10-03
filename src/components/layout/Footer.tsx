@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { BMIG_LOGO_SRC, BMIG_LOGO_SIZE } from "@/data/company";
-import { operatingRegion } from "@/data/contact";
-import { enrichedProperties } from "@/data/properties";
+import { getSections } from "@/content/server";
 
 /**
  * Footer — oversized wordmark + columns.
@@ -17,17 +16,6 @@ import { enrichedProperties } from "@/data/properties";
  * A "Connect" column slots in below once the client supplies handles.
  */
 
-const exploreLinks = [
-  { href: "/about", label: "About Us" },
-  { href: "/services", label: "Services" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/careers", label: "Join Our Team" },
-];
-
-const legalLinks = [
-  { href: "/privacy", label: "Privacy Policy" },
-  { href: "/terms", label: "Terms of Service" },
-];
 
 const LEGAL_NAME = "Brahmas Management and Investment Group";
 
@@ -56,9 +44,14 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
-export function Footer() {
+export async function Footer() {
+  const [contact, footer, nav] = await getSections(
+    "global.contact",
+    "global.footer",
+    "global.navigation",
+  );
+  const { operatingRegion } = contact;
   const year = new Date().getFullYear();
-  const assetCount = enrichedProperties.length;
 
   return (
     <footer className="relative w-full overflow-hidden bg-primary text-cream">
@@ -101,13 +94,13 @@ export function Footer() {
             </Link>
 
             <p className="mt-6 max-w-xs font-body-md text-body-md text-cream-dim">
-              Architectural integrity translated into enduring operating performance.
+              {footer.tagline}
             </p>
 
             <dl className="mt-8 flex flex-col gap-4">
               <div>
                 <dt className="font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-muted-azure">
-                  Operating region
+                  {footer.regionLabel}
                 </dt>
                 <dd className="mt-1.5 font-body-md text-body-md text-cream-dim">
                   {operatingRegion}
@@ -115,10 +108,10 @@ export function Footer() {
               </div>
               <div>
                 <dt className="font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-muted-azure">
-                  Portfolio
+                  {footer.portfolioLabel}
                 </dt>
                 <dd className="mt-1.5 font-body-md text-body-md text-cream-dim">
-                  {assetCount} operating assets
+                  {footer.portfolioText}
                 </dd>
               </div>
             </dl>
@@ -127,22 +120,21 @@ export function Footer() {
           {/* Columns */}
           <div className="grid grid-cols-2 gap-x-8 gap-y-12">
             <nav className="flex flex-col gap-4" aria-label="Explore">
-              <ColumnLabel>Explore</ColumnLabel>
-              {exploreLinks.map((link) => (
-                <FooterLink key={link.href} href={link.href}>
+              <ColumnLabel>{footer.exploreLabel}</ColumnLabel>
+              {nav.links.map((link, i) => (
+                <FooterLink key={`${i}-${link.href}`} href={link.href}>
                   {link.label}
                 </FooterLink>
               ))}
             </nav>
 
             <nav className="flex flex-col gap-4" aria-label="Legal">
-              <ColumnLabel>Legal</ColumnLabel>
-              {legalLinks.map((link) => (
-                <FooterLink key={link.href} href={link.href}>
+              <ColumnLabel>{footer.legalLabel}</ColumnLabel>
+              {footer.legalLinks.map((link, i) => (
+                <FooterLink key={`${i}-${link.href}`} href={link.href}>
                   {link.label}
                 </FooterLink>
               ))}
-              <FooterLink href="/contact">Contact</FooterLink>
             </nav>
           </div>
         </div>

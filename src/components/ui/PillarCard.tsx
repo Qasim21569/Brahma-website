@@ -1,7 +1,16 @@
 import { MaskText } from "@/components/ui/MaskText";
 import { Reveal } from "@/components/ui/Reveal";
 import { DrawnRule } from "@/components/ui/DrawnRule";
-import type { Pillar } from "@/data/services";
+
+/** One pillar, as edited in Admin → Services → Services. */
+export type Pillar = {
+  title: string;
+  /** Hand-broken lines for MaskText. */
+  body: string[];
+  capabilities: string[];
+  /** Only set where a confirmed operating company exists. */
+  subunit?: string;
+};
 
 /**
  * PillarCard — one capability pillar.
@@ -30,8 +39,11 @@ export function PillarCard({
   pillar,
   tone = "dark-on-light",
   delay = 0,
+  operatedByLabel = "Operated by",
 }: {
   pillar: Pillar;
+  /** Prefix for the subunit line (Admin → Services → Services). */
+  operatedByLabel?: string;
   /** "dark-on-light" = ink text on the canvas. "light-on-dark" = cream on ink. */
   tone?: "dark-on-light" | "light-on-dark";
   delay?: number;
@@ -102,7 +114,7 @@ export function PillarCard({
           {pillar.subunit && (
             <Reveal delay={delay + 0.4}>
               <p className={`font-label-caps text-label-caps ${accent} mt-6`}>
-                Operated by {pillar.subunit}
+                {operatedByLabel} {pillar.subunit}
               </p>
             </Reveal>
           )}

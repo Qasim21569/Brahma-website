@@ -13,42 +13,9 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { MaskText } from "@/components/ui/MaskText";
 import { SwapMaskText } from "@/components/ui/SwapMaskText";
 import { StyledLink } from "@/components/ui/StyledLink";
+import type { ImageValue } from "@/content/fields";
 
-const stages = [
-  {
-    num: "01",
-    icon: "/acq.png",
-    title: "Acquire",
-    lines: [
-      "We buy assets whose structural",
-      "quality already exceeds their",
-      "operating performance — the gap",
-      "is the opportunity.",
-    ],
-  },
-  {
-    num: "02",
-    icon: "/des.png",
-    title: "Renovate",
-    lines: [
-      "Capital goes into the building, the",
-      "operating model, and the brand",
-      "position at the same time. A repaint",
-      "is not a repositioning.",
-    ],
-  },
-  {
-    num: "03",
-    icon: "/opr.png",
-    title: "Operate",
-    lines: [
-      "We hold and run the asset ourselves",
-      "under Brahmas Hospitality",
-      "Management. No third party, no",
-      "handoff, no diluted accountability.",
-    ],
-  },
-];
+export type ProcessStage = { title: string; body: string[]; icon: ImageValue };
 
 /**
  * Process — scroll-driven stepper.
@@ -58,14 +25,32 @@ const stages = [
  * direction), and a progress line that fills across the section. The stages
  * themselves sit in the wide column and mask in line by line.
  *
- * No photography — an oversized line-art mark (client-supplied PNG,
+ * No photography — an oversized line-art mark (client-supplied PNG, defaults
  * `public/{acq,des,opr}.png`) sits beside each stage instead,
  * which fills the space without competing with the image-led sections either
  * side. Marks are desktop-only; on mobile the column collapses and they are
  * hidden. The source PNGs are already cream-on-transparent, so no recolour is
  * applied — only opacity, to keep them subordinate to the text.
+ *
+ * Copy and marks come in as props from Admin → Home → Process. Stage numbers
+ * are derived from position, never typed.
  */
-export default function Process() {
+export default function Process({
+  label,
+  linkLabel,
+  linkHref,
+  stages: stageInput,
+}: {
+  label: string;
+  linkLabel: string;
+  linkHref: string;
+  stages: ProcessStage[];
+}) {
+  const stages = stageInput.map((s, i) => ({
+    ...s,
+    num: String(i + 1).padStart(2, "0"),
+    lines: s.body,
+  }));
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
@@ -95,7 +80,7 @@ export default function Process() {
           <div className="rounded-full border border-cream/15 bg-ink-mid/90 px-4 py-2.5 backdrop-blur-md md:hidden">
             <div className="flex items-center justify-between gap-4">
               <span className="font-label-caps text-label-caps text-cream/60">
-                Process
+                {label}
               </span>
               <div className="flex items-center gap-1.5">
                 <span className="font-label-caps text-label-caps text-cream">
@@ -116,7 +101,7 @@ export default function Process() {
 
           {/* Full rail — desktop only */}
           <div className="hidden md:block">
-            <SectionTitle tone="light">Process</SectionTitle>
+            <SectionTitle tone="light">{label}</SectionTitle>
 
             <div className="mt-14 flex items-baseline gap-4">
               <span className="font-display-hero text-display-hero leading-none text-cream">
@@ -135,8 +120,8 @@ export default function Process() {
             </div>
 
             <div className="mt-10">
-              <StyledLink href="/services" tone="light">
-                Explore our thesis
+              <StyledLink href={linkHref} tone="light">
+                {linkLabel}
               </StyledLink>
             </div>
           </div>
@@ -161,7 +146,7 @@ export default function Process() {
                   </span>
                   <div className="relative h-9 w-9 shrink-0 opacity-70 md:hidden">
                     <Image
-                      src={stage.icon}
+                      src={stage.icon.src}
                       alt=""
                       fill
                       sizes="36px"
@@ -189,7 +174,7 @@ export default function Process() {
 
                   <div className="relative hidden aspect-square w-[clamp(160px,18vw,280px)] justify-self-end opacity-70 md:block">
                     <Image
-                      src={stage.icon}
+                      src={stage.icon.src}
                       alt=""
                       fill
                       sizes="280px"
@@ -202,8 +187,8 @@ export default function Process() {
           ))}
 
           <div className="mt-10 md:hidden">
-            <StyledLink href="/services" tone="light">
-              Explore our thesis
+            <StyledLink href={linkHref} tone="light">
+              {linkLabel}
             </StyledLink>
           </div>
         </div>

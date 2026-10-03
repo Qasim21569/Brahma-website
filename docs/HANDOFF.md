@@ -2,7 +2,7 @@
 
 > **The single source of truth for current state.** What is done, what is next,
 > what is blocked. Nothing else.
-> **Last updated:** 2026-08-17 (amenities + property imagery)
+> **Last updated:** 2026-10-03 (admin panel — branch `feature/admin-panel`, not yet merged)
 
 ## Which doc wins
 
@@ -19,6 +19,10 @@ wins** — this ordering exists because they had already drifted apart once.
 `RESUME-PROMPT.md` is not a plan — it is the copy-paste prompt and file list for
 starting a session elsewhere.
 
+`ADMIN-PANEL.md` is the **owner doc for the editable-content system** — like
+PHOTO-PIPELINE is for imagery. Read it before touching `src/content/`, `/admin`
+or `supabase/`. `ADMIN-PANEL-OPTIONS.md` is the decision record that led to it.
+
 `PRELOADER-SPEC.md` is **outside this precedence chain** — a portable extract of
 the intro-curtain architecture, written to be lifted into other projects. It is
 not authoritative about what is shipped here.
@@ -29,7 +33,8 @@ not authoritative about what is shipped here.
 
 ## Where the project stands
 
-**Build is green:** `npx next build` → 22 static routes, TypeScript clean.
+**Build is green:** `npx next build` → 22 static public routes + the dynamic
+`/admin` routes, TypeScript clean, `npm run content:check` 60/60.
 
 | Area | State |
 |---|---|
@@ -48,8 +53,50 @@ not authoritative about what is shipped here.
 | Enrichment script | ✅ Written, self-tested, **key working**. Derives amenities as of 2026-08-17. |
 | Preloader | ✅ **Live at 8000ms** — Phase F1. Lotus draws itself, then the key drops in; see below |
 | Page transitions | 🔲 Built but disabled. Phase F2. |
+| **Admin panel** | ✅ **Built** on `feature/admin-panel`. ⚠️ **Not switched on** — needs the migration applied + env vars + editors. Runbook: ADMIN-PANEL.md §1 |
 
-### Done this session (2026-08-17)
+### Done this session (2026-10-03) — the admin panel
+
+**The site is now client-editable** at `/admin`, backed by the Supabase project
+"BRAHMAS Website" (`dynxjlgdoftzgfsuezwc`). Full design and runbook:
+**ADMIN-PANEL.md**. Option analysis: ADMIN-PANEL-OPTIONS.md (Supabase chosen).
+
+- **All page copy moved into `src/content/sections/*.ts` as defaults** — 41
+  sections. The database stores only what an editor saves; an untouched section
+  renders exactly what shipped. **Proven:** the branch build was diffed against
+  `main` page by page — rendered text identical on all 22 routes, except that
+  Privacy/Terms gained proper `<title>`s.
+- **Properties move to a Supabase table** after a one-click import from the
+  dashboard. `data/properties.ts` is now the **seed and offline fallback** —
+  editing it no longer changes a connected site. The Places overlay and the
+  "hand-authored wins" rule are unchanged; the admin is now the hand.
+- **Public pages stay static.** Content is read with a cookie-less client at
+  build; saving revalidates. Admin routes are request-time.
+- **Public pages moved into `app/(site)/`** (URLs unchanged) so the intro
+  curtain, Lenis and MotionConfig no longer wrap `/admin`. The intro boot script
+  skips `/admin`.
+- **Navbar** is now a server shell (`Navbar.tsx`) over `NavbarClient.tsx`, so the
+  drawer's contact routes are editable. Pages import `Navbar` exactly as before.
+- **Deleted, now superseded by section defaults:** `data/contact.ts`,
+  `data/services.ts`, and `founder`/`team`/`SOURCES` in `data/company.ts`.
+  `affiliatedCompanies` deliberately kept (blocked item 6).
+- Guards carried into the editor: a credited photo cannot be placed on a
+  creditless surface (hero, homepage image band, headshots); images cannot be
+  hotlinked from other sites (D-10); stats figures stay derived — copy uses
+  `{assetCount}`-style tokens.
+
+**To switch it on** (ADMIN-PANEL.md §1): ~~apply the migrations~~ (done), turn off public sign-up,
+create editor users + `editors` rows, set the env vars locally and on Vercel,
+deploy, press *Import* on the dashboard.
+
+✅ **Database is set up** (migrations applied, advisors clean, RLS probed from
+outside). ⚠️ **The admin has not yet been exercised end to end** — no editor
+account existed at the end of the session. Sign in → edit → see it live is the
+first thing to test.
+
+---
+
+### Done previously (2026-08-17)
 
 **Amenities + the two missing images.** Both of the client's open items, plus
 three data conflicts found on the way.
@@ -547,7 +594,8 @@ fragile.
 
 ```bash
 npx tsc --noEmit          # types
-npx next build            # must stay at 22 routes
+npm run content:check     # admin content layer — defaults valid, round-trips lossless
+npx next build            # public routes must stay ○/● (22); /admin is ƒ
 npm run enrich:check      # offline checks on the enrichment script
 ```
 
@@ -587,6 +635,17 @@ grep -o "Your text" .next/server/app/index.html
   credit slot. That second list is now doing real work: **every Places-sourced
   photo carries a mandatory credit**, so only the two hand-authored galleries
   qualify for the homepage hero and other creditless surfaces.
+- **Copy lives in `src/content/sections/`, not in page JSX.** A hard-coded
+  string in a page is a string the client cannot edit. New copy goes in a
+  section field and is read with `getSection()`.
+- **Never read Supabase with the cookie-aware client in a public page.**
+  `cookies()` makes the route dynamic; the whole site would then hit the
+  database on every visit. Public pages use `src/content/server.ts` only.
+- **Do not make content reads "fail soft".** If Supabase is configured but a
+  query fails, the build must fail — falling back to defaults would publish the
+  shipped copy over the client's edits. See ADMIN-PANEL.md §3.5.
+- **A property's slug is immutable** — it is the URL and the photo directory.
+  The admin never offers to change it; do not add that.
 - **`enrich-properties.mjs` replaces each record wholesale.** Any field not set
   on every run is dropped. This already cost the galleries once — see the
   2026-08-17 notes. Add new fields at record construction, not inside a
