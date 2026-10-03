@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { requireEditor } from "@/lib/admin/auth";
 import { findSection, pages } from "@/content/registry";
 import { RestoreButton } from "@/components/admin/controls";
+import { LocalDate } from "@/components/admin/LocalDate";
 
 export const metadata: Metadata = { title: "History" };
 
@@ -58,7 +59,7 @@ export default async function HistoryPage() {
                   <p className="truncate text-[14px] font-medium">{label}</p>
                   <p className="text-[12px] text-mortar-grey">
                     Version before a {rev.operation === "delete" ? "delete" : "change"} on{" "}
-                    {new Date(rev.edited_at as string).toLocaleString()}
+                    <LocalDate iso={rev.edited_at as string} withTime />
                     {rev.edited_by === editor.id ? " · by you" : ""}
                   </p>
                 </div>

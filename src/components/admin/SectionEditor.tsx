@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { findSection } from "@/content/registry";
+import { LocalDate } from "./LocalDate";
 import { resetSection, saveSection } from "@/app/admin/actions";
 import { FieldsForm } from "./FieldsForm";
 import type { FieldContext } from "./FieldInput";
@@ -53,7 +54,13 @@ export function SectionEditor({
             <span className="text-[16px] font-semibold text-primary">{section.title}</span>
             {edited ? (
               <span className="rounded-full bg-muted-azure/15 px-2 py-0.5 text-[11px] font-semibold text-muted-azure-dim">
-                Edited{updatedAt ? ` · ${new Date(updatedAt).toLocaleDateString()}` : ""}
+                Edited
+                {updatedAt && (
+                  <>
+                    {" · "}
+                    <LocalDate iso={updatedAt} />
+                  </>
+                )}
               </span>
             ) : (
               <span className="rounded-full bg-surface-container px-2 py-0.5 text-[11px] font-medium text-mortar-grey">

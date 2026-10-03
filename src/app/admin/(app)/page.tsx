@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { requireEditor } from "@/lib/admin/auth";
 import { loadAdminProperties, loadContentRows } from "@/lib/admin/data";
 import { findSection, pages, sectionsForPage } from "@/content/registry";
+import { LocalDate } from "@/components/admin/LocalDate";
 import { properties as seedProperties } from "@/data/properties";
 import { ImportSeedButton } from "@/components/admin/controls";
 
@@ -128,9 +129,9 @@ export default async function AdminDashboard() {
                     {r.label}
                     <span className="ml-2 text-[12px] text-mortar-grey">{r.where}</span>
                   </Link>
-                  <time className="shrink-0 text-[12px] text-mortar-grey" dateTime={r.at!}>
-                    {new Date(r.at!).toLocaleString()}
-                  </time>
+                  <span className="shrink-0 text-[12px] text-mortar-grey">
+                    <LocalDate iso={r.at!} withTime />
+                  </span>
                 </li>
               ))}
             </ul>
