@@ -10,7 +10,8 @@
     "enrich": "node scripts/enrich-properties.mjs",
     "enrich:check": "node scripts/enrich-properties.mjs --self-test && node scripts/enrich-properties.mjs --list",
     "content:check": "tsx scripts/check-content.ts",
-    "editor": "node scripts/editors.mjs"
+    "editor": "node scripts/editors.mjs",
+    "photos:migrate": "node scripts/migrate-photos.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

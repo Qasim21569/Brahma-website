@@ -17,6 +17,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: metaTitle, description: metaDescription };
 }
 
+/** Team section is hidden for now — flip to `true` to bring it back. */
+const SHOW_TEAM = false;
+
 export default async function AboutPage() {
   const [hero, band, leadership, approach, teamCopy, partners, cta, founder, team, partner] =
     await getSections(
@@ -244,6 +247,7 @@ export default async function AboutPage() {
         </section>
 
         {/* ─── Team — LIGHT (stone-white, hairline-bounded) ─── */}
+        {SHOW_TEAM && (
         <section
           id="team"
           className="bg-stone-white border-y border-mortar-grey py-section-gap"
@@ -269,6 +273,7 @@ export default async function AboutPage() {
             <TeamGrid members={team.members} />
           </div>
         </section>
+        )}
 
         {/* ─── Construction partners — LIGHT ───
             Same partner record as /services (Admin → Company); kept compact here. */}

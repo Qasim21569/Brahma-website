@@ -31,6 +31,12 @@ function supabaseMediaPattern() {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // One value per build — keys the content fetch cache so no build can replay
+  // an earlier build's Supabase answers. See src/lib/supabase/public.ts.
+  env: {
+    CONTENT_BUILD_STAMP:
+      process.env.VERCEL_DEPLOYMENT_ID ?? process.env.VERCEL_GIT_COMMIT_SHA ?? String(Date.now()),
+  },
   images: {
     remotePatterns: supabaseMediaPattern(),
   },

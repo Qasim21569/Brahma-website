@@ -2,7 +2,7 @@
 
 > **The single source of truth for current state.** What is done, what is next,
 > what is blocked. Nothing else.
-> **Last updated:** 2026-10-03 (admin panel — branch `feature/admin-panel`, not yet merged)
+> **Last updated:** 2026-10-08 (pre-delivery review — admin panel merged to `main`)
 
 ## Which doc wins
 
@@ -53,7 +53,55 @@ not authoritative about what is shipped here.
 | Enrichment script | ✅ Written, self-tested, **key working**. Derives amenities as of 2026-08-17. |
 | Preloader | ✅ **Live at 8000ms** — Phase F1. Lotus draws itself, then the key drops in; see below |
 | Page transitions | 🔲 Built but disabled. Phase F2. |
-| **Admin panel** | ✅ **Built** on `feature/admin-panel`. ⚠️ **Not switched on** — needs the migration applied + env vars + editors. Runbook: ADMIN-PANEL.md §1 |
+| **Admin panel** | ✅ **Live on `main`.** DB set up, 4 editors, 12 properties imported. Runbook: ADMIN-PANEL.md |
+
+### Done 2026-10-08 — every property photo is now in the admin
+
+`npm run photos:migrate -- --apply` (new, `scripts/migrate-photos.mjs`) moved
+all property photos into Supabase Storage and into each property's gallery:
+**74 photos + 1 cover, 12 properties, 17 MB** (of the free tier's 1 GB). Before,
+10 of 12 galleries were empty in the database and filled at build time from
+`public/properties/`, so the client could not edit individual photos. Same
+photos, same order, same alt text; all 60 Google credits preserved in the data.
+Idempotent (a second run changes nothing); previous versions are in History.
+The photos were never hotlinked from Google — they were downloaded in August;
+this moves them from the repo into the client-managed store. Repo copies stay
+as the offline fallback. Script docs: ADMIN-PANEL.md §4.3b.
+
+⚠️ **Open — photo credits are not displayed anywhere.** `ui/PhotoAttribution.tsx`
+has no callers; its usage went in `7ae6b8b` ("changes as requested in the
+meet"). 60 of the 74 gallery photos are Google Places photos whose terms
+require the author credit to be shown with the image. Either the client accepts
+that risk in writing, or the credit is restored (e.g. under each gallery photo
+and the property hero). Needs a decision before delivery.
+
+---
+
+### Fixed 2026-10-08 — builds were ignoring the database (stale fetch cache)
+
+🚨 **Every build since 2026-10-03 rendered the shipped defaults, not the
+client's content.** Next's fetch cache persists across builds (locally in
+`.next/cache`, on Vercel across deployments). The first build ran before the
+portfolio import and cached Supabase's *empty* answers for a year; every later
+build replayed them — the DB held 12 properties while builds logged
+"properties table is empty". Proof it was real: the client's Terms edit
+("Last updated: August **2026**") rendered as the default "August **2025**".
+
+- `src/lib/supabase/public.ts`: every content read sends `x-content-build`
+  (a per-build stamp from `next.config.mjs`) — part of the cache key, so a
+  build can never read an earlier build's answers — and is tagged
+  `site-content`.
+- `publish()` in `admin/actions.ts` now `updateTag("site-content")` **and**
+  `revalidatePath("/", "layout")`.
+- `/api/keepalive` bypasses the cache (`fresh: true`) — cached, the daily ping
+  would never actually reach Supabase and the free project could still pause.
+- Verified: two consecutive builds read the live DB (no "empty" warning), the
+  Terms edit renders, public routes still ○/●, tsc clean, content:check 61/61.
+
+**Landmine:** never read Supabase in a public page without the build stamp —
+"the build is green" said nothing here; the content was simply old.
+
+---
 
 ### Follow-up (2026-10-03, cloud session) — completeness audit
 

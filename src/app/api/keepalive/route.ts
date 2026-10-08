@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const supabase = createPublicClient();
+  const supabase = createPublicClient({ fresh: true });
   if (!supabase) return Response.json({ ok: false, reason: "supabase not configured" }, { status: 500 });
 
   const { error } = await supabase.from("site_content").select("key").limit(1);

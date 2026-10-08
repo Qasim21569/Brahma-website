@@ -24,7 +24,6 @@ export const aboutHero = defineSection({
       { label: text("Label", "", { max: 40 }), href: url("Link", "#") },
       [
         { label: "The founder", href: "#leadership" },
-        { label: "Meet the team", href: "#team" },
         { label: "Construction partners", href: "#construction-partners" },
       ],
       { titleField: "label", max: 4 },

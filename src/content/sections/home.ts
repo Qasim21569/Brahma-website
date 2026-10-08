@@ -60,7 +60,6 @@ export const homeAbout = defineSection({
       { label: text("Label", "", { max: 40 }), href: url("Link", "/") },
       [
         link("Discover Brahmas", "/about"),
-        link("Meet the team", "/about#team"),
         link("Construction partners", "/about#construction-partners"),
       ],
       { titleField: "label", max: 4 },

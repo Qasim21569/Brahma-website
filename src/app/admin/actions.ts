@@ -1,6 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
+import { CONTENT_CACHE_TAG } from "@/lib/supabase/public";
 import { redirect } from "next/navigation";
 import { getEditor } from "@/lib/admin/auth";
 import { createServerSupabase } from "@/lib/supabase/server";
@@ -41,6 +42,9 @@ async function editorOrError() {
  * pages; the whole tree is 22 static routes and rebuilds in seconds.
  */
 function publish() {
+  // Expire the cached content reads first, then the rendered pages — either
+  // alone can leave a page rebuilt from stale data.
+  updateTag(CONTENT_CACHE_TAG);
   revalidatePath("/", "layout");
 }
 

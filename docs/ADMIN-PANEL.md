@@ -164,9 +164,17 @@ path — **immutable**), `position`, `published`, and `data` (the `Property`
 record). The read path (`src/content/server.ts → getPortfolio()`) applies the
 **same Google Places overlay as before** (`enrich()` in `data/properties.ts`),
 with the same rule: **a value set in the admin always wins over Google.**
-Concretely, an empty gallery shows the Places photos with their credits; adding
-your own photos replaces them. Amenities work the same way via the
-"Google / Custom" switch.
+Concretely, an empty gallery shows the Places photos; adding your own photos
+replaces them. Amenities work the same way via the "Google / Custom" switch.
+
+**Photos live in Supabase Storage (since 2026-10-08).** `npm run photos:migrate`
+copied every property photo — the 60 downloaded Places photos and the two
+hand-authored galleries, 74 photos + 1 cover, 17 MB — from `public/properties/`
+into the `media` bucket and wrote them into each property's gallery, in the
+order and with the alt text and credit the site already showed. So every photo
+is now individually editable in the admin (reorder, remove, re-caption,
+replace), and the Places overlay no longer supplies any gallery. The repo copies
+in `public/properties/` stay as the seed/offline fallback; do not delete them.
 
 `src/data/properties.ts` is now the **seed and offline fallback**, not the live
 source. Editing it changes nothing on a connected site.
@@ -231,9 +239,26 @@ static). Fix: Supabase dashboard → project → **Restore**. Then check the cro
 
 `scripts/enrich-properties.mjs` still reads slugs and addresses from
 `src/data/properties.ts` and writes `places.generated.json`, which the read path
-still overlays. **Open decision** (ADMIN-PANEL-OPTIONS §6): keep running it, or
+still overlays — but since the photo migration every property has its own
+gallery, so a re-run can only affect phone/booking link/coordinates/amenities
+where the admin has none, never photos. To push newly fetched photos into the
+admin, run `npm run photos:migrate` afterwards *on a property whose gallery you
+first empty* — it never overwrites a gallery that is already in Storage. **Open decision** (ADMIN-PANEL-OPTIONS §6): keep running it, or
 treat the Places data as frozen. Note a property added in the admin is unknown
 to the script until it is also added to `properties.ts`.
+
+### 4.3b Photo migration script
+
+```bash
+npm run photos:migrate              # dry run — lists what would move, changes nothing
+npm run photos:migrate -- --apply   # upload to Storage + write galleries
+```
+
+Needs `SUPABASE_SECRET_KEY` in `.env.local` (local only). Idempotent: files
+already in Storage are skipped and a property whose photos are all in Storage
+is left alone. Every record it changes keeps its previous version in History.
+Writes made by this script (or any SQL) do **not** revalidate the live site —
+redeploy, or save anything in the admin, to publish.
 
 ### 4.4 Backups
 
