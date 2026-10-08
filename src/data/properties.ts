@@ -243,18 +243,24 @@ export const properties: Property[] = [
     // Suites Fort Myers Airport" / Choice Hotels. Google's listing for this
     // address and phone is La Quinta (a Wyndham brand), and the client
     // confirmed the asset flies the La Quinta flag.
-    name: "La Quinta Inn and Suites Fort Myers I-75",
-    shortName: "La Quinta Inn & Suites Fort Myers",
+    // REBRANDED 2026-10-08, from the owner: the La Quinta has moved to Choice
+    // Hotels as "Stay Well Inn & Suites" (choicehotels.com code FLL60, same
+    // 9521 Marketplace Rd building). Live record changed in the admin DB; this
+    // seed mirrors it. Google's listing may still say La Quinta for a while —
+    // enrichment matches on name + address, so expect a mismatch until it
+    // catches up.
+    name: "Stay Well Inn & Suites Fort Myers",
+    shortName: "Stay Well Inn & Suites Fort Myers",
     address: "9521 Market Place Rd, Fort Myers, FL 33912",
     city: "Fort Myers",
     state: "Florida",
     phone: "(941) 585-0973",
     assetType: "hospitality",
-    brand: "Wyndham",
+    brand: "Choice Hotels",
     category: "Acquisition",
     acquiredYear: "2024",
     subunit: "Brahmas Hospitality Management",
-    bookingUrl: null,
+    bookingUrl: "https://www.choicehotels.com/florida/fort-myers/choice-hotels/fll60",
     placeId: null,
     coordinates: null,
     summary:
