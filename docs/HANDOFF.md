@@ -68,12 +68,12 @@ The photos were never hotlinked from Google — they were downloaded in August;
 this moves them from the repo into the client-managed store. Repo copies stay
 as the offline fallback. Script docs: ADMIN-PANEL.md §4.3b.
 
-⚠️ **Open — photo credits are not displayed anywhere.** `ui/PhotoAttribution.tsx`
+✅ **Decided 2026-10-08 — photo credits stay off the site (owner's call; do not re-raise).**
+Context: `ui/PhotoAttribution.tsx`
 has no callers; its usage went in `7ae6b8b` ("changes as requested in the
 meet"). 60 of the 74 gallery photos are Google Places photos whose terms
-require the author credit to be shown with the image. Either the client accepts
-that risk in writing, or the credit is restored (e.g. under each gallery photo
-and the property hero). Needs a decision before delivery.
+require the author credit to be shown with the image. The owner accepted that.
+Credits remain stored on each photo, so restoring them later is a small change.
 
 ---
 
