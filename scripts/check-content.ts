@@ -46,22 +46,22 @@ check("stored values overlay defaults; bad types fall back", () => {
   const v = resolveValues(hero.fields, {
     headline: ["One", "", "Two  "],
     buttonLabel: 42,
-    image: { src: "/x.webp" },
+    properties: ["a-slug", "", "b-slug"],
     unknown: "dropped",
   }) as Record<string, unknown>;
   assert.deepEqual(v.headline, ["One", "Two"]);
   assert.equal(v.buttonLabel, "Reach Out to Us");
-  assert.deepEqual(v.image, { src: "/x.webp", alt: "", attribution: null });
+  assert.deepEqual(v.properties, ["a-slug", "b-slug"]);
   assert.equal("unknown" in v, false);
 });
 
 check("validation blocks a credited photo on a no-credit surface", () => {
-  const hero = allSections.find((s) => s.key === "home.hero")!;
-  const { issues } = validateValues(hero.fields, {
-    ...resolveValues(hero.fields, undefined),
-    image: { src: "/a.jpg", alt: "A", attribution: "Photo: Google user" },
+  const about = allSections.find((s) => s.key === "home.about")!;
+  const { issues } = validateValues(about.fields, {
+    ...resolveValues(about.fields, undefined),
+    slides: [{ src: "/a.jpg", alt: "A", attribution: "Photo: Google user" }],
   });
-  assert.ok(issues.some((i) => i.level === "error" && i.path === "image"));
+  assert.ok(issues.some((i) => i.level === "error" && i.path === "slides"));
 });
 
 check("validation rejects javascript: links", () => {

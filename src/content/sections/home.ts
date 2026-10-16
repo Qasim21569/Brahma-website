@@ -12,15 +12,18 @@ export const homeHero = defineSection({
       maxLines: 3,
       maxLineLength: 32,
     }),
-    image: image(
-      "Background image",
+    properties: propertyRefs(
+      "Background properties",
+      [
+        "holiday-inn-express-orlando-seaworld",
+        "hampton-inn-suites-tampa-east-seffner",
+        "hampton-inn-tampa-veterans-expwy",
+        "clarion-pointe-lakeland-i4",
+        "beach-house-weeki-wachee",
+      ],
       {
-        src: "/properties/clarion-pointe-tampa-brandon/01-hero.webp",
-        alt: "Clarion Pointe Tampa Brandon exterior anchor shot",
-      },
-      {
-        noCredit: true,
-        help: "Full-bleed, so there is no room for a photo credit — use photography the group owns. Landscape, at least 2400px wide.",
+        count: 5,
+        help: "The background cycles through these five properties, in this order. Each shows its first gallery photo — change a property's photos on its own page and the hero follows.",
       },
     ),
     buttonLabel: text("Button label", "Reach Out to Us", { max: 30 }),
@@ -82,6 +85,56 @@ export const homeAbout = defineSection({
         {
           src: "/properties/clarion-pointe-tampa-brandon/01-hero.webp",
           alt: "Clarion Pointe Tampa exterior",
+          attribution: null,
+        },
+        {
+          src: "/properties/beach-house-weeki-wachee/05-aerial-oblique.webp",
+          alt: "Beach House at Weeki Wachee from above",
+          attribution: null,
+        },
+        {
+          src: "/properties/microtel-inn-suites-zephyrhills/g-01.webp",
+          alt: "Microtel Inn & Suites Zephyrhills at dusk",
+          attribution: null,
+        },
+        {
+          src: "/properties/holiday-inn-express-orlando-seaworld/g-04.jpg",
+          alt: "Holiday Inn Express Orlando pool",
+          attribution: null,
+        },
+        {
+          src: "/properties/primrose-school-of-oldsmar/g-03.jpg",
+          alt: "Primrose School of Oldsmar entrance",
+          attribution: null,
+        },
+        {
+          src: "/properties/rodeway-inn-port-richey-north/g-01.jpg",
+          alt: "Rodeway Inn Port Richey North entrance",
+          attribution: null,
+        },
+        {
+          src: "/properties/hampton-inn-suites-tampa-east-seffner/g-04.jpg",
+          alt: "Hampton Inn & Suites Tampa East pool",
+          attribution: null,
+        },
+        {
+          src: "/properties/quality-inn-conference-center-tampa-brandon/g-01.jpg",
+          alt: "Quality Inn and Conference Center Tampa-Brandon courtyard",
+          attribution: null,
+        },
+        {
+          src: "/properties/beach-house-weeki-wachee/08-porch-gulf.webp",
+          alt: "Beach House porch looking out over the Gulf",
+          attribution: null,
+        },
+        {
+          src: "/properties/clarion-pointe-lakeland-i4/g-05.jpg",
+          alt: "Clarion Pointe Lakeland I-4 at dusk",
+          attribution: null,
+        },
+        {
+          src: "/properties/hampton-inn-tampa-veterans-expwy/g-06.jpg",
+          alt: "Hampton Inn Tampa-Veterans Expwy at night",
           attribution: null,
         },
       ],

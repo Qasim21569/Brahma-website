@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, type ReactNode } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { MaskText } from "@/components/ui/MaskText";
+import { HeroSlideshow } from "@/components/ui/HeroSlideshow";
 import useMaskImage from "@/hooks/useMaskImage";
 
 /**
@@ -15,19 +15,19 @@ import useMaskImage from "@/hooks/useMaskImage";
  *   2. CTA button — actionable entry point
  * The media parallaxes and dissolves as you scroll past.
  *
- * Media slot accepts an image now, a <video> later, without layout change.
+ * Media slot is a looping photo slideshow now (`slides`), or a <video> if
+ * `videoSrc` is given — either way, no layout change.
  */
 export function Hero({
-  imageSrc,
-  imageAlt,
+  slides,
   videoSrc,
   posterSrc,
   headline,
   action,
   className = "",
 }: {
-  imageSrc: string;
-  imageAlt: string;
+  /** Background photographs, cycled in order. One is a still image. */
+  slides: { src: string; alt: string }[];
   videoSrc?: string;
   posterSrc?: string;
   /** Headline lines — each string becomes a masked reveal line. */
@@ -63,7 +63,7 @@ export function Hero({
     >
       {/* ── Media ── */}
       <div ref={mediaRef} className="absolute inset-0 overflow-clip">
-        {/* `relative` is required, not cosmetic: the <Image fill> below
+        {/* `relative` is required, not cosmetic: the slideshow's <Image fill> below
             positions against its NEAREST POSITIONED ANCESTOR. Without it that
             was the grandparent, and the image only looked correct because the
             parallax `y` transform happens to create a containing block of its
@@ -80,21 +80,14 @@ export function Hero({
             muted
             loop
             playsInline
-            poster={posterSrc ?? imageSrc}
-            aria-label={imageAlt}
+            poster={posterSrc ?? slides[0]?.src}
+            aria-label={slides[0]?.alt}
           >
             <source src={videoSrc} type="video/mp4" />
           </video>
         ) : (
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          )}
+          <HeroSlideshow slides={slides} />
+        )}
         </motion.div>
       </div>
 

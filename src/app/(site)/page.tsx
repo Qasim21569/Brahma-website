@@ -61,16 +61,27 @@ export default async function HomePage() {
     })
     .filter((item): item is SelectedWorkItem => item !== null && item.src !== "");
 
+  /* Hero backdrop: each chosen property's thumbnail — the first photo of its
+     gallery, the same one its portfolio card shows. A property that was hidden
+     or has no photos yet is skipped; if nothing resolves, fall back to the first
+     asset that has photography so the hero is never empty. */
+  const heroSlides = hero.properties
+    .map((slug) => portfolio.get(slug))
+    .map((p) => p?.gallery[0] && { src: p.gallery[0].src, alt: p.shortName })
+    .filter((s): s is { src: string; alt: string } => Boolean(s));
+  if (heroSlides.length === 0 && withPhotos[0]) {
+    heroSlides.push({ src: withPhotos[0].gallery[0].src, alt: withPhotos[0].shortName });
+  }
+
   return (
     <>
       <Navbar />
       <main>
-        {/* ─── Hero ─── the image is an explicit editor choice (Admin → Home →
-             Hero), never a side effect of portfolio order. The admin refuses an
-             image carrying a photo credit here — there is no room to print one. */}
+        {/* ─── Hero ─── the properties are an explicit editor choice (Admin →
+             Home → Hero), never a side effect of portfolio order. Their photos
+             are the properties' own thumbnails. */}
         <Hero
-          imageSrc={hero.image.src}
-          imageAlt={hero.image.alt}
+          slides={heroSlides}
           headline={hero.headline}
           action={
             <a

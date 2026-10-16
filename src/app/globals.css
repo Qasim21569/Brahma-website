@@ -197,6 +197,15 @@ body {
   to   { transform: translateX(-50%); }
 }
 
+/* ─── Hero slideshow (HeroSlideshow) ───
+   A slow push-in on whichever slide is showing or fading out. Held for the
+   whole visible life of a slide (fade-in + hold + fade-out ≈ 6s) so it never
+   stalls before the next one arrives. */
+@keyframes hero-push {
+  from { transform: scale(1.1); }
+  to   { transform: scale(1); }
+}
+
 /* ─── Mobile: marquee only. Type + spacing scale via --multiplier. ─── */
 @layer utilities {
   @media (max-width: 767px) {
