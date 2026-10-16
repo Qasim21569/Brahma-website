@@ -65,6 +65,11 @@ export type Property = {
   brand: string | null;
   category: string;
   acquiredYear: string;
+  /**
+   * Label for the year row on the property page. Empty means "Acquired" (the
+   * site-wide label); set "Built" for an asset the group developed itself.
+   */
+  yearLabel?: string;
   subunit: string;
   /** Deep link to the property's own booking page. Filled by enrichment. */
   bookingUrl: string | null;
@@ -683,7 +688,8 @@ export const properties: Property[] = [
     assetType: "education",
     brand: "Primrose Schools",
     category: "Education",
-    acquiredYear: "2024",
+    acquiredYear: "2020",
+    yearLabel: "Built",
     subunit: "Brahmas Management and Investment Group",
     bookingUrl: null,
     placeId: null,
@@ -816,6 +822,7 @@ export function normalizeProperty(slug: string, data: Partial<Property>): Proper
     brand: strOrNull(data.brand),
     category: str(data.category, "Acquisition"),
     acquiredYear: str(data.acquiredYear),
+    ...(strOrNull(data.yearLabel) ? { yearLabel: str(data.yearLabel).trim() } : {}),
     subunit: str(data.subunit, "Brahmas Hospitality Management"),
     bookingUrl: strOrNull(data.bookingUrl),
     placeId: strOrNull(data.placeId),

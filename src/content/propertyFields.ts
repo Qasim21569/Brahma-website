@@ -55,7 +55,12 @@ export const propertyFields = {
     { value: "residential", label: "Residential" },
   ]),
   brand: text("Brand / franchise", "", { optional: true, max: 60 }),
-  acquiredYear: text("Year acquired", "", { max: 10 }),
+  acquiredYear: text("Year", "", { max: 10, help: "The year the group acquired the asset — or built it, if the label below says Built." }),
+  yearLabel: text("Year label", "", {
+    optional: true,
+    max: 24,
+    help: "Leave empty to show “Acquired”. Enter “Built” for an asset the group developed itself.",
+  }),
   subunit: text("Operated by", "Brahmas Hospitality Management", { max: 80 }),
   contentStatus: select("Copy status", "placeholder", [
     { value: "placeholder", label: "Placeholder — not yet approved" },
@@ -124,6 +129,7 @@ export function propertyToValues(p: Property): PropertyFormValues {
     assetType: p.assetType,
     brand: p.brand ?? "",
     acquiredYear: p.acquiredYear,
+    yearLabel: p.yearLabel ?? "",
     subunit: p.subunit,
     contentStatus: p.contentStatus,
     address: p.address,
@@ -151,13 +157,14 @@ export function valuesToPropertyData(
   const amenities: Amenity[] | undefined =
     v.amenitiesMode === "custom" ? v.amenities.map((a) => ({ label: a.label, icon: a.icon })) : undefined;
 
-  const { slug: _slug, amenities: _a, amenitiesSource: _s, highlights: _h, ...kept } = {
+  const { slug: _slug, amenities: _a, amenitiesSource: _s, highlights: _h, yearLabel: _y, ...kept } = {
     ...existing,
   } as Partial<Property>;
   void _slug;
   void _a;
   void _s;
   void _h;
+  void _y;
 
   return {
     category: "Acquisition",
@@ -174,6 +181,7 @@ export function valuesToPropertyData(
     assetType: v.assetType as Property["assetType"],
     brand: orNull(v.brand),
     acquiredYear: v.acquiredYear.trim(),
+    ...(orNull(v.yearLabel) ? { yearLabel: v.yearLabel.trim() } : {}),
     subunit: v.subunit.trim(),
     contentStatus: v.contentStatus === "final" ? "final" : "placeholder",
     address: v.address.trim(),

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MaskText } from "@/components/ui/MaskText";
+import { ResponsiveMaskText } from "@/components/ui/ResponsiveMaskText";
 import { Hero } from "@/components/ui/Hero";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionTitle } from "@/components/ui/SectionTitle";
@@ -129,17 +130,19 @@ export default async function HomePage() {
                   lines={about.heading}
                 />
               </h2>
-              <MaskText
+              <ResponsiveMaskText
                 delay={0.15}
                 className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
-                lines={about.body}
+                desktop={about.body}
+                mobile={[about.body.join(" ")]}
               />
-              <MaskText
+              <ResponsiveMaskText
                 delay={0.2}
                 className="font-body-lg text-body-lg text-on-surface-variant mt-10 max-w-xl"
                 /* "Nearly three decades" tracks the founder's years in the
                    industry (27+); update both together. */
-                lines={about.body2}
+                desktop={about.body2}
+                mobile={[about.body2.join(" ")]}
               />
               <Reveal delay={0.5}>
                 <div className="mt-10 flex flex-col gap-2 max-w-xl">
@@ -200,15 +203,17 @@ export default async function HomePage() {
                   lines={philosophy.heading}
                 />
               </h2>
-              <MaskText
+              <ResponsiveMaskText
                 delay={0.15}
                 className="font-body-lg text-body-lg text-on-surface-variant mt-8 max-w-xl"
-                lines={philosophy.body}
+                desktop={philosophy.body}
+                mobile={[philosophy.body.join(" ")]}
               />
-              <MaskText
+              <ResponsiveMaskText
                 delay={0.2}
                 className="font-body-lg text-body-lg text-on-surface-variant mt-10 max-w-xl"
-                lines={philosophy.body2}
+                desktop={philosophy.body2}
+                mobile={[philosophy.body2.join(" ")]}
               />
               <Reveal delay={0.45}>
                 <div className="mt-10">

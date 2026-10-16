@@ -92,7 +92,7 @@ export default async function PropertyPage({
     { label: t.factLocation, value: `${city}, ${state}` },
     { label: t.factType, value: assetTypeLabels[assetType] },
     ...(brand ? [{ label: t.factBrand, value: brand }] : []),
-    { label: t.factAcquired, value: acquiredYear },
+    { label: property.yearLabel ?? t.factAcquired, value: acquiredYear },
     { label: t.factOperator, value: subunit },
     // Per-asset facts the shared hotel-shaped rows above cannot carry — lot
     // size, water frontage. Client-supplied only; empty for most properties.
